@@ -1,0 +1,33 @@
+// Contextual backgrounds
+@mixin bg-variant($parent, $color) {
+    #{$parent} {
+        background-color: $color !important;
+    }
+    a#{$parent},
+    button#{$parent} {
+        @include hover-focus {
+            background-color: darken($color, 10%) !important;
+        }
+    }
+}
+
+@mixin bg-gradient-variant($parent, $color) {
+    #{$parent} {
+      background: #c31432 !important;  /* fallback for old browsers */
+      background: -webkit-linear-gradient(to right, #240b36, #c31432) !important;  /* Chrome 10-25, Safari 5.1-6 */
+      background: linear-gradient(to right, #240b36, #c31432) !important; /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+    }
+}
+
+@mixin bg-translucent-variant($parent, $color) {
+    #{$parent} {
+        background-color: darken(rgba($color, $translucent-color-opacity), 7%) !important;
+    }
+    a#{$parent},
+    button#{$parent} {
+        @include hover-focus {
+            background-color: darken(rgba($color, $translucent-color-opacity), 12%) !important;
+        }
+    }
+}
