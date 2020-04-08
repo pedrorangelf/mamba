@@ -1,6 +1,6 @@
 ### Mamba - Read Me
 
-**Link do repositório no GitHub:** https://github.com/victorssr/Mamba
+**Link do repositório no GitHub:** https://github.com/pedrorangelf/mamba
 
 - **Host do banco de dados SQL Server:** mamba.database.windows.net,1433
 - **Login do banco de dado SQL Server:** mamba
