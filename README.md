@@ -19,7 +19,7 @@ Siga os passos abaixo e garanta que tudo estará instalado para a execução do 
 2. Baixe e instale o .Net Core 3.1 pelo link https://dotnet.microsoft.com/download/dotnet-core/3.1
 3. Baixe e instale o NodeJS pelo link https://nodejs.org/ (selecione a opção "LTS").
 4. Instale o Angular CLI executando o seguinte comando no terminal:
-**npm i -g @angular/cli **
+**npm i -g @angular/cli**
 
 
 ## Passo a passo
