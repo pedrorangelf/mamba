@@ -51,7 +51,9 @@ export class DesafioComponent implements OnInit {
       questoes: questoes
     };
 
-    this.desafioService.salvar(model).subscribe(result => { console.log(result); });
+    this.desafioService.salvar(model).subscribe(result => {
+      this.router.navigate(['dashboard']);
+    });
 
   }
 

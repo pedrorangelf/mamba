@@ -41,6 +41,20 @@ namespace Mamba.Infra.Context
             modelBuilder.ApplyConfiguration(new QuestaoConfig());
             modelBuilder.ApplyConfiguration(new RespostaConfig());
             modelBuilder.ApplyConfiguration(new UsuarioConfig());
+
+            var cascadeFKs = modelBuilder
+                          .Model
+                          .GetEntityTypes()
+                          .SelectMany(t => t.GetForeignKeys())
+                          .Where(fk => !fk.IsOwnership)
+                          .ToList();
+
+            foreach (var fk in cascadeFKs)
+            {
+                fk.DeleteBehavior = DeleteBehavior.Cascade;
+            }
+
+            base.OnModelCreating(modelBuilder);
         }
 
         public override int SaveChanges()

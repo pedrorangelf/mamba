@@ -15,8 +15,8 @@ export class DesafioService extends DataService {
         return this.post<any>('', data);
     }
 
-    excluir(data: any) {
-        return this.post<any>('horariosreagendar', data);
+    excluir(id: number) {
+        return this.delete<any>('excluir', id);
     }
 
     buscarDesafioPorId(id: number) {

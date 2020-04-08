@@ -35,6 +35,18 @@ namespace Mamba.API
                 options.UseSqlServer(Configuration.GetConnectionString("Conexao"));
             });
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll",
+                    builder =>
+                    {
+                        builder
+                        .AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader();
+                    });
+            });
+
             services.AddControllers();
             services.AddScoped<IDesafioRepository, DesafioRepository>();
             services.AddScoped<IQuestaoRepository, QuestaoRepository>();
@@ -52,12 +64,9 @@ namespace Mamba.API
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseCors("AllowAll");
 
-            app.UseRouting();
-
-            app.UseAuthorization();
-
-            app.UseCors(option => option.AllowAnyOrigin());
+            app.UseRouting();          
 
             app.UseEndpoints(endpoints =>
             {

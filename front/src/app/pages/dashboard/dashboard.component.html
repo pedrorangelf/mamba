@@ -110,14 +110,22 @@
           <table class="table align-items-center table-flush">
             <thead class="thead-light">
               <tr>
-                <th scope="col">Descrição</th>
+                <th scope="row" colspan="2">Descrição</th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let item of desafios" >
                 <th scope="row">
-                  item.titulo
+                  {{item.titulo}}
                 </th>
+                <th class="text-right">                  
+                    <a class="btn btn-sm btn-icon-only text-primary">
+                      <i class="fas fa-edit"></i>
+                    </a>
+                    <a class="btn btn-sm btn-icon-only text-danger" (click)="excluir(item.idDesafio)">
+                      <i class="fas fa-trash-alt"></i>
+                    </a>                     
+                </th>               
               </tr>
             </tbody>
           </table>

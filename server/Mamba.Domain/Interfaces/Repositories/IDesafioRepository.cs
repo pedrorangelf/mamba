@@ -7,6 +7,8 @@ namespace Mamba.Domain.Interfaces.Repositories
     {
         IEnumerable<Desafio> ListarDesafios();
         Desafio Salvar(Desafio desafio);
+        void Excluir(int id);
+        Desafio BuscarPorId(int id);
 
     }
 }

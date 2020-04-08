@@ -1,6 +1,8 @@
 ﻿using Mamba.Domain.Entities;
 using Mamba.Domain.Interfaces.Repositories;
 using Mamba.Infra.Context;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Mamba.Infra.Repositories
 {
@@ -8,6 +10,19 @@ namespace Mamba.Infra.Repositories
     {
         public EmpresaRepository(ContextBase contextBase) : base(contextBase)
         {
+        }
+
+        public Empresa BuscarEmpresaPorId(int id)
+        {
+            try
+            {
+               return _contextBase.Empresa.FirstOrDefault(f => f.IdEmpresa == id);
+            }
+            catch (System.Exception)
+            {
+
+                throw;
+            }
         }
     }
 }

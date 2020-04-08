@@ -72,4 +72,14 @@ export class DashboardComponent implements OnInit {
     this.salesChart.update();
   }
 
+  public excluir(id: number) {
+    // LOADING
+    this.desafioService.excluir(id).subscribe(() => {
+      // FIM LOADING
+      // MENSAGEM SUCESSO
+      // TRATAR ERRO
+      this.listarDesafios();
+    });
+  }
+
 }

@@ -37,6 +37,29 @@ namespace Mamba.API.Controllers
             return Ok(model);
         }
 
+        [HttpGet]
+        [Route("{id:int}")]
+        public async Task<IActionResult> BuscarDesafioPorId(int id)
+        {          
+
+            Desafio desafio = _desafioReposiory.BuscarPorId(id);
+
+            return Ok(new DesafioModel 
+            {
+                IdDesafio = desafio.IdDesafio,
+                Titulo = desafio.Titulo
+            });
+        }
+
+        [HttpDelete]
+        [Route("excluir/{id:int}")]
+        public async Task<IActionResult> ExcluirDesafio(int id)
+        {
+            _desafioReposiory.Excluir(id);
+
+            return Ok();
+        }
+
         [HttpPost]
         public async Task<IActionResult> Salvar(DesafioAddModel model)
         {
@@ -48,7 +71,7 @@ namespace Mamba.API.Controllers
                   Desafio desafio = _desafioReposiory.Salvar(new Desafio
                     {    
                         CodigoEmpresa = 2,
-                        Empresa = _empresaReposiory.GetById(2),
+                        Empresa = _empresaReposiory.BuscarEmpresaPorId(2),
                         CodigoUsuarioCadastro = 0,
                         DataAbertura = DateTime.Now,
                         DataCadastro = DateTime.Now,
