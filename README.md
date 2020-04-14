@@ -31,6 +31,7 @@ Após tudo instalado e configurado, abra o prompt de comando e navegue até a pa
 **No terminal acesse a pasta "server" e execute os comandos abaixo:**
 - dotnet restore
 - dotnet build
+- acessar o projeto Mamba.API (cd Mamba.API)
 - dotnet run
 
 **No terminal acesse a pasta "front" e execute os comandos abaixo:**
