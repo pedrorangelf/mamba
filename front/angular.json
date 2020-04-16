@@ -28,7 +28,8 @@
             ],
             "styles": [
               "src/styles.scss",
-              "src/assets/scss/argon.scss"
+              "src/assets/scss/argon.scss",
+              "node_modules/sweetalert2/dist/sweetalert2.css"
             ],
             "scripts": [
               "node_modules/chart.js/dist/Chart.min.js",

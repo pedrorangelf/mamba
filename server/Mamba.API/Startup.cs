@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Mamba.Domain.Interfaces.Repositories;
+using Mamba.Domain.Interfaces.Services;
+using Mamba.Domain.Services;
 using Mamba.Infra.Context;
 using Mamba.Infra.Repositories;
 using Microsoft.AspNetCore.Builder;
@@ -14,6 +16,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
 
 namespace Mamba.API
 {
@@ -47,11 +50,32 @@ namespace Mamba.API
                     });
             });
 
+           
+
             services.AddControllers();
+            services.AddSwaggerGen(c =>
+            {
+
+                c.SwaggerDoc("v1",
+                    new OpenApiInfo
+                    {
+                        Title = "Mamba",
+                        Version = "v1",
+                        Description = "Mamba API REST",
+                        Contact = new OpenApiContact
+                        {
+                            Name = "Mamba",
+                            Url = new Uri("https://github.com/pedrorangelf/mamba")
+                        }
+                    });
+            });
             services.AddScoped<IDesafioRepository, DesafioRepository>();
             services.AddScoped<IQuestaoRepository, QuestaoRepository>();
             services.AddScoped<IRespostaRepository, RespostaRepository>();
             services.AddScoped<IEmpresaRepository, EmpresaRepository>();
+
+            //SERVICES
+            services.AddScoped<IEmpresaService, EmpresaService>();
 
 
         }
@@ -63,6 +87,12 @@ namespace Mamba.API
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Mamba V1");
+            });
 
             app.UseCors("AllowAll");
 

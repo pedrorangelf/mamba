@@ -71,7 +71,7 @@ namespace Mamba.API.Controllers
                   Desafio desafio = _desafioReposiory.Salvar(new Desafio
                     {    
                         CodigoEmpresa = 2,
-                        Empresa = _empresaReposiory.BuscarEmpresaPorId(2),
+                        Empresa = _empresaReposiory.BuscarEmpresaPorId(3),
                         CodigoUsuarioCadastro = 0,
                         DataAbertura = DateTime.Now,
                         DataCadastro = DateTime.Now,

@@ -12,5 +12,18 @@ namespace Mamba.Domain.Services
         {
             _EmpresaRepository = EmpresaRepository;
         }
+
+        public void Salvar(Empresa empresa)
+        {
+            try
+            {                
+                _EmpresaRepository.Add(empresa);
+            }
+            catch (System.Exception ex)
+            {
+
+                throw ex;
+            }
+        }
     }
 }

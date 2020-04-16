@@ -1,4 +1,5 @@
-<div class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center" style="min-height: 600px; background-size: cover; background-position: center top;">
+<div class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center"
+  style="min-height: 600px; background-size: cover; background-position: center top;">
   <!-- Mask -->
   <span class="mask bg-gradient-danger opacity-8"></span>
   <!-- Header container -->
@@ -31,26 +32,37 @@
                 <div class="col-lg-12">
                   <div class="form-group">
                     <label class="form-control-label" for="input-username">Título</label>
-                    <input type="text" id="input-username" formControlName="titulo" class="form-control form-control-alternative" value="">
+                    <input type="text" id="input-username" formControlName="titulo"
+                      class="form-control form-control-alternative" value="">
                   </div>
                 </div>
                 <div class="col-lg-12">
                   <div class="form-group">
                     <label class="form-control-label" for="input-email">Descrição</label>
-                    <textarea rows="4" class="form-control form-control-alternative" formControlName="descricao"></textarea>
+                    <textarea rows="4" class="form-control form-control-alternative"
+                      formControlName="descricao"></textarea>
                   </div>
                 </div>
               </div>
             </div>
             <hr class="my-4" />
             <!-- Address -->
-            <h6 class="heading-small text-muted mb-4">Questões</h6>
+            <div class="row">
+              <div class="col">
+                <h6 class="heading-small text-muted mb-4">Questões</h6>
+              </div>
+              <div class="col text-right">
+                <button type="button" class="btn btn-success btn-info">+</button>
+              </div>
+            </div>
+
             <div class="pl-lg-4">
               <div class="row">
                 <div class="col-md-12">
                   <div class="form-group">
                     <label class="form-control-label" for="input-address">Questão 01</label>
-                    <textarea rows="4" class="form-control form-control-alternative" formControlName="questao"></textarea>
+                    <textarea rows="4" class="form-control form-control-alternative"
+                      formControlName="questao"></textarea>
                   </div>
                 </div>
               </div>
@@ -76,7 +88,10 @@
             <!-- <h6 class="heading-small text-muted mb-4">About me</h6> -->
             <div class="pl-lg-4">
               <div class="form-group">
-                <button type="button" class="btn btn-success btn-lg btn-block" [disabled]="formGroup.invalid" (click)="salvar()">Salvar Desafio</button>
+                <button type="button" class="btn btn-success btn-lg btn-block" [disabled]="formGroup.invalid"
+                  (click)="salvar()">Salvar Desafio</button>
+                  <button type="button" class="btn btn-danger btn-lg btn-block"
+                  (click)="cancelar()">Cancelar</button>
               </div>
             </div>
           </form>

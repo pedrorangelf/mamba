@@ -4,6 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { QuestaoModel } from 'src/app/shared/model/desafio-add.model';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-desafio',
@@ -52,9 +53,45 @@ export class DesafioComponent implements OnInit {
     };
 
     this.desafioService.salvar(model).subscribe(result => {
-      this.router.navigate(['dashboard']);
+      Swal.fire({
+        title: 'Desafio salvo com sucesso!',
+        text: 'Deseja continuar cadastrando ?',
+        showCancelButton: true,
+        confirmButtonColor: '#29b6f6',
+        cancelButtonColor: '#ef9a9a',
+        confirmButtonText: 'Sim',
+        cancelButtonText: 'Não'
+      }).then(
+        s => {
+          if (s.value) {
+
+          } else {
+            this.router.navigate(['dashboard']);
+          }
+        }
+      );
     });
 
+  }
+
+  cancelar() {
+    if (this.formGroup.dirty) {
+      Swal.fire({
+        title: 'Deseja abandonar?',
+        text: 'Se você sair os dados alterados não serão salvos.',
+        showCancelButton: true,
+        confirmButtonColor: '#29b6f6',
+        cancelButtonColor: '#ef9a9a',
+        confirmButtonText: 'Sim',
+        cancelButtonText: 'Não'
+      }).then(
+        s => {
+          if (s.value) {
+            this.router.navigate(['dashboard']);
+          }
+        }
+      );
+    }
   }
 
 }
