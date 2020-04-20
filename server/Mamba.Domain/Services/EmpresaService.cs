@@ -16,8 +16,15 @@ namespace Mamba.Domain.Services
         public void Salvar(Empresa empresa)
         {
             try
-            {                
-                _EmpresaRepository.Add(empresa);
+            {
+                if (empresa.IdEmpresa > 0)
+                {
+                    _EmpresaRepository.Update(empresa);
+                }
+                else
+                {
+                    _EmpresaRepository.Add(empresa);
+                }
             }
             catch (System.Exception ex)
             {

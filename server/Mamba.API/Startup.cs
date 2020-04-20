@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+using Mamba.API.AutoMapper;
 using Mamba.Domain.Interfaces.Repositories;
 using Mamba.Domain.Interfaces.Services;
 using Mamba.Domain.Services;
@@ -50,7 +52,7 @@ namespace Mamba.API
                     });
             });
 
-           
+            services.AddAutoMapper(typeof(MappingProfile));
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
@@ -76,6 +78,8 @@ namespace Mamba.API
 
             //SERVICES
             services.AddScoped<IEmpresaService, EmpresaService>();
+            services.AddScoped<IUsuarioService, UsuarioService>();
+            services.AddScoped<ICidadeService, CidadeService>();
 
 
         }

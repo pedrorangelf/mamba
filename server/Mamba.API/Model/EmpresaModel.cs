@@ -7,7 +7,7 @@ namespace Mamba.API.Model
 {
     public class EmpresaModel
     {
-        public int IdEmpresa { get; set; }
+        public int? IdEmpresa { get; set; }
         public int CodigoCidade { get; set; }
         public string Nome { get; set; }
         public int CNPJ { get; set; }
@@ -16,6 +16,5 @@ namespace Mamba.API.Model
 
         // ATRIBUTOS PADRÕES DE CONTROLE
         public int? CodigoUsuarioCadastro { get; set; }
-        public string ProcessoCadastro { get; set; }
     }
 }

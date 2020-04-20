@@ -12,5 +12,25 @@ namespace Mamba.Domain.Services
         {
             _UsuarioRepository = UsuarioRepository;
         }
+
+        public void Salvar(Usuario usuario)
+        {
+            try
+            {
+                if (usuario.IdUsuario > 0)
+                {
+                    _UsuarioRepository.Update(usuario);
+                }
+                else
+                {
+                    _UsuarioRepository.Add(usuario);
+                }
+            }
+            catch (System.Exception ex)
+            {
+
+                throw ex;
+            }
+        }
     }
 }
