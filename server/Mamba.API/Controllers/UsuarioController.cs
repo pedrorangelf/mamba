@@ -30,8 +30,15 @@ namespace Mamba.API.Controllers
         /// <returns>Lista de todos os usuários registros</returns>
         /// <response code="200">Retorna a lista dos usuários registrados</response>
         /// <response code="400">Erro ao buscar usuários</response>
+        /// <remarks>
+        /// Orientações de testes:
+        /// 
+        ///     Clique no botão "Try it out" abaixo e depois no botão "Execute" que será exibido para testar o serviço.
+        ///     
+        ///     Dica: Utilize este serviço para ver os Id's disponíveis para os próximos testes.
+        /// </remarks>
         [HttpGet]
-        public async Task<IActionResult> BuscarUsuarios()
+        public async Task<IActionResult> ListarUsuarios()
         {
             try
             {
@@ -58,6 +65,13 @@ namespace Mamba.API.Controllers
         /// <response code="200">Retorna o usuário encontrado</response>
         /// <response code="400">Erro ao buscar usuário</response>
         /// <response code="404">Nenhum usuário encontrado</response>
+        /// <remarks>
+        /// Orientações de testes:
+        /// 
+        ///     Clique no botão "Try it out" abaixo, informe o id de um desafio cadastrado e depois no botão "Execute" para testar o serviço.
+        /// 
+        ///     Dica: Utilize o serviço de listagem para encontrar um id para o teste.
+        /// </remarks>
         [HttpGet]
         [Route("{id:int}")]
         public async Task<IActionResult> BuscarUsuarioPorId(int id)
@@ -75,12 +89,51 @@ namespace Mamba.API.Controllers
         }
 
         /// <summary>
+        /// Exclui um usuário registrado
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// <response code="200">Usuário excluído com sucesso</response>
+        /// <response code="400">Erro ao excluir usuário</response>
+        /// <response code="404">Usuário não encontrado</response>
+        /// <remarks>
+        /// Orientações de testes:
+        /// 
+        ///     Clique no botão "Try it out" abaixo, informe o id de um desafio cadastrado e depois no botão "Execute" para testar o serviço.
+        /// 
+        ///     Dica: Utilize o serviço de listagem para encontrar um id para o teste.
+        /// </remarks>
+        [HttpDelete]
+        [Route("excluir/{id:int}")]
+        public async Task<IActionResult> Excluir(int id)
+        {
+            try
+            {
+                var usuario = _usuarioAppService.GetById(id);
+
+                _usuarioAppService.Remove(usuario);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        /// <summary>
         /// Registra um novo usuário
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
         /// <response code="200">Usuário registrado com sucesso</response>
         /// <response code="400">Erro ao registrar usuário</response>
+        /// <remarks>
+        /// Orientações de testes:
+        /// 
+        ///     Clique no botão "Try it out" abaixo, informe todos os campos exigidos e depois no botão "Execute" para testar o serviço.
+        /// </remarks>
         [HttpPost]
         public async Task<IActionResult> Incluir(UsuarioModel model)
         {
@@ -104,6 +157,13 @@ namespace Mamba.API.Controllers
         /// <response code="200">Usuário atualizado com sucesso</response>
         /// <response code="400">Erro ao atualizar usuário</response>
         /// <response code="404">Usuário não encontrado</response>
+        /// <remarks>
+        /// Orientações de testes:
+        /// 
+        ///     Clique no botão "Try it out" abaixo, informe todos os campos exigidos e depois no botão "Execute" para testar o serviço.
+        /// 
+        ///     Dica: Utilize o serviço de listagem para encontrar um id para o teste.
+        /// </remarks>
         [HttpPut]
         public async Task<IActionResult> Editar(UsuarioModel model)
         {
@@ -136,31 +196,5 @@ namespace Mamba.API.Controllers
             }
         }
 
-        /// <summary>
-        /// Exclui um usuário registrado
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        /// <response code="200">Usuário excluído com sucesso</response>
-        /// <response code="400">Erro ao excluir usuário</response>
-        /// <response code="404">Usuário não encontrado</response>
-        [HttpDelete]
-        [Route("excluir/{id:int}")]
-        public async Task<IActionResult> Excluir(int id)
-        {
-            try
-            {
-                var usuario = _usuarioAppService.GetById(id);
-
-                _usuarioAppService.Remove(usuario);
-
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-
-                throw ex;
-            }
-        }
     }
 }

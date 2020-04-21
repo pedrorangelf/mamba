@@ -98,7 +98,7 @@ namespace Mamba.API.Controllers
         /// </remarks>
         [HttpDelete]
         [Route("excluir/{id:int}")]
-        public async Task<IActionResult> ExcluirDesafio(int id)
+        public async Task<IActionResult> Excluir(int id)
         {
             try
             {
@@ -136,7 +136,7 @@ namespace Mamba.API.Controllers
         ///     Clique no botão "Try it out" abaixo, informe todos os campos exigidos e depois no botão "Execute" para testar o serviço.
         /// </remarks>
         [HttpPost]
-        public async Task<IActionResult> Salvar(DesafioAddModel model)
+        public async Task<IActionResult> Incluir(DesafioAddModel model)
         {
             try
             {
@@ -188,6 +188,13 @@ namespace Mamba.API.Controllers
         /// <response code="200">Desafio atualizado com sucesso</response>
         /// <response code="400">Erro ao atualizar desafio</response>
         /// <response code="404">Desafio não encontrado</response>
+        /// <remarks>
+        /// Orientações de testes:
+        /// 
+        ///     Clique no botão "Try it out" abaixo, informe todos os campos exigidos e depois no botão "Execute" para testar o serviço.
+        /// 
+        ///     Dica: Utilize o serviço de listagem para encontrar um id para o teste.
+        /// </remarks>
         [HttpPut]
         public async Task<IActionResult> Editar(DesafioAddModel model)
         {
