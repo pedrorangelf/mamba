@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'http://localhost:57829',
+  apiUrl: 'http://mambafiap.azurewebsites.net/',
 };
