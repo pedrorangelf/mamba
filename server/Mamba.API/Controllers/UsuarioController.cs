@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Mamba.API.Model;
 using Mamba.Domain.Entities;
-using Mamba.Domain.Interfaces.Repositories;
 using Mamba.Domain.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -51,7 +50,7 @@ namespace Mamba.API.Controllers
         {
             try
             {
-                _usuarioService.Salvar(_mapper.Map<Usuario>(model));
+                _usuarioService.Add(_mapper.Map<Usuario>(model));
 
                 return Ok();
             }
@@ -76,7 +75,7 @@ namespace Mamba.API.Controllers
 
                     usuario = _mapper.Map<Usuario>(model);
 
-                    _usuarioService.Salvar(usuario);
+                    _usuarioService.Update(usuario);
 
                     return Ok();
                 }

@@ -1,10 +1,6 @@
 ﻿using AutoMapper;
 using Mamba.API.Model;
 using Mamba.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Mamba.API.AutoMapper
 {

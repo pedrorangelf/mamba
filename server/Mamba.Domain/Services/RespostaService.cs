@@ -6,11 +6,11 @@ namespace Mamba.Domain.Services
 {
     public class RespostaService : ServiceBase<Resposta>, IRespostaService
     {
-        private readonly IRespostaRepository _RespostaRepository;
+        private readonly IRespostaRepository _respostaRepository;
 
         public RespostaService(IRespostaRepository RespostaRepository) : base(RespostaRepository)
         {
-            _RespostaRepository = RespostaRepository;
+            _respostaRepository = RespostaRepository;
         }
     }
 }

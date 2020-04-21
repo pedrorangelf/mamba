@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Mamba.API.Model;
 using Mamba.Domain.Entities;
-using Mamba.Domain.Interfaces.Repositories;
 using Mamba.Domain.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -53,7 +52,7 @@ namespace Mamba.API.Controllers
         {
             try
             {
-                _empresaService.Salvar(new Empresa
+                _empresaService.Add(new Empresa
                 {
                     CNPJ = model.CNPJ,
                     CodigoCidade = model.CodigoCidade,
@@ -90,7 +89,7 @@ namespace Mamba.API.Controllers
 
                     empresa = _mapper.Map<Empresa>(model);
 
-                    _empresaService.Salvar(empresa);
+                    _empresaService.Update(empresa);
 
                     return Ok();
                 }

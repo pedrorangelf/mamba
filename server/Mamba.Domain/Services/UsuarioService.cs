@@ -6,31 +6,12 @@ namespace Mamba.Domain.Services
 {
     public class UsuarioService : ServiceBase<Usuario>, IUsuarioService
     {
-        private readonly IUsuarioRepository _UsuarioRepository;
+        private readonly IUsuarioRepository _usuarioRepository;
 
         public UsuarioService(IUsuarioRepository UsuarioRepository) : base(UsuarioRepository)
         {
-            _UsuarioRepository = UsuarioRepository;
+            _usuarioRepository = UsuarioRepository;
         }
 
-        public void Salvar(Usuario usuario)
-        {
-            try
-            {
-                if (usuario.IdUsuario > 0)
-                {
-                    _UsuarioRepository.Update(usuario);
-                }
-                else
-                {
-                    _UsuarioRepository.Add(usuario);
-                }
-            }
-            catch (System.Exception ex)
-            {
-
-                throw ex;
-            }
-        }
     }
 }

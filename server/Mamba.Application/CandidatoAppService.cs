@@ -6,11 +6,11 @@ namespace Mamba.Application
 {
     public class CandidatoAppService : AppServiceBase<Candidato>, ICandidatoAppService
     {
-        private readonly ICandidatoService _CandidatoService;
+        private readonly ICandidatoService _candidatoService;
 
         public CandidatoAppService(ICandidatoService CandidatoService) : base(CandidatoService)
         {
-            _CandidatoService = CandidatoService;
+            _candidatoService = CandidatoService;
         }
     }
 }

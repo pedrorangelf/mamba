@@ -1,5 +1,4 @@
-﻿using System;
-namespace Mamba.API.Model
+﻿namespace Mamba.API.Model
 {
     public class DesafioModel
     {

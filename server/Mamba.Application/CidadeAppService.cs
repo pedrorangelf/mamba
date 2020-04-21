@@ -6,11 +6,11 @@ namespace Mamba.Application
 {
     public class CidadeAppService : AppServiceBase<Cidade>, ICidadeAppService
     {
-        private readonly ICidadeService _CidadeService;
+        private readonly ICidadeService _cidadeService;
 
         public CidadeAppService(ICidadeService CidadeService) : base(CidadeService)
         {
-            _CidadeService = CidadeService;
+            _cidadeService = CidadeService;
         }
     }
 }

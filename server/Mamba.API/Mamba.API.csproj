@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Mamba.Application\Mamba.Application.csproj" />
     <ProjectReference Include="..\Mamba.Infra\Mamba.Infra.csproj" />
   </ItemGroup>
 </Project>

@@ -6,11 +6,11 @@ namespace Mamba.Domain.Services
 {
     public class QuestaoService : ServiceBase<Questao>, IQuestaoService
     {
-        private readonly IQuestaoRepository _QuestaoRepository;
+        private readonly IQuestaoRepository _questaoRepository;
 
         public QuestaoService(IQuestaoRepository QuestaoRepository) : base(QuestaoRepository)
         {
-            _QuestaoRepository = QuestaoRepository;
+            _questaoRepository = QuestaoRepository;
         }
     }
 }

@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Mamba.API.Model;
+using Mamba.Application.Interface;
 using Mamba.Domain.Entities;
-using Mamba.Domain.Interfaces.Repositories;
-using Mamba.Domain.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Mamba.API.Controllers
@@ -15,16 +14,15 @@ namespace Mamba.API.Controllers
     [Route("[controller]")]
     public class DesafioController : ControllerBase
     {
-        private readonly IDesafioRepository _desafioReposiory;
-        private readonly IQuestaoRepository _questaoReposiory;
-        private readonly IEmpresaRepository _empresaReposiory;
+        private readonly IDesafioAppService _desafioAppReposiory;
+        private readonly IQuestaoAppService _questaoAppReposiory;
+        private readonly IEmpresaAppService _empresaAppReposiory;
 
-        public DesafioController(IDesafioRepository desafioReposiory, IQuestaoRepository questaoRepository, IEmpresaRepository empresaRepository)
+        public DesafioController(IDesafioAppService desafioAppReposiory, IQuestaoAppService questaoAppReposiory, IEmpresaAppService empresaAppReposiory)
         {
-            _desafioReposiory = desafioReposiory;
-            _questaoReposiory = questaoRepository;
-            _empresaReposiory = empresaRepository;
-            
+            _desafioAppReposiory = desafioAppReposiory;
+            _questaoAppReposiory = questaoAppReposiory;
+            _empresaAppReposiory = empresaAppReposiory;
         }
 
         [HttpGet]
@@ -32,7 +30,7 @@ namespace Mamba.API.Controllers
         {
             List<DesafioModel> model = new List<DesafioModel>();
 
-            model = _desafioReposiory.ListarDesafios().Select(s => new DesafioModel { IdDesafio = s.IdDesafio, Titulo = s.Titulo }).ToList();
+            model = _desafioAppReposiory.GetAll().Select(s => new DesafioModel { IdDesafio = s.IdDesafio, Titulo = s.Titulo }).ToList();
 
             return Ok(model);
         }
@@ -40,11 +38,11 @@ namespace Mamba.API.Controllers
         [HttpGet]
         [Route("{id:int}")]
         public async Task<IActionResult> BuscarDesafioPorId(int id)
-        {          
+        {
 
-            Desafio desafio = _desafioReposiory.BuscarPorId(id);
+            Desafio desafio = _desafioAppReposiory.GetById(id);
 
-            return Ok(new DesafioModel 
+            return Ok(new DesafioModel
             {
                 IdDesafio = desafio.IdDesafio,
                 Titulo = desafio.Titulo
@@ -55,9 +53,23 @@ namespace Mamba.API.Controllers
         [Route("excluir/{id:int}")]
         public async Task<IActionResult> ExcluirDesafio(int id)
         {
-            _desafioReposiory.Excluir(id);
+            try
+            {
+                Desafio desafio = _desafioAppReposiory.GetById(id);
+                if (desafio != null)
+                {
+                    IEnumerable<Questao> questoes = _questaoAppReposiory.GetAll().Where(q => q.CodigoDesafio == desafio.IdDesafio);
+                    _questaoAppReposiory.RemoveInScale(questoes);
 
-            return Ok();
+                    _desafioAppReposiory.Remove(desafio);
+                }
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
 
         [HttpPost]
@@ -67,11 +79,10 @@ namespace Mamba.API.Controllers
             {
                 if (model.IdDesafio == 0)
                 {
-                   
-                  Desafio desafio = _desafioReposiory.Salvar(new Desafio
-                    {    
+                    Desafio desafio = new Desafio
+                    {
                         CodigoEmpresa = 2,
-                        Empresa = _empresaReposiory.BuscarEmpresaPorId(3),
+                        Empresa = _empresaAppReposiory.GetById(3),
                         CodigoUsuarioCadastro = 0,
                         DataAbertura = DateTime.Now,
                         DataCadastro = DateTime.Now,
@@ -80,11 +91,11 @@ namespace Mamba.API.Controllers
                         Descricao = model.Descricao,
                         Titulo = model.Titulo,
                         ProcessoCadastro = "Cadastro Desafio"
+                    };
 
+                    _desafioAppReposiory.Add(desafio);
 
-                  });
-
-                    _questaoReposiory.Add(new Questao
+                    Questao questao = new Questao
                     {
                         IdQuestao = 0,
                         Descricao = model.Questoes.FirstOrDefault().Descricao,
@@ -92,10 +103,10 @@ namespace Mamba.API.Controllers
                         CodigoDesafio = desafio.IdDesafio,
                         CodigoUsuarioCadastro = 0,
                         DataCadastro = DateTime.Now,
-                        ProcessoCadastro = "Cadastro Desafio",
+                        ProcessoCadastro = "Cadastro Desafio"
+                    };
 
-                    });
-
+                    _questaoAppReposiory.Add(questao);
                 }
 
                 return Ok();

@@ -6,11 +6,11 @@ namespace Mamba.Application
 {
     public class EstadoAppService : AppServiceBase<Estado>, IEstadoAppService
     {
-        private readonly IEstadoService _EstadoService;
+        private readonly IEstadoService _estadoService;
 
         public EstadoAppService(IEstadoService EstadoService) : base(EstadoService)
         {
-            _EstadoService = EstadoService;
+            _estadoService = EstadoService;
         }
     }
 }

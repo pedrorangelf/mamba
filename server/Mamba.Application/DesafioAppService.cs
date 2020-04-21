@@ -6,11 +6,11 @@ namespace Mamba.Application
 {
     public class DesafioAppService : AppServiceBase<Desafio>, IDesafioAppService
     {
-        private readonly IDesafioService _DesafioService;
+        private readonly IDesafioService _desafioService;
 
         public DesafioAppService(IDesafioService DesafioService) : base(DesafioService)
         {
-            _DesafioService = DesafioService;
+            _desafioService = DesafioService;
         }
     }
 }

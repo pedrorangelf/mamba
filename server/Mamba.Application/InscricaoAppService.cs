@@ -6,11 +6,11 @@ namespace Mamba.Application
 {
     public class InscricaoAppService : AppServiceBase<Inscricao>, IInscricaoAppService
     {
-        private readonly IInscricaoService _InscricaoService;
+        private readonly IInscricaoService _inscricaoService;
 
         public InscricaoAppService(IInscricaoService InscricaoService) : base(InscricaoService)
         {
-            _InscricaoService = InscricaoService;
+            _inscricaoService = InscricaoService;
         }
     }
 }

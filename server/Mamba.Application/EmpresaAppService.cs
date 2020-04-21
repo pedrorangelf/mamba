@@ -6,11 +6,11 @@ namespace Mamba.Application
 {
     public class EmpresaAppService : AppServiceBase<Empresa>, IEmpresaAppService
     {
-        private readonly IEmpresaService _EmpresaService;
+        private readonly IEmpresaService _empresaService;
 
         public EmpresaAppService(IEmpresaService EmpresaService) : base(EmpresaService)
         {
-            _EmpresaService = EmpresaService;
+            _empresaService = EmpresaService;
         }
     }
 }

@@ -6,11 +6,11 @@ namespace Mamba.Application
 {
     public class RespostaAppService : AppServiceBase<Resposta>, IRespostaAppService
     {
-        private readonly IRespostaService _RespostaService;
+        private readonly IRespostaService _respostaService;
 
         public RespostaAppService(IRespostaService RespostaService) : base(RespostaService)
         {
-            _RespostaService = RespostaService;
+            _respostaService = RespostaService;
         }
     }
 }

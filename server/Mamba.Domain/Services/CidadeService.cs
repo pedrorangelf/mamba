@@ -6,11 +6,11 @@ namespace Mamba.Domain.Services
 {
     public class CidadeService : ServiceBase<Cidade>, ICidadeService
     {
-        private readonly ICidadeRepository _CidadeRepository;
+        private readonly ICidadeRepository _cidadeRepository;
 
         public CidadeService(ICidadeRepository CidadeRepository) : base(CidadeRepository)
         {
-            _CidadeRepository = CidadeRepository;
+            _cidadeRepository = CidadeRepository;
         }
     }
 }

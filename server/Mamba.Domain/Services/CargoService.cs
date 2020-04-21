@@ -6,11 +6,11 @@ namespace Mamba.Domain.Services
 {
     public class CargoService : ServiceBase<Cargo>, ICargoService
     {
-        private readonly ICargoRepository _CargoRepository;
+        private readonly ICargoRepository _cargoRepository;
 
         public CargoService(ICargoRepository CargoRepository) : base(CargoRepository)
         {
-            _CargoRepository = CargoRepository;
+            _cargoRepository = CargoRepository;
         }
     }
 }
