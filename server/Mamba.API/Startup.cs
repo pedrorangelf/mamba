@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using AutoMapper;
 using Mamba.API.AutoMapper;
@@ -59,7 +61,6 @@ namespace Mamba.API
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
-
                 c.SwaggerDoc("v1",
                     new OpenApiInfo
                     {
@@ -72,6 +73,10 @@ namespace Mamba.API
                             Url = new Uri("https://github.com/pedrorangelf/mamba")
                         }
                     });
+
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
             });
 
             // INFRA
@@ -128,10 +133,13 @@ namespace Mamba.API
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseDefaultFiles(new DefaultFilesOptions { DefaultFileNames = new List<string> { "index.html" } });
+
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Mamba V1");
+                c.RoutePrefix = string.Empty;
             });
 
             app.UseCors("AllowAll");

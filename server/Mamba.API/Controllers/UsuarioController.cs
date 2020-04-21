@@ -4,8 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Mamba.API.Model;
+using Mamba.Application.Interface;
 using Mamba.Domain.Entities;
-using Mamba.Domain.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Mamba.API.Controllers
@@ -15,16 +15,21 @@ namespace Mamba.API.Controllers
     [Route("[controller]")]
     public class UsuarioController : ControllerBase
     {
-        private readonly IUsuarioService _usuarioService;
+        private readonly IUsuarioAppService _usuarioAppService;
         private readonly IMapper _mapper;
 
-        public UsuarioController(IUsuarioService usuarioService, IMapper mapper)
+        public UsuarioController(IUsuarioAppService usuarioAppService, IMapper mapper)
         {
-            _usuarioService = usuarioService;
+            _usuarioAppService = usuarioAppService;
             _mapper = mapper;
-
         }
 
+        /// <summary>
+        /// Lista todos os usuários registrados
+        /// </summary>
+        /// <returns>Lista de todos os usuários registros</returns>
+        /// <response code="200">Retorna a lista dos usuários registrados</response>
+        /// <response code="400">Erro ao buscar usuários</response>
         [HttpGet]
         public async Task<IActionResult> BuscarUsuarios()
         {
@@ -33,10 +38,10 @@ namespace Mamba.API.Controllers
 
                 List<UsuarioModel> model = new List<UsuarioModel>();
 
-                model = _usuarioService.GetAll().Select(s => _mapper.Map<UsuarioModel>(s)).ToList();
+                model = _usuarioAppService.GetAll().Select(s => _mapper.Map<UsuarioModel>(s)).ToList();
 
                 return Ok(model);
-                
+
             }
             catch (Exception ex)
             {
@@ -45,12 +50,43 @@ namespace Mamba.API.Controllers
             }
         }
 
+        /// <summary>
+        /// Retorna um usuário registrado
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>O usuário registrado</returns>
+        /// <response code="200">Retorna o usuário encontrado</response>
+        /// <response code="400">Erro ao buscar usuário</response>
+        /// <response code="404">Nenhum usuário encontrado</response>
+        [HttpGet]
+        [Route("{id:int}")]
+        public async Task<IActionResult> BuscarUsuarioPorId(int id)
+        {
+            UsuarioModel usuarioModel = _mapper.Map<UsuarioModel>(_usuarioAppService.GetById(id));
+
+            if (usuarioModel != null)
+            {
+                return Ok(usuarioModel);
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
+        /// <summary>
+        /// Registra um novo usuário
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        /// <response code="200">Usuário registrado com sucesso</response>
+        /// <response code="400">Erro ao registrar usuário</response>
         [HttpPost]
         public async Task<IActionResult> Incluir(UsuarioModel model)
         {
             try
             {
-                _usuarioService.Add(_mapper.Map<Usuario>(model));
+                _usuarioAppService.Add(_mapper.Map<Usuario>(model));
 
                 return Ok();
             }
@@ -60,6 +96,14 @@ namespace Mamba.API.Controllers
             }
         }
 
+        /// <summary>
+        /// Atualiza um usuário registrado
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        /// <response code="200">Usuário atualizado com sucesso</response>
+        /// <response code="400">Erro ao atualizar usuário</response>
+        /// <response code="404">Usuário não encontrado</response>
         [HttpPut]
         public async Task<IActionResult> Editar(UsuarioModel model)
         {
@@ -67,7 +111,7 @@ namespace Mamba.API.Controllers
             {
                 if (model.IdUsuario > 0)
                 {
-                    var usuario = _usuarioService.GetById(model.IdUsuario.Value);
+                    var usuario = _usuarioAppService.GetById(model.IdUsuario.Value);
 
                     usuario.DataUltimaAlteracao = DateTime.Now;
 
@@ -75,7 +119,7 @@ namespace Mamba.API.Controllers
 
                     usuario = _mapper.Map<Usuario>(model);
 
-                    _usuarioService.Update(usuario);
+                    _usuarioAppService.Update(usuario);
 
                     return Ok();
                 }
@@ -84,7 +128,7 @@ namespace Mamba.API.Controllers
                     return NotFound();
                 }
 
-                
+
             }
             catch (Exception ex)
             {
@@ -92,15 +136,23 @@ namespace Mamba.API.Controllers
             }
         }
 
+        /// <summary>
+        /// Exclui um usuário registrado
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// <response code="200">Usuário excluído com sucesso</response>
+        /// <response code="400">Erro ao excluir usuário</response>
+        /// <response code="404">Usuário não encontrado</response>
         [HttpDelete]
-        [Route("exlcuir/{id:int}")]
+        [Route("excluir/{id:int}")]
         public async Task<IActionResult> Excluir(int id)
         {
             try
             {
-               var usuario =  _usuarioService.GetById(id);
+                var usuario = _usuarioAppService.GetById(id);
 
-                _usuarioService.Remove(usuario);
+                _usuarioAppService.Remove(usuario);
 
                 return Ok();
             }

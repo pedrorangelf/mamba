@@ -4,8 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Mamba.API.Model;
+using Mamba.Application.Interface;
 using Mamba.Domain.Entities;
-using Mamba.Domain.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Mamba.API.Controllers
@@ -15,30 +15,33 @@ namespace Mamba.API.Controllers
     [Route("[controller]")]
     public class EmpresaController : ControllerBase
     {
-        private readonly IEmpresaService _empresaService;
-        private readonly ICidadeService _cidadeService;
+        private readonly IEmpresaAppService _empresaAppService;
+        private readonly ICidadeAppService _cidadeAppService;
         private readonly IMapper _mapper;
 
-        public EmpresaController(IEmpresaService empresaService, ICidadeService cidadeService, IMapper mapper)
+        public EmpresaController(IEmpresaAppService empresaAppService, ICidadeAppService cidadeAppService, IMapper mapper)
         {
-            _empresaService = empresaService;
-            _cidadeService = cidadeService;
+            _empresaAppService = empresaAppService;
+            _cidadeAppService = cidadeAppService;
             _mapper = mapper;
-
         }
 
+        /// <summary>
+        /// Lista todas as empresas registradas
+        /// </summary>
+        /// <returns>Lista das empresas registradas</returns>
+        /// <response code="200">Retorna a lista das empresas registradas</response>
+        /// <response code="400">Erro ao buscar as empresas</response>
         [HttpGet]
         public async Task<IActionResult> BuscarEmpresas()
         {
             try
             {
-
                 List<EmpresaModel> model = new List<EmpresaModel>();
 
-                model = _empresaService.GetAll().Select(s => _mapper.Map<EmpresaModel>(s)).ToList();
+                model = _empresaAppService.GetAll().Select(s => _mapper.Map<EmpresaModel>(s)).ToList();
 
                 return Ok(model);
-                
             }
             catch (Exception ex)
             {
@@ -47,12 +50,36 @@ namespace Mamba.API.Controllers
             }
         }
 
+        /// <summary>
+        /// Retorna uma empresa registrada
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>Empresa registrada</returns>
+        /// <response code="200">Retorna a empresa encontrada</response>
+        /// <response code="400">Erro ao buscar a empresa</response>
+        /// <response code="404">Empresa não encontrada</response>
+        [HttpGet]
+        [Route("{id:int}")]
+        public async Task<IActionResult> BuscaEmpresaPorId(int id)
+        {
+            EmpresaModel empresaModel = _mapper.Map<Empresa, EmpresaModel>(_empresaAppService.GetById(id));
+
+            return Ok(empresaModel);
+        }
+
+        /// <summary>
+        /// Registra uma nova empresa
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        /// <response code="200">Empresa registrada com sucesso</response>
+        /// <response code="400">Erro ao registrar empresa</response>
         [HttpPost]
         public async Task<IActionResult> Incluir(EmpresaModel model)
         {
             try
             {
-                _empresaService.Add(new Empresa
+                _empresaAppService.Add(new Empresa
                 {
                     CNPJ = model.CNPJ,
                     CodigoCidade = model.CodigoCidade,
@@ -60,7 +87,7 @@ namespace Mamba.API.Controllers
                     DataCadastro = DateTime.Now,
                     DataUltimaAlteracao = DateTime.Now,
                     Descricao = model.Descricao,
-                    Cidade = _cidadeService.GetById(model.CodigoCidade),
+                    Cidade = _cidadeAppService.GetById(model.CodigoCidade),
                     Nome = model.Nome,
                     //Logo =
                     ProcessoCadastro = "EmpresaController.Incluir"
@@ -74,6 +101,14 @@ namespace Mamba.API.Controllers
             }
         }
 
+        /// <summary>
+        /// Atualiza uma empresa registrada
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        /// <response code="200">Empresa atualizada com sucesso</response>
+        /// <response code="400">Erro ao atualizar empresa</response>
+        /// <response code="404">Empresa não encontrada</response>
         [HttpPut]
         public async Task<IActionResult> Editar(EmpresaModel model)
         {
@@ -81,7 +116,7 @@ namespace Mamba.API.Controllers
             {
                 if (model.IdEmpresa > 0)
                 {
-                    var empresa = _empresaService.GetById(model.IdEmpresa.Value);
+                    var empresa = _empresaAppService.GetById(model.IdEmpresa.Value);
 
                     empresa.DataUltimaAlteracao = DateTime.Now;
 
@@ -89,7 +124,7 @@ namespace Mamba.API.Controllers
 
                     empresa = _mapper.Map<Empresa>(model);
 
-                    _empresaService.Update(empresa);
+                    _empresaAppService.Update(empresa);
 
                     return Ok();
                 }
@@ -97,8 +132,6 @@ namespace Mamba.API.Controllers
                 {
                     return NotFound();
                 }
-
-                
             }
             catch (Exception ex)
             {
@@ -106,15 +139,23 @@ namespace Mamba.API.Controllers
             }
         }
 
+        /// <summary>
+        /// Exclui uma empresa registrada
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// <response code="200">Empresa excluída com sucesso</response>
+        /// <response code="400">Erro ao excluir a empresa</response>
+        /// <response code="404">Empresa não encontrada</response>
         [HttpDelete]
-        [Route("exlcuir/{id:int}")]
+        [Route("excluir/{id:int}")]
         public async Task<IActionResult> Excluir(int id)
         {
             try
             {
-               var empresa =  _empresaService.GetById(id);
+                var empresa = _empresaAppService.GetById(id);
 
-                _empresaService.Remove(empresa);
+                _empresaAppService.Remove(empresa);
 
                 return Ok();
             }
