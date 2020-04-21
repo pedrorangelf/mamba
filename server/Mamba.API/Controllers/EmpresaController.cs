@@ -37,7 +37,7 @@ namespace Mamba.API.Controllers
         /// 
         ///     Clique no botão "Try it out" abaixo e depois no botão "Execute" que será exibido para testar o serviço.
         ///     
-        ///     Dica: Utilize este serviço para ver os Id's disponíveis para os próximos testes.
+        ///     Dica: Utilize este serviço para ver os Id's disponíveis para os próximos testes. Caso não encontre nenhum registro na lista, utilize o serviço de cadastro para registrar uma nova empresa.
         /// </remarks>
         [HttpGet]
         public async Task<IActionResult> ListarEmpresas()
