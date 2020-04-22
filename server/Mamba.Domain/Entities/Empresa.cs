@@ -9,7 +9,7 @@ namespace Mamba.Domain.Entities
         public int IdEmpresa { get; set; }
         public int CodigoCidade { get; set; }
         public string Nome { get; set; }
-        public int CNPJ { get; set; }
+        public string CNPJ { get; set; }
         public string Descricao { get; set; }
         public string Logo { get; set; }
 

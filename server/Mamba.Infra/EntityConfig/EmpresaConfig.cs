@@ -29,6 +29,7 @@ namespace Mamba.Infra.EntityConfig
 
             builder.Property(p => p.CNPJ)
                 .HasColumnName("NUM_CNPJ")
+                .HasMaxLength(18)
                 .IsRequired();
 
             builder.Property(p => p.Descricao)
