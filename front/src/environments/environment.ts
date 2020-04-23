@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'http://mambafiap.azurewebsites.net/',
+  apiUrl: 'http://mambafiap.azurewebsites.net',
 };
 
 /*
