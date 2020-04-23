@@ -102,7 +102,8 @@ namespace Mamba.API.Controllers
         {
             try
             {
-                var empresa = _empresaAppService.GetById(id);
+                Empresa empresa = _empresaAppService.GetById(id);
+                if (empresa == null) { return NotFound(); }
 
                 _empresaAppService.Remove(empresa);
 
@@ -128,21 +129,19 @@ namespace Mamba.API.Controllers
         ///     Clique no botão "Try it out" abaixo, informe todos os campos exigidos e depois no botão "Execute" para testar o serviço.
         /// </remarks>
         [HttpPost]
-        public async Task<IActionResult> Incluir(EmpresaModel model)
+        public async Task<IActionResult> Incluir(EmpresaAddModel model)
         {
             try
             {
                 _empresaAppService.Add(new Empresa
                 {
                     CNPJ = model.CNPJ,
-                    CodigoCidade = model.CodigoCidade,
-                    CodigoUsuarioCadastro = model.CodigoUsuarioCadastro,
+                    CodigoCidade = 1,
+                    CodigoUsuarioCadastro = 0,
                     DataCadastro = DateTime.Now,
                     DataUltimaAlteracao = DateTime.Now,
                     Descricao = model.Descricao,
-                    Cidade = _cidadeAppService.GetById(model.CodigoCidade),
                     Nome = model.Nome,
-                    //Logo =
                     ProcessoCadastro = "EmpresaController.Incluir"
                 });
 
@@ -174,15 +173,14 @@ namespace Mamba.API.Controllers
         {
             try
             {
-                if (model.IdEmpresa > 0)
+                Empresa empresa = _empresaAppService.FindAsNoTracking(model.IdEmpresa);
+
+                if (empresa != null)
                 {
-                    var empresa = _empresaAppService.GetById(model.IdEmpresa.Value);
-
-                    empresa.DataUltimaAlteracao = DateTime.Now;
-
-                    empresa.ProcessoCadastro = "EmpresaController.Editar";
-
                     empresa = _mapper.Map<Empresa>(model);
+                    empresa.DataUltimaAlteracao = DateTime.Now;
+                    empresa.ProcessoCadastro = "EmpresaController.Editar";
+                    empresa.CodigoCidade = 1;
 
                     _empresaAppService.Update(empresa);
 

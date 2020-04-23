@@ -110,6 +110,7 @@ namespace Mamba.API.Controllers
             try
             {
                 var usuario = _usuarioAppService.GetById(id);
+                if (usuario == null) { return NotFound(); }
 
                 _usuarioAppService.Remove(usuario);
 
@@ -135,11 +136,26 @@ namespace Mamba.API.Controllers
         ///     Clique no botão "Try it out" abaixo, informe todos os campos exigidos e depois no botão "Execute" para testar o serviço.
         /// </remarks>
         [HttpPost]
-        public async Task<IActionResult> Incluir(UsuarioModel model)
+        public async Task<IActionResult> Incluir(UsuarioAddModel model)
         {
             try
             {
-                _usuarioAppService.Add(_mapper.Map<Usuario>(model));
+                _usuarioAppService.Add(new Usuario
+                {
+                    Nome = model.Nome,
+                    DataNascimento = model.DataNascimento,
+                    Email = model.Email,
+                    Celular = model.Celular,
+                    EmailConfirmado = model.EmailConfirmado,
+                    Administrador = model.Administrador,
+                    Bloqueado = model.Bloqueado,
+                    MotivoBloqueio = model.MotivoBloqueio,
+                    LinkLinkedin = model.LinkLinkedin,
+                    LinkGithub = model.LinkGithub,
+                    Senha = "",
+                    CodigoUsuarioCadastro = 0,
+                    ProcessoCadastro = "UsuarioController.Incluir"
+                });
 
                 return Ok();
             }
@@ -169,15 +185,13 @@ namespace Mamba.API.Controllers
         {
             try
             {
-                if (model.IdUsuario > 0)
+                Usuario usuario = _usuarioAppService.FindAsNoTracking(model.IdUsuario);
+
+                if (usuario != null)
                 {
-                    var usuario = _usuarioAppService.GetById(model.IdUsuario.Value);
-
-                    usuario.DataUltimaAlteracao = DateTime.Now;
-
-                    usuario.ProcessoCadastro = "UsuarioController.Editar";
-
                     usuario = _mapper.Map<Usuario>(model);
+                    usuario.DataUltimaAlteracao = DateTime.Now;
+                    usuario.Senha = "";
 
                     _usuarioAppService.Update(usuario);
 
@@ -187,8 +201,6 @@ namespace Mamba.API.Controllers
                 {
                     return NotFound();
                 }
-
-
             }
             catch (Exception ex)
             {

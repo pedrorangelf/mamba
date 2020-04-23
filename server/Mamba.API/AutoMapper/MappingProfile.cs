@@ -13,6 +13,12 @@ namespace Mamba.API.AutoMapper
 
             CreateMap<UsuarioModel, Usuario>();
             CreateMap<Usuario, UsuarioModel>();
+
+            CreateMap<DesafioModel, Desafio>();
+            CreateMap<Desafio, DesafioModel>();
+
+            CreateMap<QuestaoModel, Questao>();
+            CreateMap<Questao, QuestaoModel>();
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -47,7 +48,15 @@ namespace Mamba.API.Controllers
         {
             List<DesafioModel> model = new List<DesafioModel>();
 
-            model = _desafioAppService.GetAll().Select(s => new DesafioModel { IdDesafio = s.IdDesafio, Titulo = s.Titulo }).ToList();
+            model = _desafioAppService
+                        .FindBy(null, d => d.Questoes)
+                        .Select(d => new DesafioModel
+                        {
+                            IdDesafio = d.IdDesafio,
+                            Titulo = d.Titulo,
+                            Descricao = d.Descricao,
+                            Questoes = d.Questoes.Select(q => new QuestaoModel { IdQuestao = q.IdQuestao, Descricao = q.Descricao }).ToList()
+                        }).ToList();
 
             return Ok(model);
         }
@@ -71,14 +80,16 @@ namespace Mamba.API.Controllers
         [Route("{id:int}")]
         public async Task<IActionResult> BuscarDesafioPorId(int id)
         {
-            Desafio desafio = _desafioAppService.GetById(id);
+            Desafio desafio = _desafioAppService.FindBy(d => d.IdDesafio == id, d => d.Questoes).FirstOrDefault();
             if (desafio == null) return NotFound();
 
             return Ok(new DesafioModel
             {
                 IdDesafio = desafio.IdDesafio,
-                Titulo = desafio.Titulo
-            });
+                Titulo = desafio.Titulo,
+                Descricao = desafio.Descricao,
+                Questoes = _mapper.Map<List<QuestaoModel>>(desafio.Questoes)
+            }); ;
         }
 
         /// <summary>
@@ -140,35 +151,39 @@ namespace Mamba.API.Controllers
         {
             try
             {
-                if (model.IdDesafio == 0)
+                int codigoEmpresa = _empresaAppService.GetAll().Select(e => e.IdEmpresa).FirstOrDefault();
+                if (codigoEmpresa == 0)
                 {
-                    Desafio desafio = new Desafio
-                    {
-                        CodigoEmpresa = 2,
-                        Empresa = _empresaAppService.GetById(3),
-                        CodigoUsuarioCadastro = 0,
-                        DataAbertura = DateTime.Now,
-                        DataCadastro = DateTime.Now,
-                        DataFechamento = null,
-                        DataUltimaAlteracao = DateTime.Now,
-                        Descricao = model.Descricao,
-                        Titulo = model.Titulo,
-                        ProcessoCadastro = "Cadastro Desafio"
-                    };
+                    throw new Exception("Cadastre uma empresa para prosseguir.");
+                }
 
-                    _desafioAppService.Add(desafio);
+                Desafio desafio = new Desafio
+                {
+                    CodigoEmpresa = codigoEmpresa,
+                    Empresa = _empresaAppService.GetById(3),
+                    CodigoUsuarioCadastro = 0,
+                    DataAbertura = DateTime.Now,
+                    DataCadastro = DateTime.Now,
+                    DataFechamento = null,
+                    DataUltimaAlteracao = DateTime.Now,
+                    Descricao = model.Descricao,
+                    Titulo = model.Titulo,
+                    ProcessoCadastro = "Cadastro Desafio"
+                };
 
+                _desafioAppService.Add(desafio);
+
+                foreach (QuestaoAddModel questaoAddModel in model.Questoes)
+                {
                     Questao questao = new Questao
                     {
-                        IdQuestao = 0,
-                        Descricao = model.Questoes.FirstOrDefault().Descricao,
+                        Descricao = questaoAddModel.Descricao,
                         Desafio = desafio,
                         CodigoDesafio = desafio.IdDesafio,
                         CodigoUsuarioCadastro = 0,
                         DataCadastro = DateTime.Now,
                         ProcessoCadastro = "Cadastro Desafio"
                     };
-
                     _questaoAppService.Add(questao);
                 }
 
@@ -196,17 +211,24 @@ namespace Mamba.API.Controllers
         ///     Dica: Utilize o serviço de listagem para encontrar um id para o teste.
         /// </remarks>
         [HttpPut]
-        public async Task<IActionResult> Editar(DesafioAddModel model)
+        public async Task<IActionResult> Editar(DesafioModel model)
         {
             try
             {
-                if (model.IdDesafio > 0)
+                Desafio desafio = _desafioAppService.FindAsNoTracking(model.IdDesafio);
+
+                if (desafio != null)
                 {
-                    Desafio desafio = _desafioAppService.GetById(model.IdDesafio);
+                    int codigoEmpresa = _empresaAppService.GetAll().Select(e => e.IdEmpresa).FirstOrDefault();
+                    if (codigoEmpresa == 0)
+                    {
+                        throw new Exception("Cadastre uma empresa para prosseguir.");
+                    }
+
+                    desafio = _mapper.Map<DesafioModel, Desafio>(model);
+                    desafio.CodigoEmpresa = codigoEmpresa;
                     desafio.DataUltimaAlteracao = DateTime.Now;
                     desafio.ProcessoCadastro = "EmpresaController.Editar";
-
-                    desafio = _mapper.Map<Desafio>(model);
 
                     _desafioAppService.Update(desafio);
 

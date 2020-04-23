@@ -27,7 +27,10 @@ namespace Mamba.Infra.Repositories
         {
             TEntity genericEntity = _contextBase.Set<TEntity>().Find(id);
 
-            _contextBase.Entry(genericEntity).State = EntityState.Detached;
+            if (genericEntity != null)
+            {
+                _contextBase.Entry(genericEntity).State = EntityState.Detached;
+            }
 
             return genericEntity;
         }
