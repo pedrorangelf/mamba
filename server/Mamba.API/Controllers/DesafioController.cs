@@ -52,7 +52,7 @@ namespace Mamba.API.Controllers
                         .FindBy(null, d => d.Questoes)
                         .Select(d => new DesafioModel
                         {
-                            IdDesafio = d.IdDesafio,
+                            IdDesafio = d.IdDesafio.ToString(),
                             Titulo = d.Titulo,
                             Descricao = d.Descricao,
                             Questoes = d.Questoes.Select(q => new QuestaoModel { IdQuestao = q.IdQuestao, Descricao = q.Descricao }).ToList()
@@ -85,7 +85,7 @@ namespace Mamba.API.Controllers
 
             return Ok(new DesafioModel
             {
-                IdDesafio = desafio.IdDesafio,
+                IdDesafio = desafio.IdDesafio.ToString(),
                 Titulo = desafio.Titulo,
                 Descricao = desafio.Descricao,
                 Questoes = _mapper.Map<List<QuestaoModel>>(desafio.Questoes)
@@ -211,11 +211,12 @@ namespace Mamba.API.Controllers
         ///     Dica: Utilize o serviço de listagem para encontrar um id para o teste.
         /// </remarks>
         [HttpPut]
+        [Route("editar")]
         public async Task<IActionResult> Editar(DesafioModel model)
         {
             try
             {
-                Desafio desafio = _desafioAppService.FindAsNoTracking(model.IdDesafio);
+                Desafio desafio = _desafioAppService.FindAsNoTracking(Convert.ToInt32(model.IdDesafio));
 
                 if (desafio != null)
                 {

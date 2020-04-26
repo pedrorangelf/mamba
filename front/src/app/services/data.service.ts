@@ -31,6 +31,11 @@ export abstract class DataService {
         return this.http.post<T>(this.config + '/' + this.context + '/' + (url ? url : ''), data);
     }
 
+    protected put<T>(url: string, data: any): Observable<T> {
+        console.log(this.config + '/' + this.context + '/' + (url ? url : ''));
+        return this.http.put<T>(this.config + '/' + this.context + '/' + (url ? url : ''), data);
+    }
+
     protected delete<T>(url?: string, resourceId?: number | string): Observable<T> {
         return this.http.delete<T>(this.config + '/' + this.context + '/' + (url ? url : '') + '/' + resourceId);
     }

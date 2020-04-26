@@ -9,6 +9,7 @@ import {
   chartExample1,
   chartExample2
 } from '../../variables/charts';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -24,7 +25,7 @@ export class DashboardComponent implements OnInit {
   public clicked1 = false;
   public desafios = [];
 
-  constructor(private desafioService: DesafioService) { }
+  constructor(private desafioService: DesafioService, private router: Router) { }
 
   ngOnInit() {
 
@@ -60,7 +61,6 @@ export class DashboardComponent implements OnInit {
 
   listarDesafios() {
     this.desafioService.listarDesafios().subscribe(result => {
-      console.log(result);
       this.desafios = result;
     });
   }
@@ -73,13 +73,18 @@ export class DashboardComponent implements OnInit {
   }
 
   public excluir(id: number) {
-    // LOADING
     this.desafioService.excluir(id).subscribe(() => {
-      // FIM LOADING
-      // MENSAGEM SUCESSO
-      // TRATAR ERRO
       this.listarDesafios();
     });
   }
+
+  editar(id: any): void {
+    this.router.navigate(['desafio/' + id]);
+
+    // this.dialogFormCreateOrEditService
+    //   .open({ title: `${acao} Funcionário`, model: row }, FuncionarioEditComponent)
+    //   .pipe(take(1))
+    //   .subscribe((res: boolean) => { if (res) { this.listarFuncionarios(); } });
+}
 
 }

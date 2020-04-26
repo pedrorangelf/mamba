@@ -119,7 +119,7 @@
                   {{item.titulo}}
                 </th>
                 <th class="text-right">                  
-                    <a class="btn btn-sm btn-icon-only text-primary">
+                    <a class="btn btn-sm btn-icon-only text-primary" (click)="editar(item.idDesafio)">
                       <i class="fas fa-edit"></i>
                     </a>
                     <a class="btn btn-sm btn-icon-only text-danger" (click)="excluir(item.idDesafio)">

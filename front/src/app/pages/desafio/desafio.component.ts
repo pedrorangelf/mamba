@@ -16,61 +16,83 @@ export class DesafioComponent implements OnInit {
   formGroup: FormGroup;
   idDesafio: number;
   title = 'Cadastar Desafio';
+  subtitle = 'Novo Desafio';
   desafio: any = {};
+  questoes: QuestaoModel[] = [];
 
   constructor(private formBuilder: FormBuilder,
     private _activatedRoute: ActivatedRoute,
     private router: Router,
     private desafioService: DesafioService) {
     this.idDesafio = this._activatedRoute.snapshot.params.id ?? 0;
+    console.log(this._activatedRoute.snapshot.params.id);
 
-    if (this._activatedRoute.snapshot.params.id > 0) { this.title = 'Editar Desafio'; }
+    if (this._activatedRoute.snapshot.params.id > 0) {
+      this.title = 'Editar Desafio';
+      this.desafioService.buscarDesafioPorId(this.idDesafio).subscribe((result) => {
+        this.desafio = result;
+        this.subtitle = this.desafio.titulo;
+        this.questoes = this.desafio.questoes;
+      });
+    }
   }
 
   ngOnInit(): void {
 
     this.formGroup = this.formBuilder.group({
       titulo: [this.desafio.titulo],
-      descricao: [this.desafio.descricao],
-      questao: ['']
+      descricao: [this.desafio.descricao]
     });
+
   }
 
   salvar() {
-    const questoes: QuestaoModel[] = [];
-    const questao: QuestaoModel = {
-      idQuestao: 0,
-      descricao: this.formGroup.value.questao
-    };
-
-    questoes.push(questao);
-
     const model: DesafioModel = {
-      descricao: this.formGroup.value.descricao,
-      titulo: this.formGroup.value.titulo,
+      descricao: this.formGroup.value.descricao ?? this.desafio.descricao,
+      titulo: this.formGroup.value.titulo ?? this.desafio.titulo,
       idDesafio: this.idDesafio,
-      questoes: questoes
+      questoes: this.questoes
     };
-
-    this.desafioService.salvar(model).subscribe(result => {
-      Swal.fire({
-        title: 'Desafio salvo com sucesso!',
-        text: 'Deseja continuar cadastrando ?',
-        showCancelButton: true,
-        confirmButtonColor: '#29b6f6',
-        cancelButtonColor: '#ef9a9a',
-        confirmButtonText: 'Sim',
-        cancelButtonText: 'Não'
-      }).then(
-        s => {
-          if (s.value) {
-
-          } else {
-            this.router.navigate(['dashboard']);
+    if (this.idDesafio > 0) {
+      this.desafioService.editar(model).subscribe(result => {
+        Swal.fire({
+          title: 'Desafio salvo com sucesso!',
+          // text: 'Deseja continuar cadastrando ?',
+          showCancelButton: false,
+          confirmButtonColor: '#29b6f6',
+          cancelButtonColor: '#ef9a9a',
+          confirmButtonText: 'Ok',
+        }).then(
+          s => {
+            if (s.value) {
+              this.router.navigate(['dashboard']);
+            } else {
+              this.router.navigate(['dashboard']);
+            }
           }
-        }
-      );
-    });
+        );
+      });
+    } else {
+      this.desafioService.salvar(model).subscribe(result => {
+        Swal.fire({
+          title: 'Desafio salvo com sucesso!',
+          text: 'Deseja continuar cadastrando ?',
+          showCancelButton: true,
+          confirmButtonColor: '#29b6f6',
+          cancelButtonColor: '#ef9a9a',
+          confirmButtonText: 'Sim',
+          cancelButtonText: 'Não'
+        }).then(
+          s => {
+            if (s.value) {
+              this.router.navigate(['desafio']);
+            } else {
+              this.router.navigate(['dashboard']);
+            }
+          }
+        );
+      });
+    }
 
   }
 
@@ -92,6 +114,18 @@ export class DesafioComponent implements OnInit {
         }
       );
     }
+  }
+
+  addQuestao() {
+    this.questoes.push({
+      descricao: '',
+      idQuestao: 0
+    });
+  }
+
+
+  removeQuestao(i: number) {
+    this.questoes.splice(i, 1);
   }
 
 }

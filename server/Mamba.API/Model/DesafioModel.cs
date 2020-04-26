@@ -4,7 +4,7 @@ namespace Mamba.API.Model
 {
     public class DesafioModel
     {
-        public int IdDesafio { get; set; }
+        public string IdDesafio { get; set; }
         public string Titulo { get; set; }
         public string Descricao { get; set; }
         public List<QuestaoModel> Questoes { get; set; }
