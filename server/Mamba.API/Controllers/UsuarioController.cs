@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Mamba.API.Model;
-using Mamba.Application.Interface;
 using Mamba.Domain.Entities;
+using Mamba.Domain.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Mamba.API.Controllers
@@ -15,12 +14,12 @@ namespace Mamba.API.Controllers
     [Route("[controller]")]
     public class UsuarioController : ControllerBase
     {
-        private readonly IUsuarioAppService _usuarioAppService;
+        private readonly IUsuarioService _usuarioService;
         private readonly IMapper _mapper;
 
-        public UsuarioController(IUsuarioAppService usuarioAppService, IMapper mapper)
+        public UsuarioController(IUsuarioService usuarioService, IMapper mapper)
         {
-            _usuarioAppService = usuarioAppService;
+            _usuarioService = usuarioService;
             _mapper = mapper;
         }
 
@@ -43,9 +42,7 @@ namespace Mamba.API.Controllers
             try
             {
 
-                List<UsuarioModel> model = new List<UsuarioModel>();
-
-                model = _usuarioAppService.GetAll().Select(s => _mapper.Map<UsuarioModel>(s)).ToList();
+                var model = _usuarioService.GetAll().Result.Select(s => _mapper.Map<UsuarioModel>(s)).ToList();
 
                 return Ok(model);
 
@@ -76,16 +73,11 @@ namespace Mamba.API.Controllers
         [Route("{id:int}")]
         public async Task<IActionResult> BuscarUsuarioPorId(int id)
         {
-            UsuarioModel usuarioModel = _mapper.Map<UsuarioModel>(_usuarioAppService.GetById(id));
+            var usuarioModel = _mapper.Map<UsuarioModel>(await _usuarioService.GetById(id));
 
-            if (usuarioModel != null)
-            {
-                return Ok(usuarioModel);
-            }
-            else
-            {
-                return NotFound();
-            }
+            if (usuarioModel == null) return NotFound();
+
+            return Ok(usuarioModel);
         }
 
         /// <summary>
@@ -109,10 +101,11 @@ namespace Mamba.API.Controllers
         {
             try
             {
-                var usuario = _usuarioAppService.GetById(id);
-                if (usuario == null) { return NotFound(); }
+                var usuario = await _usuarioService.GetById(id);
 
-                _usuarioAppService.Remove(usuario);
+                if (usuario == null) return NotFound();
+
+                await _usuarioService.Remove(usuario);
 
                 return Ok();
             }
@@ -140,7 +133,7 @@ namespace Mamba.API.Controllers
         {
             try
             {
-                _usuarioAppService.Add(new Usuario
+                await _usuarioService.Add(new Usuario
                 {
                     Nome = model.Nome,
                     DataNascimento = model.DataNascimento,
@@ -185,22 +178,16 @@ namespace Mamba.API.Controllers
         {
             try
             {
-                Usuario usuario = _usuarioAppService.FindAsNoTracking(model.IdUsuario);
+                var usuario = await _usuarioService.FindAsNoTracking(model.IdUsuario);
 
-                if (usuario != null)
-                {
-                    usuario = _mapper.Map<Usuario>(model);
-                    usuario.DataUltimaAlteracao = DateTime.Now;
-                    usuario.Senha = "";
+                if (usuario == null) return NotFound();
 
-                    _usuarioAppService.Update(usuario);
+                usuario = _mapper.Map<Usuario>(model);
+                usuario.Senha = "";
 
-                    return Ok();
-                }
-                else
-                {
-                    return NotFound();
-                }
+                await _usuarioService.Update(usuario);
+
+                return Ok();
             }
             catch (Exception ex)
             {

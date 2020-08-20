@@ -17,7 +17,7 @@ namespace Mamba.Infra.Repositories
         {
             try
             {
-                return _contextBase.Desafio.Include(i => i.Questoes).FirstOrDefault(f => f.IdDesafio == id);
+                return _contextBase.Desafio.Include(i => i.Questoes).FirstOrDefault(f => f.Id == id);
             }
             catch (System.Exception)
             {
@@ -30,9 +30,9 @@ namespace Mamba.Infra.Repositories
         {
             try
             {
-                IEnumerable<Questao> questoes = _contextBase.Questao.Where(w => w.Desafio.IdDesafio == id);
+                IEnumerable<Questao> questoes = _contextBase.Questao.Where(w => w.Desafio.Id == id);
                 _contextBase.Questao.RemoveRange(questoes);
-                Desafio desafio = _contextBase.Desafio.FirstOrDefault(f => f.IdDesafio == id);
+                Desafio desafio = _contextBase.Desafio.FirstOrDefault(f => f.Id == id);
                 _contextBase.Desafio.Remove(desafio);
                 _contextBase.SaveChanges();
 

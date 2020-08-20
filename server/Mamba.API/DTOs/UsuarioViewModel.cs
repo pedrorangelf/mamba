@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Mamba.Domain.Entities
+namespace Mamba.API.DTOs
 {
-    public class Usuario : MainEntity
+    public class UsuarioViewModel : MainEntityViewModel
     {
         public string Nome { get; set; }
         public DateTime DataNascimento { get; set; }
@@ -19,8 +19,8 @@ namespace Mamba.Domain.Entities
         public string Foto { get; set; }
 
         // RELACIONAMENTO
-        public List<Candidato> Candidatos { get; set; }
-        public List<Funcionario> Funcionarios { get; set; }
+        public List<CandidatoViewModel> Candidatos { get; set; }
+        public List<FuncionarioViewModel> Funcionarios { get; set; }
 
         // AUXILIARES
         public string Idade

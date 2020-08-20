@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Mamba.API.Model;
-using Mamba.Application.Interface;
 using Mamba.Domain.Entities;
+using Mamba.Domain.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Mamba.API.Controllers
@@ -15,14 +14,14 @@ namespace Mamba.API.Controllers
     [Route("[controller]")]
     public class EmpresaController : ControllerBase
     {
-        private readonly IEmpresaAppService _empresaAppService;
-        private readonly ICidadeAppService _cidadeAppService;
+        private readonly IEmpresaService _empresaService;
+        private readonly ICidadeService _cidadeService;
         private readonly IMapper _mapper;
 
-        public EmpresaController(IEmpresaAppService empresaAppService, ICidadeAppService cidadeAppService, IMapper mapper)
+        public EmpresaController(IEmpresaService empresaService, ICidadeService cidadeService, IMapper mapper)
         {
-            _empresaAppService = empresaAppService;
-            _cidadeAppService = cidadeAppService;
+            _empresaService = empresaService;
+            _cidadeService = cidadeService;
             _mapper = mapper;
         }
 
@@ -44,9 +43,7 @@ namespace Mamba.API.Controllers
         {
             try
             {
-                List<EmpresaModel> model = new List<EmpresaModel>();
-
-                model = _empresaAppService.GetAll().Select(s => _mapper.Map<EmpresaModel>(s)).ToList();
+                var model = _empresaService.GetAll().Result.Select(s => _mapper.Map<EmpresaModel>(s)).ToList();
 
                 return Ok(model);
             }
@@ -76,7 +73,7 @@ namespace Mamba.API.Controllers
         [Route("{id:int}")]
         public async Task<IActionResult> BuscaEmpresaPorId(int id)
         {
-            EmpresaModel empresaModel = _mapper.Map<Empresa, EmpresaModel>(_empresaAppService.GetById(id));
+            var empresaModel = _mapper.Map<EmpresaModel>(await _empresaService.GetById(id));
 
             return Ok(empresaModel);
         }
@@ -102,16 +99,16 @@ namespace Mamba.API.Controllers
         {
             try
             {
-                Empresa empresa = _empresaAppService.GetById(id);
-                if (empresa == null) { return NotFound(); }
+                var empresa = await _empresaService.GetById(id);
 
-                _empresaAppService.Remove(empresa);
+                if (empresa == null) return NotFound();
+
+                await _empresaService.Remove(empresa);
 
                 return Ok();
             }
             catch (Exception ex)
             {
-
                 throw ex;
             }
         }
@@ -133,10 +130,10 @@ namespace Mamba.API.Controllers
         {
             try
             {
-                _empresaAppService.Add(new Empresa
+                await _empresaService.Add(new Empresa
                 {
                     CNPJ = model.CNPJ,
-                    CodigoCidade = 1,
+                    CidadeId = 1,
                     CodigoUsuarioCadastro = 0,
                     DataCadastro = DateTime.Now,
                     DataUltimaAlteracao = DateTime.Now,
@@ -173,16 +170,15 @@ namespace Mamba.API.Controllers
         {
             try
             {
-                Empresa empresa = _empresaAppService.FindAsNoTracking(model.IdEmpresa);
+                var empresa = await _empresaService.FindAsNoTracking(model.IdEmpresa);
 
                 if (empresa != null)
                 {
                     empresa = _mapper.Map<Empresa>(model);
-                    empresa.DataUltimaAlteracao = DateTime.Now;
                     empresa.ProcessoCadastro = "EmpresaController.Editar";
-                    empresa.CodigoCidade = 1;
+                    empresa.CidadeId = 1;
 
-                    _empresaAppService.Update(empresa);
+                    await _empresaService.Update(empresa);
 
                     return Ok();
                 }

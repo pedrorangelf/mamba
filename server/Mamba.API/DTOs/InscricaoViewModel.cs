@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Mamba.Domain.Entities
+namespace Mamba.API.DTOs
 {
-    public class Inscricao : MainEntity
+    public class InscricaoViewModel : MainEntityViewModel
     {
         public int DesafioId { get; set; }
         public int CandidatoId { get; set; }
@@ -13,8 +13,8 @@ namespace Mamba.Domain.Entities
         public bool? Aprovado { get; set; }
 
         // RELACIONAMENTO
-        public Desafio Desafio { get; set; }
-        public Candidato Candidato { get; set; }
-        public List<Resposta> Respostas { get; set; }
+        public DesafioViewModel Desafio { get; set; }
+        public CandidatoViewModel Candidato { get; set; }
+        public List<RespostaViewModel> Respostas { get; set; }
     }
 }

@@ -5,92 +5,85 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace Mamba.Infra.Repositories
 {
     public class RepositoryBase<TEntity> : IDisposable, IRepositoryBase<TEntity> where TEntity : class
     {
         protected readonly ContextBase _contextBase;
+        protected readonly DbSet<TEntity> _entity;
 
         public RepositoryBase(ContextBase contextBase)
         {
             _contextBase = contextBase;
+            _entity = contextBase.Set<TEntity>();
         }
 
-        public void Add(TEntity obj)
+        public async Task Add(TEntity obj)
         {
-            _contextBase.Set<TEntity>().Add(obj);
-            _contextBase.SaveChanges();
+            _entity.Add(obj);
+            await SaveChanges();
         }
 
-        public TEntity FindAsNoTracking(int id)
+        public async Task Update(TEntity obj)
         {
-            TEntity genericEntity = _contextBase.Set<TEntity>().Find(id);
+            _entity.Update(obj);
+            await SaveChanges();
+        }
 
-            if (genericEntity != null)
+        public async Task Remove(TEntity obj)
+        {
+            _entity.Remove(obj);
+            await SaveChanges();
+        }
+
+        public async Task RemoveInScale(IEnumerable<TEntity> objs)
+        {
+            foreach (var obj in objs)
             {
-                _contextBase.Entry(genericEntity).State = EntityState.Detached;
+                _entity.Remove(obj);
+                await SaveChanges();
             }
+        }
 
-            return genericEntity;
+        public async Task<TEntity> GetById(int id)
+        {
+            return await _entity.FindAsync(id);
+        }
+
+        public async Task<TEntity> FindAsNoTracking(int id)
+        {
+            var entity = await _entity.FindAsync(id);
+
+            if (entity != null) _contextBase.Entry(entity).State = EntityState.Detached;
+
+            return entity;
+        }
+
+        public async Task<IEnumerable<TEntity>> GetAll()
+        {
+            return await _entity.ToListAsync();
         }
 
         public IQueryable<TEntity> FindBy(Expression<Func<TEntity, bool>> predicate, params Expression<Func<TEntity, object>>[] includes)
         {
-            var query = _contextBase.Set<TEntity>().AsNoTracking();
-            if (predicate != null)
-            {
-                query = query.Where(predicate);
-            }
+            var query = _entity.AsNoTracking();
+
+            if (predicate != null) query = query.Where(predicate);
 
             return includes.Aggregate(query, (current, includeProperty) => current.Include(includeProperty));
         }
 
-        public IEnumerable<TEntity> GetAll()
-        {
-            return _contextBase.Set<TEntity>().AsNoTracking().ToList();
-        }
 
-        public TEntity GetById(int id)
+        public async Task<int> SaveChanges()
         {
-            return _contextBase.Set<TEntity>().Find(id);
-        }
-
-        public void Remove(TEntity obj)
-        {
-            _contextBase.Set<TEntity>().Remove(obj);
-            _contextBase.SaveChanges();
-        }
-
-        public void RemoveInScale(IEnumerable<TEntity> objs)
-        {
-            foreach (var obj in objs)
-            {
-                _contextBase.Set<TEntity>().Remove(obj);
-                _contextBase.SaveChanges();
-            }
-        }
-
-        public void Update(TEntity obj)
-        {
-            _contextBase.Entry(obj).State = EntityState.Modified;
-            _contextBase.SaveChanges();
+            return await _contextBase.SaveChangesAsync();
         }
 
         public void Dispose()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        private void Dispose(bool isDispose)
-        {
-            if (!isDispose) return;
-        }
-
-        ~RepositoryBase()
-        {
-            Dispose(false);
+            _contextBase?.Dispose();
         }
     }
 }

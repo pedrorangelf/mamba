@@ -1,6 +1,6 @@
-﻿namespace Mamba.Domain.Entities
+﻿namespace Mamba.API.DTOs
 {
-    public class Avaliacao : MainEntity
+    public class AvaliacaoViewModel : MainEntityViewModel
     {
         public int FuncionarioId { get; set; }
         public int RespostaId { get; set; }
@@ -10,7 +10,7 @@
         public int Nota { get; set; }
 
         // RELACIONAMENTO
-        public Funcionario Funcionario { get; set; }
-        public Resposta Resposta { get; set; }
+        public FuncionarioViewModel Funcionario { get; set; }
+        public RespostaViewModel Resposta { get; set; }
     }
 }

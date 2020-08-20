@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace Mamba.Domain.Services
 {
@@ -16,19 +17,39 @@ namespace Mamba.Domain.Services
             _repositoryBase = repositoryBase;
         }
 
-        public void Add(TEntity obj)
+        public async Task Add(TEntity obj)
         {
-            _repositoryBase.Add(obj);
+            await _repositoryBase.Add(obj);
         }
 
-        public void Dispose()
+        public async Task Update(TEntity obj)
         {
-            _repositoryBase.Dispose();
+            await _repositoryBase.Update(obj);
         }
 
-        public TEntity FindAsNoTracking(int id)
+        public async Task Remove(TEntity obj)
         {
-            return _repositoryBase.FindAsNoTracking(id);
+            await _repositoryBase.Remove(obj);
+        }
+
+        public async Task RemoveInScale(IEnumerable<TEntity> objs)
+        {
+            await _repositoryBase.RemoveInScale(objs);
+        }
+
+        public async Task<TEntity> GetById(int id)
+        {
+            return await _repositoryBase.GetById(id);
+        }
+
+        public async Task<TEntity> FindAsNoTracking(int id)
+        {
+            return await _repositoryBase.FindAsNoTracking(id);
+        }
+
+        public async Task<IEnumerable<TEntity>> GetAll()
+        {
+            return await _repositoryBase.GetAll();
         }
 
         public IQueryable<TEntity> FindBy(Expression<Func<TEntity, bool>> predicate, params Expression<Func<TEntity, object>>[] includes)
@@ -36,29 +57,14 @@ namespace Mamba.Domain.Services
             return _repositoryBase.FindBy(predicate, includes);
         }
 
-        public IEnumerable<TEntity> GetAll()
+        public async Task<int> SaveChanges()
         {
-            return _repositoryBase.GetAll();
+            return await _repositoryBase.SaveChanges();
         }
 
-        public TEntity GetById(int id)
+        public void Dispose()
         {
-            return _repositoryBase.GetById(id);
-        }
-
-        public void Remove(TEntity obj)
-        {
-            _repositoryBase.Remove(obj);
-        }
-
-        public void RemoveInScale(IEnumerable<TEntity> objs)
-        {
-            _repositoryBase.RemoveInScale(objs);
-        }
-
-        public void Update(TEntity obj)
-        {
-            _repositoryBase.Update(obj);
+            _repositoryBase.Dispose();
         }
     }
 }

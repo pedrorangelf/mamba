@@ -1,5 +1,5 @@
 ﻿using Mamba.Domain.Entities;
-using Mamba.Infra.EntityConfig;
+using Mamba.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
@@ -8,8 +8,10 @@ namespace Mamba.Infra.Context
 {
     public class ContextBase : DbContext
     {
-        public ContextBase(DbContextOptions<ContextBase> options) : base(options)
+        private readonly IUser _user;
+        public ContextBase(DbContextOptions<ContextBase> options, IUser user) : base(options)
         {
+            _user = user;
         }
 
         public DbSet<AreaAtuacao> AreaAtuacao { get; set; }
@@ -28,31 +30,10 @@ namespace Mamba.Infra.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfiguration(new AreaAtuacaoConfig());
-            modelBuilder.ApplyConfiguration(new AvaliacaoConfig());
-            modelBuilder.ApplyConfiguration(new CandidatoConfig());
-            modelBuilder.ApplyConfiguration(new CargoConfig());
-            modelBuilder.ApplyConfiguration(new CidadeConfig());
-            modelBuilder.ApplyConfiguration(new DesafioConfig());
-            modelBuilder.ApplyConfiguration(new EmpresaConfig());
-            modelBuilder.ApplyConfiguration(new EstadoConfig());
-            modelBuilder.ApplyConfiguration(new FuncionarioConfig());
-            modelBuilder.ApplyConfiguration(new InscricaoConfig());
-            modelBuilder.ApplyConfiguration(new QuestaoConfig());
-            modelBuilder.ApplyConfiguration(new RespostaConfig());
-            modelBuilder.ApplyConfiguration(new UsuarioConfig());
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(ContextBase).Assembly);
 
-            //var cascadeFKs = modelBuilder
-            //              .Model
-            //              .GetEntityTypes()
-            //              .SelectMany(t => t.GetForeignKeys())
-            //              .Where(fk => !fk.IsOwnership)
-            //              .ToList();
-
-            //foreach (var fk in cascadeFKs)
-            //{
-            //    fk.DeleteBehavior = DeleteBehavior.Cascade;
-            //}
+            foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
+                relationship.DeleteBehavior = DeleteBehavior.ClientSetNull;
 
             base.OnModelCreating(modelBuilder);
         }
@@ -64,14 +45,18 @@ namespace Mamba.Infra.Context
                 if (entry.State == EntityState.Added)
                 {
                     entry.Property("DataCadastro").CurrentValue = DateTime.Now;
+                    if (_user.IsAutheticated())
+                        entry.Property("CodigoUsuarioCadastro").CurrentValue = _user.GetUserId();
+
                     entry.Property("DataUltimaAlteracao").IsModified = false;
                 }
                 else if (entry.State == EntityState.Modified)
                 {
+                    entry.Property("DataUltimaAlteracao").CurrentValue = DateTime.Now;
+
                     entry.Property("ProcessoCadastro").IsModified = false;
                     entry.Property("DataCadastro").IsModified = false;
                     entry.Property("CodigoUsuarioCadastro").IsModified = false;
-                    entry.Property("DataUltimaAlteracao").CurrentValue = DateTime.Now;
                 }
             }
 

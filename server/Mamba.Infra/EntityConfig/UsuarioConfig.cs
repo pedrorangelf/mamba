@@ -8,15 +8,9 @@ namespace Mamba.Infra.EntityConfig
     {
         public void Configure(EntityTypeBuilder<Usuario> builder)
         {
-            // DEFINIÇÕES DA TABELA (NOME, PK E FK)
-            builder.ToTable("USUARIO");
-            builder.HasKey(p => p.IdUsuario).HasName("COD_USUARIO");
+            builder.SetMainEntityConfig("USUARIO");
 
             // CAMPOS DA TABELA
-            builder.Property(p => p.IdUsuario)
-                .HasColumnName("COD_USUARIO")
-                .IsRequired();
-
             builder.Property(p => p.Nome)
                 .HasColumnName("NOM_USUARIO")
                 .HasMaxLength(300)
@@ -68,24 +62,6 @@ namespace Mamba.Infra.EntityConfig
             builder.Property(p => p.Foto)
                 .HasColumnName("NOM_ARQUIVO_FOTO")
                 .HasMaxLength(200);
-
-
-            // CAMPOS DE CONTROLE DE CADASTRO
-            builder.Property(p => p.DataCadastro)
-                .HasColumnName("DAT_CADASTRO")
-                .IsRequired();
-
-            builder.Property(p => p.CodigoUsuarioCadastro)
-                .HasColumnName("COD_USUARIO_CADASTRO")
-                .IsRequired();
-
-            builder.Property(p => p.ProcessoCadastro)
-                .HasColumnName("NOM_PROCESSO_CADASTRO")
-                .HasMaxLength(300)
-                .IsRequired();
-
-            builder.Property(p => p.DataUltimaAlteracao)
-                .HasColumnName("DAT_ULTIMA_ALTERACAO");
         }
     }
 }

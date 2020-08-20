@@ -8,18 +8,12 @@ namespace Mamba.Infra.EntityConfig
     {
         public void Configure(EntityTypeBuilder<Cidade> builder)
         {
-            // DEFINIÇÕES DA TABELA (NOME, PK E FK)
-            builder.ToTable("CIDADE");
-            builder.HasKey(p => p.IdCidade).HasName("COD_CIDADE");
-            builder.HasOne(p => p.Estado).WithMany(p => p.Cidades).HasForeignKey(p => p.CodigoEstado).OnDelete(DeleteBehavior.Restrict);
+            builder.SetMainEntityConfig("CIDADE");
+            builder.HasOne(p => p.Estado).WithMany(p => p.Cidades).HasForeignKey(p => p.EstadoId);
 
             // CAMPOS DA TABELA
-            builder.Property(p => p.IdCidade)
-                .HasColumnName("COD_CIDADE")
-                .IsRequired();
-
-            builder.Property(p => p.CodigoEstado)
-                .HasColumnName("COD_ESTADO")
+            builder.Property(p => p.EstadoId)
+                .HasColumnName("ID_ESTADO")
                 .IsRequired();
 
             builder.Property(p => p.Nome)
@@ -31,23 +25,6 @@ namespace Mamba.Infra.EntityConfig
                 .HasColumnName("SGL_CIDADE")
                 .HasMaxLength(3)
                 .IsRequired();
-
-            // CAMPOS DE CONTROLE DE CADASTRO
-            builder.Property(p => p.DataCadastro)
-                .HasColumnName("DAT_CADASTRO")
-                .IsRequired();
-
-            builder.Property(p => p.CodigoUsuarioCadastro)
-                .HasColumnName("COD_USUARIO_CADASTRO")
-                .IsRequired();
-
-            builder.Property(p => p.ProcessoCadastro)
-                .HasColumnName("NOM_PROCESSO_CADASTRO")
-                .HasMaxLength(300)
-                .IsRequired();
-
-            builder.Property(p => p.DataUltimaAlteracao)
-                .HasColumnName("DAT_ULTIMA_ALTERACAO");
         }
     }
 }

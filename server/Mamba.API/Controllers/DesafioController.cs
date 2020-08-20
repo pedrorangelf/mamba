@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection.Metadata;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using AutoMapper;
 using Mamba.API.Model;
-using Mamba.Application.Interface;
 using Mamba.Domain.Entities;
+using Mamba.Domain.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Mamba.API.Controllers
@@ -17,16 +15,16 @@ namespace Mamba.API.Controllers
     [Route("[controller]")]
     public class DesafioController : ControllerBase
     {
-        private readonly IDesafioAppService _desafioAppService;
-        private readonly IQuestaoAppService _questaoAppService;
-        private readonly IEmpresaAppService _empresaAppService;
+        private readonly IDesafioService _desafioService;
+        private readonly IQuestaoService _questaoService;
+        private readonly IEmpresaService _empresaService;
         private readonly IMapper _mapper;
 
-        public DesafioController(IDesafioAppService desafioAppService, IQuestaoAppService questaoAppService, IEmpresaAppService empresaAppService, IMapper mapper)
+        public DesafioController(IDesafioService desafioService, IQuestaoService questaoService, IEmpresaService empresaService, IMapper mapper)
         {
-            _desafioAppService = desafioAppService;
-            _questaoAppService = questaoAppService;
-            _empresaAppService = empresaAppService;
+            _desafioService = desafioService;
+            _questaoService = questaoService;
+            _empresaService = empresaService;
             _mapper = mapper;
         }
 
@@ -48,14 +46,14 @@ namespace Mamba.API.Controllers
         {
             List<DesafioModel> model = new List<DesafioModel>();
 
-            model = _desafioAppService
+            model = _desafioService
                         .FindBy(null, d => d.Questoes)
                         .Select(d => new DesafioModel
                         {
-                            IdDesafio = d.IdDesafio.ToString(),
+                            IdDesafio = d.Id.ToString(),
                             Titulo = d.Titulo,
                             Descricao = d.Descricao,
-                            Questoes = d.Questoes.Select(q => new QuestaoModel { IdQuestao = q.IdQuestao, Descricao = q.Descricao }).ToList()
+                            Questoes = d.Questoes.Select(q => new QuestaoModel { IdQuestao = q.Id, Descricao = q.Descricao }).ToList()
                         }).ToList();
 
             return Ok(model);
@@ -80,12 +78,12 @@ namespace Mamba.API.Controllers
         [Route("{id:int}")]
         public async Task<IActionResult> BuscarDesafioPorId(int id)
         {
-            Desafio desafio = _desafioAppService.FindBy(d => d.IdDesafio == id, d => d.Questoes).FirstOrDefault();
+            Desafio desafio = _desafioService.FindBy(d => d.Id == id, d => d.Questoes).FirstOrDefault();
             if (desafio == null) return NotFound();
 
             return Ok(new DesafioModel
             {
-                IdDesafio = desafio.IdDesafio.ToString(),
+                IdDesafio = desafio.Id.ToString(),
                 Titulo = desafio.Titulo,
                 Descricao = desafio.Descricao,
                 Questoes = _mapper.Map<List<QuestaoModel>>(desafio.Questoes)
@@ -113,13 +111,13 @@ namespace Mamba.API.Controllers
         {
             try
             {
-                Desafio desafio = _desafioAppService.GetById(id);
+                var desafio = await _desafioService.GetById(id);
                 if (desafio != null)
                 {
-                    IEnumerable<Questao> questoes = _questaoAppService.GetAll().Where(q => q.CodigoDesafio == desafio.IdDesafio);
-                    _questaoAppService.RemoveInScale(questoes);
+                    IEnumerable<Questao> questoes = _questaoService.GetAll().Result.Where(q => q.DesafioId == desafio.Id);
+                    await _questaoService.RemoveInScale(questoes);
 
-                    _desafioAppService.Remove(desafio);
+                    await _desafioService.Remove(desafio);
                 }
                 else
                 {
@@ -151,7 +149,7 @@ namespace Mamba.API.Controllers
         {
             try
             {
-                int codigoEmpresa = _empresaAppService.GetAll().Select(e => e.IdEmpresa).FirstOrDefault();
+                int codigoEmpresa = _empresaService.GetAll().Result.Select(e => e.Id).FirstOrDefault();
                 if (codigoEmpresa == 0)
                 {
                     throw new Exception("Cadastre uma empresa para prosseguir.");
@@ -159,8 +157,8 @@ namespace Mamba.API.Controllers
 
                 Desafio desafio = new Desafio
                 {
-                    CodigoEmpresa = codigoEmpresa,
-                    Empresa = _empresaAppService.GetById(3),
+                    EmpresaId = codigoEmpresa,
+                    Empresa = await _empresaService.GetById(3),
                     CodigoUsuarioCadastro = 0,
                     DataAbertura = DateTime.Now,
                     DataCadastro = DateTime.Now,
@@ -171,7 +169,7 @@ namespace Mamba.API.Controllers
                     ProcessoCadastro = "Cadastro Desafio"
                 };
 
-                _desafioAppService.Add(desafio);
+                await _desafioService.Add(desafio);
 
                 foreach (QuestaoAddModel questaoAddModel in model.Questoes)
                 {
@@ -179,12 +177,12 @@ namespace Mamba.API.Controllers
                     {
                         Descricao = questaoAddModel.Descricao,
                         Desafio = desafio,
-                        CodigoDesafio = desafio.IdDesafio,
+                        DesafioId = desafio.Id,
                         CodigoUsuarioCadastro = 0,
                         DataCadastro = DateTime.Now,
                         ProcessoCadastro = "Cadastro Desafio"
                     };
-                    _questaoAppService.Add(questao);
+                    await _questaoService.Add(questao);
                 }
 
                 return Ok();
@@ -216,22 +214,22 @@ namespace Mamba.API.Controllers
         {
             try
             {
-                Desafio desafio = _desafioAppService.FindAsNoTracking(Convert.ToInt32(model.IdDesafio));
+                Desafio desafio = await _desafioService.FindAsNoTracking(Convert.ToInt32(model.IdDesafio));
 
                 if (desafio != null)
                 {
-                    int codigoEmpresa = _empresaAppService.GetAll().Select(e => e.IdEmpresa).FirstOrDefault();
+                    int codigoEmpresa = _empresaService.GetAll().Result.Select(e => e.Id).FirstOrDefault();
                     if (codigoEmpresa == 0)
                     {
                         throw new Exception("Cadastre uma empresa para prosseguir.");
                     }
 
                     desafio = _mapper.Map<DesafioModel, Desafio>(model);
-                    desafio.CodigoEmpresa = codigoEmpresa;
+                    desafio.EmpresaId = codigoEmpresa;
                     desafio.DataUltimaAlteracao = DateTime.Now;
                     desafio.ProcessoCadastro = "EmpresaController.Editar";
 
-                    _desafioAppService.Update(desafio);
+                    await _desafioService.Update(desafio);
 
                     return Ok();
                 }

@@ -16,7 +16,7 @@ namespace Mamba.Infra.Repositories
         {
             try
             {
-               return _contextBase.Empresa.FirstOrDefault(f => f.IdEmpresa == id);
+               return _contextBase.Empresa.FirstOrDefault(f => f.Id == id);
             }
             catch (System.Exception)
             {

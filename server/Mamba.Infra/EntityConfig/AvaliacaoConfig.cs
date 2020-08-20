@@ -8,23 +8,16 @@ namespace Mamba.Infra.EntityConfig
     {
         public void Configure(EntityTypeBuilder<Avaliacao> builder)
         {
-            // DEFINIÇÕES DA TABELA (NOME, PK E FK)
-            builder.ToTable("AVALIACAO");
-            builder.HasKey(p => p.IdAvaliacao).HasName("COD_AVALIACAO");
-            builder.HasOne(p => p.Funcionario).WithMany(p => p.Avaliacoes).HasForeignKey(p => p.CodigoFuncionario).OnDelete(DeleteBehavior.Restrict);
-            builder.HasOne(p => p.Resposta).WithOne(p => p.Avaliacao).HasForeignKey<Avaliacao>(p => p.CodigoResposta).OnDelete(DeleteBehavior.Restrict);
+            builder.SetMainEntityConfig("AVALIACAO");
+            builder.HasOne(p => p.Funcionario).WithMany(p => p.Avaliacoes).HasForeignKey(p => p.FuncionarioId);
+            builder.HasOne(p => p.Resposta).WithOne(p => p.Avaliacao).HasForeignKey<Avaliacao>(p => p.RespostaId);
 
-            // CAMPOS DA TABELA
-            builder.Property(p => p.IdAvaliacao)
-                .HasColumnName("COD_AVALIACAO")
+            builder.Property(p => p.FuncionarioId)
+                .HasColumnName("ID_FUNCIONARIO")
                 .IsRequired();
 
-            builder.Property(p => p.CodigoFuncionario)
-                .HasColumnName("COD_FUNCIONARIO")
-                .IsRequired();
-
-            builder.Property(p => p.CodigoResposta)
-                .HasColumnName("COD_RESPOSTA")
+            builder.Property(p => p.RespostaId)
+                .HasColumnName("ID_RESPOSTA")
                 .IsRequired();
 
             builder.Property(p => p.Aprovado)
@@ -34,23 +27,6 @@ namespace Mamba.Infra.EntityConfig
             builder.Property(p => p.Nota)
                 .HasColumnName("NUM_NOTA")
                 .IsRequired();
-
-            // CAMPOS DE CONTROLE DE CADASTRO
-            builder.Property(p => p.DataCadastro)
-                .HasColumnName("DAT_CADASTRO")
-                .IsRequired();
-
-            builder.Property(p => p.CodigoUsuarioCadastro)
-                .HasColumnName("COD_USUARIO_CADASTRO")
-                .IsRequired();
-
-            builder.Property(p => p.ProcessoCadastro)
-                .HasColumnName("NOM_PROCESSO_CADASTRO")
-                .HasMaxLength(300)
-                .IsRequired();
-
-            builder.Property(p => p.DataUltimaAlteracao)
-                .HasColumnName("DAT_ULTIMA_ALTERACAO");
         }
     }
 }

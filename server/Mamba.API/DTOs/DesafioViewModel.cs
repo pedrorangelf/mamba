@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Mamba.Domain.Entities
+namespace Mamba.API.DTOs
 {
-    public class Desafio : MainEntity
+    public class DesafioViewModel : MainEntityViewModel
+
     {
         public int EmpresaId { get; set; }
         public int? CargoId { get; set; }
@@ -14,9 +15,9 @@ namespace Mamba.Domain.Entities
         public DateTime? DataFechamento { get; set; }
 
         // RELACIONAMENTO
-        public Empresa Empresa { get; set; }
-        public Cargo Cargo { get; set; }
-        public List<Questao> Questoes { get; set; }
-        public List<Inscricao> Inscricoes { get; set; }
+        public EmpresaViewModel Empresa { get; set; }
+        public CargoViewModel Cargo { get; set; }
+        public List<QuestaoViewModel> Questoes { get; set; }
+        public List<InscricaoViewModel> Inscricoes { get; set; }
     }
 }
