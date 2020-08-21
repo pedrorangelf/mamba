@@ -21,8 +21,8 @@ namespace Mamba.API.Configurations
 
             services.AddDefaultIdentity<IdentityUser>()
                 .AddRoles<IdentityRole>()
-                .AddEntityFrameworkStores<AuthDbContext>()
                 .AddErrorDescriber<IdentityMensagensPortugues>()
+                .AddEntityFrameworkStores<AuthDbContext>()
                 .AddDefaultTokenProviders();
 
             var jwtSettingsSection = configuration.GetSection("JwtSettings");

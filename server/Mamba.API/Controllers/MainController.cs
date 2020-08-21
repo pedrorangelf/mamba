@@ -2,6 +2,7 @@
 using Mamba.Domain.Notifications;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System;
 using System.Linq;
 
 namespace Mamba.API.Controllers
@@ -21,7 +22,7 @@ namespace Mamba.API.Controllers
             UsuarioAutenticado = user.IsAuthenticated();
         }
 
-        protected int? UsuarioId { get; set; }
+        protected Guid UsuarioId { get; set; }
         protected bool UsuarioAutenticado { get; set; }
 
 

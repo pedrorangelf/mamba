@@ -1,9 +1,11 @@
 ﻿using Mamba.API.Extensions;
+using Mamba.API.Identity;
 using Mamba.Domain.Interfaces;
 using Mamba.Domain.Interfaces.Repositories;
 using Mamba.Domain.Interfaces.Services;
 using Mamba.Domain.Notifications;
 using Mamba.Domain.Services;
+using Mamba.Infra.Context;
 using Mamba.Infra.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,6 +19,9 @@ namespace Mamba.API.Configurations
     {
         public static IServiceCollection ResolveDepedencies(this IServiceCollection services)
         {
+            services.AddScoped<ContextBase>();
+            services.AddScoped<AuthDbContext>();
+
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddScoped<INotificator, Notificator>();

@@ -44,10 +44,14 @@ namespace Mamba.API
             {
                 app.UseDeveloperExceptionPage();
             }
-
-            app.UseSwaggerConfig(apiVersionDescriptionProvider);
+            else
+            {
+                app.UseHsts();
+            }
 
             app.UseWebApiConfig();
+
+            app.UseSwaggerConfig(apiVersionDescriptionProvider);
         }
     }
 }

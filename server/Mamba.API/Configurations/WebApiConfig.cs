@@ -33,6 +33,7 @@ namespace Mamba.API.Configurations
 
         public static IApplicationBuilder UseWebApiConfig(this IApplicationBuilder app)
         {
+            app.UseAuthentication();
             app.UseHttpsRedirection();
             app.UseRouting();
             app.UseAuthorization();

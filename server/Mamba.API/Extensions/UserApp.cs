@@ -27,11 +27,11 @@ namespace Mamba.API.Extensions
             return _httpContextAccessor.HttpContext.User.GetUserEmail();
         }
 
-        public int? GetUserId()
+        public Guid GetUserId()
         {
-            if (!IsAuthenticated()) return null;
+            if (!IsAuthenticated()) return Guid.Empty;
 
-            return int.Parse(_httpContextAccessor.HttpContext.User.GetUserId());
+            return Guid.Parse(_httpContextAccessor.HttpContext.User.GetUserId());
         }
 
         public bool IsAuthenticated()

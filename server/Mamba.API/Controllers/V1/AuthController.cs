@@ -3,6 +3,7 @@ using Mamba.API.DTOs;
 using Mamba.API.Extensions;
 using Mamba.Domain.Interfaces;
 using Mamba.Domain.Interfaces.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -28,7 +29,7 @@ namespace Mamba.API.Controllers.V1
         private readonly JwtSettings _jwtSettings;
 
         public AuthController(INotificator notificator, IUser user, IEstadoService estadoService, IMapper mapper,
-                                SignInManager<IdentityUser> signInManager, UserManager<IdentityUser> userManager, 
+                                SignInManager<IdentityUser> signInManager, UserManager<IdentityUser> userManager,
                                 IOptions<JwtSettings> jwtSettings) : base(notificator, user)
         {
             _estadoService = estadoService;
@@ -36,6 +37,13 @@ namespace Mamba.API.Controllers.V1
             _signInManager = signInManager;
             _userManager = userManager;
             _jwtSettings = jwtSettings.Value;
+        }
+
+        [Authorize]
+        [HttpGet]
+        public IActionResult Teste()
+        {
+            return CustomResponse("Ok!");
         }
 
         [HttpPost("registrar")]
