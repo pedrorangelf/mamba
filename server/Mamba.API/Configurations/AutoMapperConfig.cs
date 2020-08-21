@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Mamba.API.DTOs;
+using Mamba.API.DTOs.Domain;
 using Mamba.Domain.Entities;
 
 namespace Mamba.API.Configurations

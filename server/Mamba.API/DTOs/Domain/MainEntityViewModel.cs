@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Mamba.API.DTOs
+namespace Mamba.API.DTOs.Domain
 {
     public abstract class MainEntityViewModel
     {

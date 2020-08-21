@@ -1,4 +1,4 @@
-﻿namespace Mamba.API.DTOs
+﻿namespace Mamba.API.DTOs.Domain
 {
     public class AvaliacaoViewModel : MainEntityViewModel
     {

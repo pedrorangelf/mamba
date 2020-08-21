@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Mamba.API.DTOs
+namespace Mamba.API.DTOs.Domain
 {
     public class QuestaoViewModel : MainEntityViewModel
     {
