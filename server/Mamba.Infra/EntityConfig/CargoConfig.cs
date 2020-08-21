@@ -23,6 +23,7 @@ namespace Mamba.Infra.EntityConfig
 
             builder.Property(p => p.Nome)
                 .HasColumnName("NOM_CARGO")
+                .HasMaxLength(300)
                 .IsRequired();
         }
     }

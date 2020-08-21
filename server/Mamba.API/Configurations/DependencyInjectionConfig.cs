@@ -1,8 +1,15 @@
-﻿using Mamba.Domain.Interfaces.Repositories;
+﻿using Mamba.API.Extensions;
+using Mamba.Domain.Interfaces;
+using Mamba.Domain.Interfaces.Repositories;
 using Mamba.Domain.Interfaces.Services;
+using Mamba.Domain.Notifications;
 using Mamba.Domain.Services;
 using Mamba.Infra.Repositories;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
+using Swashbuckle.AspNetCore.SwaggerGen;
+using static Mamba.API.Configurations.SwaggerConfig;
 
 namespace Mamba.API.Configurations
 {
@@ -10,6 +17,12 @@ namespace Mamba.API.Configurations
     {
         public static IServiceCollection ResolveDepedencies(this IServiceCollection services)
         {
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+            services.AddScoped<INotificator, Notificator>();
+            services.AddScoped<IUser, UserApp>();
+            services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
+
             // INFRA
             services.AddScoped<IAreaAtuacaoRepository, AreaAtuacaoRepository>();
             services.AddScoped<IAvaliacaoRepository, AvaliacaoRepository>();

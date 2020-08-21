@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
+using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
-using System;
-using System.IO;
-using System.Reflection;
+using Swashbuckle.AspNetCore.SwaggerGen;
+using System.Linq;
 
 namespace Mamba.API.Configurations
 {
@@ -11,39 +13,90 @@ namespace Mamba.API.Configurations
     {
         public static IServiceCollection AddSwaggerConfig(this IServiceCollection services)
         {
-            services.AddSwaggerGen(c =>
+            services.AddSwaggerGen(options =>
             {
-                c.SwaggerDoc("v1",
-                    new OpenApiInfo
-                    {
-                        Title = "Mamba",
-                        Version = "v1",
-                        Description = "Mamba API REST",
-                        Contact = new OpenApiContact
-                        {
-                            Name = "Mamba",
-                            Url = new Uri("https://github.com/pedrorangelf/mamba")
-                        }
-                    });
-
-                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-                c.IncludeXmlComments(xmlPath);
+                options.OperationFilter<SwaggerDefaultValues>();
             });
 
             return services;
         }
 
-        public static IApplicationBuilder UseSwaggerConfig(this IApplicationBuilder app)
+        public static IApplicationBuilder UseSwaggerConfig(this IApplicationBuilder app, IApiVersionDescriptionProvider provider)
         {
             app.UseSwagger();
+
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Mamba V1");
-                c.RoutePrefix = string.Empty;
+                foreach (var description in provider.ApiVersionDescriptions)
+                {
+                    c.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json", $"Mamba API {description.GroupName.ToUpperInvariant()}");
+                }
             });
 
             return app;
+        }
+
+
+        public class ConfigureSwaggerOptions : IConfigureOptions<SwaggerGenOptions>
+        {
+            private readonly IApiVersionDescriptionProvider _apiVersionDescriptionProvider;
+
+            public ConfigureSwaggerOptions(IApiVersionDescriptionProvider apiVersionDescriptionProvider)
+            {
+                _apiVersionDescriptionProvider = apiVersionDescriptionProvider;
+            }
+
+            public void Configure(SwaggerGenOptions options)
+            {
+                foreach (var description in _apiVersionDescriptionProvider.ApiVersionDescriptions)
+                    options.SwaggerDoc(description.GroupName, CreateInfoForApiVersion(description));
+            }
+
+            private static OpenApiInfo CreateInfoForApiVersion(ApiVersionDescription description)
+            {
+                var info = new OpenApiInfo
+                {
+                    Title = "API - mamba.io",
+                    Version = description.ApiVersion.ToString(),
+                    Description = "Api de consumo sobre o projeto do StartUp One da FIAP ON. mamba.io ",
+                    Contact = new OpenApiContact { Email = "dev@mamba.io", Name = "Suporte para Devs" }
+                };
+
+                if (description.IsDeprecated)
+                    info.Description += " Esta versão está obsoleta e será abandonada em breve!";
+
+                return info;
+            }
+        }
+
+        public class SwaggerDefaultValues : IOperationFilter
+        {
+            public void Apply(OpenApiOperation operation, OperationFilterContext context)
+            {
+                operation.Deprecated = context.ApiDescription.IsDeprecated();
+
+                if (operation.Parameters == null) return;
+
+                foreach (var parameter in operation.Parameters)
+                {
+                    var description = context.ApiDescription.ParameterDescriptions.First(p => p.Name == parameter.Name);
+
+                    if (parameter.Description == null)
+                    {
+                        parameter.Description = description.ModelMetadata?.Description;
+                    }
+
+                    var routeInfo = description.RouteInfo;
+                    if (routeInfo == null) continue;
+
+                    if (parameter.In != ParameterLocation.Path && parameter.Schema.Default == null)
+                    {
+                        parameter.Schema.Default = new OpenApiString(routeInfo.DefaultValue.ToString());
+                    }
+
+                    parameter.Required |= !routeInfo.IsOptional;
+                }
+            }
         }
     }
 }

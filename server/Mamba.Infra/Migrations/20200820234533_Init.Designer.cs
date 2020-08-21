@@ -10,28 +10,28 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Mamba.Infra.Migrations
 {
     [DbContext(typeof(ContextBase))]
-    [Migration("20200422230237_Victor_220420_01")]
-    partial class Victor_220420_01
+    [Migration("20200820234533_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.3")
+                .HasAnnotation("ProductVersion", "3.1.7")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("Mamba.Domain.Entities.AreaAtuacao", b =>
                 {
-                    b.Property<int>("IdAreaAtuacao")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("COD_AREA_ATUACAO")
+                        .HasColumnName("ID_AREA_ATUACAO")
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int?>("CodigoUsuarioCadastro")
                         .IsRequired()
-                        .HasColumnName("COD_USUARIO_CADASTRO")
+                        .HasColumnName("ID_USUARIO_CADASTRO")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("DataCadastro")
@@ -54,17 +54,17 @@ namespace Mamba.Infra.Migrations
                         .HasColumnType("nvarchar(300)")
                         .HasMaxLength(300);
 
-                    b.HasKey("IdAreaAtuacao")
-                        .HasName("COD_AREA_ATUACAO");
+                    b.HasKey("Id")
+                        .HasName("ID_AREA_ATUACAO");
 
                     b.ToTable("AREA_ATUACAO");
                 });
 
             modelBuilder.Entity("Mamba.Domain.Entities.Avaliacao", b =>
                 {
-                    b.Property<int>("IdAvaliacao")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("COD_AVALIACAO")
+                        .HasColumnName("ID_AVALIACAO")
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -72,17 +72,9 @@ namespace Mamba.Infra.Migrations
                         .HasColumnName("IND_APROVADO")
                         .HasColumnType("bit");
 
-                    b.Property<int>("CodigoFuncionario")
-                        .HasColumnName("COD_FUNCIONARIO")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CodigoResposta")
-                        .HasColumnName("COD_RESPOSTA")
-                        .HasColumnType("int");
-
                     b.Property<int?>("CodigoUsuarioCadastro")
                         .IsRequired()
-                        .HasColumnName("COD_USUARIO_CADASTRO")
+                        .HasColumnName("ID_USUARIO_CADASTRO")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("DataCadastro")
@@ -96,6 +88,10 @@ namespace Mamba.Infra.Migrations
                     b.Property<string>("Descricao")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("FuncionarioId")
+                        .HasColumnName("ID_FUNCIONARIO")
+                        .HasColumnType("int");
+
                     b.Property<int>("Nota")
                         .HasColumnName("NUM_NOTA")
                         .HasColumnType("int");
@@ -106,12 +102,16 @@ namespace Mamba.Infra.Migrations
                         .HasColumnType("nvarchar(300)")
                         .HasMaxLength(300);
 
-                    b.HasKey("IdAvaliacao")
-                        .HasName("COD_AVALIACAO");
+                    b.Property<int>("RespostaId")
+                        .HasColumnName("ID_RESPOSTA")
+                        .HasColumnType("int");
 
-                    b.HasIndex("CodigoFuncionario");
+                    b.HasKey("Id")
+                        .HasName("ID_AVALIACAO");
 
-                    b.HasIndex("CodigoResposta")
+                    b.HasIndex("FuncionarioId");
+
+                    b.HasIndex("RespostaId")
                         .IsUnique();
 
                     b.ToTable("AVALIACAO");
@@ -119,23 +119,19 @@ namespace Mamba.Infra.Migrations
 
             modelBuilder.Entity("Mamba.Domain.Entities.Candidato", b =>
                 {
-                    b.Property<int>("IdCandidato")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("COD_CANDIDATO")
+                        .HasColumnName("ID_CANDIDATO")
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("CodigoCidade")
-                        .HasColumnName("COD_CIDADE")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CodigoUsuario")
-                        .HasColumnName("COD_USUARIO")
+                    b.Property<int>("CidadeId")
+                        .HasColumnName("ID_CIDADE")
                         .HasColumnType("int");
 
                     b.Property<int?>("CodigoUsuarioCadastro")
                         .IsRequired()
-                        .HasColumnName("COD_USUARIO_CADASTRO")
+                        .HasColumnName("ID_USUARIO_CADASTRO")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("DataCadastro")
@@ -157,35 +153,35 @@ namespace Mamba.Infra.Migrations
                         .HasColumnName("DSC_PROFISSAO")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("IdCandidato")
-                        .HasName("COD_CANDIDATO");
+                    b.Property<int>("UsuarioId")
+                        .HasColumnName("ID_USUARIO")
+                        .HasColumnType("int");
 
-                    b.HasIndex("CodigoCidade");
+                    b.HasKey("Id")
+                        .HasName("ID_CANDIDATO");
 
-                    b.HasIndex("CodigoUsuario");
+                    b.HasIndex("CidadeId");
+
+                    b.HasIndex("UsuarioId");
 
                     b.ToTable("CANDIDATO");
                 });
 
             modelBuilder.Entity("Mamba.Domain.Entities.Cargo", b =>
                 {
-                    b.Property<int>("IdCargo")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("COD_CARGO")
+                        .HasColumnName("ID_CARGO")
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("CodigoAreaAtuacao")
-                        .HasColumnName("COD_AREA_ATUACAO")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CodigoEmpresa")
-                        .HasColumnName("COD_EMPRESA")
+                    b.Property<int>("AreaAtuacaoId")
+                        .HasColumnName("ID_AREA_ATUACAO")
                         .HasColumnType("int");
 
                     b.Property<int?>("CodigoUsuarioCadastro")
                         .IsRequired()
-                        .HasColumnName("COD_USUARIO_CADASTRO")
+                        .HasColumnName("ID_USUARIO_CADASTRO")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("DataCadastro")
@@ -195,6 +191,10 @@ namespace Mamba.Infra.Migrations
                     b.Property<DateTime?>("DataUltimaAlteracao")
                         .HasColumnName("DAT_ULTIMA_ALTERACAO")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("EmpresaId")
+                        .HasColumnName("ID_EMPRESA")
+                        .HasColumnType("int");
 
                     b.Property<string>("Nome")
                         .IsRequired()
@@ -207,31 +207,27 @@ namespace Mamba.Infra.Migrations
                         .HasColumnType("nvarchar(300)")
                         .HasMaxLength(300);
 
-                    b.HasKey("IdCargo")
-                        .HasName("COD_CARGO");
+                    b.HasKey("Id")
+                        .HasName("ID_CARGO");
 
-                    b.HasIndex("CodigoAreaAtuacao");
+                    b.HasIndex("AreaAtuacaoId");
 
-                    b.HasIndex("CodigoEmpresa");
+                    b.HasIndex("EmpresaId");
 
                     b.ToTable("CARGO");
                 });
 
             modelBuilder.Entity("Mamba.Domain.Entities.Cidade", b =>
                 {
-                    b.Property<int>("IdCidade")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("COD_CIDADE")
+                        .HasColumnName("ID_CIDADE")
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("CodigoEstado")
-                        .HasColumnName("COD_ESTADO")
-                        .HasColumnType("int");
-
                     b.Property<int?>("CodigoUsuarioCadastro")
                         .IsRequired()
-                        .HasColumnName("COD_USUARIO_CADASTRO")
+                        .HasColumnName("ID_USUARIO_CADASTRO")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("DataCadastro")
@@ -241,6 +237,10 @@ namespace Mamba.Infra.Migrations
                     b.Property<DateTime?>("DataUltimaAlteracao")
                         .HasColumnName("DAT_ULTIMA_ALTERACAO")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("EstadoId")
+                        .HasColumnName("ID_ESTADO")
+                        .HasColumnType("int");
 
                     b.Property<string>("Nome")
                         .IsRequired()
@@ -260,33 +260,29 @@ namespace Mamba.Infra.Migrations
                         .HasColumnType("nvarchar(3)")
                         .HasMaxLength(3);
 
-                    b.HasKey("IdCidade")
-                        .HasName("COD_CIDADE");
+                    b.HasKey("Id")
+                        .HasName("ID_CIDADE");
 
-                    b.HasIndex("CodigoEstado");
+                    b.HasIndex("EstadoId");
 
                     b.ToTable("CIDADE");
                 });
 
             modelBuilder.Entity("Mamba.Domain.Entities.Desafio", b =>
                 {
-                    b.Property<int>("IdDesafio")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("COD_DESAFIO")
+                        .HasColumnName("ID_DESAFIO")
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("CodigoCargo")
-                        .HasColumnName("COD_CARGO")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CodigoEmpresa")
-                        .HasColumnName("COD_EMPRESA")
+                    b.Property<int?>("CargoId")
+                        .HasColumnName("ID_CARGO")
                         .HasColumnType("int");
 
                     b.Property<int?>("CodigoUsuarioCadastro")
                         .IsRequired()
-                        .HasColumnName("COD_USUARIO_CADASTRO")
+                        .HasColumnName("ID_USUARIO_CADASTRO")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("DataAbertura")
@@ -310,6 +306,10 @@ namespace Mamba.Infra.Migrations
                         .HasColumnName("DSC_DESAFIO")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("EmpresaId")
+                        .HasColumnName("ID_EMPRESA")
+                        .HasColumnType("int");
+
                     b.Property<int?>("LimiteInscricao")
                         .HasColumnName("QTD_LIMITE_INSCRICAO")
                         .HasColumnType("int");
@@ -325,21 +325,21 @@ namespace Mamba.Infra.Migrations
                         .HasColumnName("NOM_TITULO")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("IdDesafio")
-                        .HasName("COD_DESAFIO");
+                    b.HasKey("Id")
+                        .HasName("ID_DESAFIO");
 
-                    b.HasIndex("CodigoCargo");
+                    b.HasIndex("CargoId");
 
-                    b.HasIndex("CodigoEmpresa");
+                    b.HasIndex("EmpresaId");
 
                     b.ToTable("DESAFIO");
                 });
 
             modelBuilder.Entity("Mamba.Domain.Entities.Empresa", b =>
                 {
-                    b.Property<int>("IdEmpresa")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("COD_EMPRESA")
+                        .HasColumnName("ID_EMPRESA")
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -349,13 +349,13 @@ namespace Mamba.Infra.Migrations
                         .HasColumnType("nvarchar(18)")
                         .HasMaxLength(18);
 
-                    b.Property<int>("CodigoCidade")
-                        .HasColumnName("COD_CIDADE")
+                    b.Property<int>("CidadeId")
+                        .HasColumnName("ID_CIDADE")
                         .HasColumnType("int");
 
                     b.Property<int?>("CodigoUsuarioCadastro")
                         .IsRequired()
-                        .HasColumnName("COD_USUARIO_CADASTRO")
+                        .HasColumnName("ID_USUARIO_CADASTRO")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("DataCadastro")
@@ -388,25 +388,25 @@ namespace Mamba.Infra.Migrations
                         .HasColumnType("nvarchar(300)")
                         .HasMaxLength(300);
 
-                    b.HasKey("IdEmpresa")
-                        .HasName("COD_EMPRESA");
+                    b.HasKey("Id")
+                        .HasName("ID_EMPRESA");
 
-                    b.HasIndex("CodigoCidade");
+                    b.HasIndex("CidadeId");
 
                     b.ToTable("EMPRESA");
                 });
 
             modelBuilder.Entity("Mamba.Domain.Entities.Estado", b =>
                 {
-                    b.Property<int>("IdEstado")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("COD_ESTADO")
+                        .HasColumnName("ID_ESTADO")
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int?>("CodigoUsuarioCadastro")
                         .IsRequired()
-                        .HasColumnName("COD_USUARIO_CADASTRO")
+                        .HasColumnName("ID_USUARIO_CADASTRO")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("DataCadastro")
@@ -416,6 +416,9 @@ namespace Mamba.Infra.Migrations
                     b.Property<DateTime?>("DataUltimaAlteracao")
                         .HasColumnName("DAT_ULTIMA_ALTERACAO")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("EstadoId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Nome")
                         .IsRequired()
@@ -435,35 +438,27 @@ namespace Mamba.Infra.Migrations
                         .HasColumnType("nvarchar(2)")
                         .HasMaxLength(2);
 
-                    b.HasKey("IdEstado")
-                        .HasName("COD_ESTADO");
+                    b.HasKey("Id")
+                        .HasName("ID_ESTADO");
 
                     b.ToTable("ESTADO");
                 });
 
             modelBuilder.Entity("Mamba.Domain.Entities.Funcionario", b =>
                 {
-                    b.Property<int>("IdFuncionario")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("COD_FUNCIONARIO")
+                        .HasColumnName("ID_FUNCIONARIO")
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("CodigoCargo")
-                        .HasColumnName("COD_CARGO")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CodigoEmpresa")
-                        .HasColumnName("COD_EMPRESA")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CodigoUsuario")
-                        .HasColumnName("COD_USUARIO")
+                    b.Property<int?>("CargoId")
+                        .HasColumnName("ID_CARGO")
                         .HasColumnType("int");
 
                     b.Property<int?>("CodigoUsuarioCadastro")
                         .IsRequired()
-                        .HasColumnName("COD_USUARIO_CADASTRO")
+                        .HasColumnName("ID_USUARIO_CADASTRO")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("DataCadastro")
@@ -474,29 +469,37 @@ namespace Mamba.Infra.Migrations
                         .HasColumnName("DAT_ULTIMA_ALTERACAO")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("EmpresaId")
+                        .HasColumnName("ID_EMPRESA")
+                        .HasColumnType("int");
+
                     b.Property<string>("ProcessoCadastro")
                         .IsRequired()
                         .HasColumnName("NOM_PROCESSO_CADASTRO")
                         .HasColumnType("nvarchar(300)")
                         .HasMaxLength(300);
 
-                    b.HasKey("IdFuncionario")
-                        .HasName("COD_FUNCIONARIO");
+                    b.Property<int>("UsuarioId")
+                        .HasColumnName("ID_USUARIO")
+                        .HasColumnType("int");
 
-                    b.HasIndex("CodigoCargo");
+                    b.HasKey("Id")
+                        .HasName("ID_FUNCIONARIO");
 
-                    b.HasIndex("CodigoEmpresa");
+                    b.HasIndex("CargoId");
 
-                    b.HasIndex("CodigoUsuario");
+                    b.HasIndex("EmpresaId");
+
+                    b.HasIndex("UsuarioId");
 
                     b.ToTable("FUNCIONARIO");
                 });
 
             modelBuilder.Entity("Mamba.Domain.Entities.Inscricao", b =>
                 {
-                    b.Property<int>("IdInscricao")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("COD_INSCRICAO")
+                        .HasColumnName("ID_INSCRICAO")
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -504,17 +507,13 @@ namespace Mamba.Infra.Migrations
                         .HasColumnName("IND_APROVADO")
                         .HasColumnType("bit");
 
-                    b.Property<int>("CodigoCandidato")
-                        .HasColumnName("COD_CANDIDATO")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CodigoDesafio")
-                        .HasColumnName("COD_DESAFIO")
+                    b.Property<int>("CandidatoId")
+                        .HasColumnName("ID_CANDIDATO")
                         .HasColumnType("int");
 
                     b.Property<int?>("CodigoUsuarioCadastro")
                         .IsRequired()
-                        .HasColumnName("COD_USUARIO_CADASTRO")
+                        .HasColumnName("ID_USUARIO_CADASTRO")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("DataCadastro")
@@ -533,6 +532,10 @@ namespace Mamba.Infra.Migrations
                         .HasColumnName("DAT_ULTIMA_ALTERACAO")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("DesafioId")
+                        .HasColumnName("ID_DESAFIO")
+                        .HasColumnType("int");
+
                     b.Property<string>("ProcessoCadastro")
                         .IsRequired()
                         .HasColumnName("NOM_PROCESSO_CADASTRO")
@@ -544,31 +547,27 @@ namespace Mamba.Infra.Migrations
                         .HasColumnType("nvarchar(500)")
                         .HasMaxLength(500);
 
-                    b.HasKey("IdInscricao")
-                        .HasName("COD_INSCRICAO");
+                    b.HasKey("Id")
+                        .HasName("ID_INSCRICAO");
 
-                    b.HasIndex("CodigoCandidato");
+                    b.HasIndex("CandidatoId");
 
-                    b.HasIndex("CodigoDesafio");
+                    b.HasIndex("DesafioId");
 
                     b.ToTable("INSCRICAO");
                 });
 
             modelBuilder.Entity("Mamba.Domain.Entities.Questao", b =>
                 {
-                    b.Property<int>("IdQuestao")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("COD_QUESTAO")
+                        .HasColumnName("ID_QUESTAO")
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("CodigoDesafio")
-                        .HasColumnName("COD_DESAFIO")
-                        .HasColumnType("int");
-
                     b.Property<int?>("CodigoUsuarioCadastro")
                         .IsRequired()
-                        .HasColumnName("COD_USUARIO_CADASTRO")
+                        .HasColumnName("ID_USUARIO_CADASTRO")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("DataCadastro")
@@ -578,6 +577,10 @@ namespace Mamba.Infra.Migrations
                     b.Property<DateTime?>("DataUltimaAlteracao")
                         .HasColumnName("DAT_ULTIMA_ALTERACAO")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("DesafioId")
+                        .HasColumnName("ID_DESAFIO")
+                        .HasColumnType("int");
 
                     b.Property<string>("Descricao")
                         .IsRequired()
@@ -590,33 +593,25 @@ namespace Mamba.Infra.Migrations
                         .HasColumnType("nvarchar(300)")
                         .HasMaxLength(300);
 
-                    b.HasKey("IdQuestao")
-                        .HasName("COD_QUESTAO");
+                    b.HasKey("Id")
+                        .HasName("ID_QUESTAO");
 
-                    b.HasIndex("CodigoDesafio");
+                    b.HasIndex("DesafioId");
 
                     b.ToTable("QUESTAO");
                 });
 
             modelBuilder.Entity("Mamba.Domain.Entities.Resposta", b =>
                 {
-                    b.Property<int>("IdResposta")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("COD_RESPOSTA")
+                        .HasColumnName("ID_RESPOSTA")
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("CodigoInscricao")
-                        .HasColumnName("COD_INSCRICAO")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CodigoQuestao")
-                        .HasColumnName("COD_QUESTAO")
-                        .HasColumnType("int");
-
                     b.Property<int?>("CodigoUsuarioCadastro")
                         .IsRequired()
-                        .HasColumnName("COD_USUARIO_CADASTRO")
+                        .HasColumnName("ID_USUARIO_CADASTRO")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("DataCadastro")
@@ -633,27 +628,35 @@ namespace Mamba.Infra.Migrations
                         .HasColumnType("nvarchar(500)")
                         .HasMaxLength(500);
 
+                    b.Property<int>("InscricaoId")
+                        .HasColumnName("ID_INSCRICAO")
+                        .HasColumnType("int");
+
                     b.Property<string>("ProcessoCadastro")
                         .IsRequired()
                         .HasColumnName("NOM_PROCESSO_CADASTRO")
                         .HasColumnType("nvarchar(300)")
                         .HasMaxLength(300);
 
-                    b.HasKey("IdResposta")
-                        .HasName("COD_RESPOSTA");
+                    b.Property<int>("QuestaoId")
+                        .HasColumnName("ID_QUESTAO")
+                        .HasColumnType("int");
 
-                    b.HasIndex("CodigoInscricao");
+                    b.HasKey("Id")
+                        .HasName("ID_RESPOSTA");
 
-                    b.HasIndex("CodigoQuestao");
+                    b.HasIndex("InscricaoId");
+
+                    b.HasIndex("QuestaoId");
 
                     b.ToTable("RESPOSTA");
                 });
 
             modelBuilder.Entity("Mamba.Domain.Entities.Usuario", b =>
                 {
-                    b.Property<int>("IdUsuario")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("COD_USUARIO")
+                        .HasColumnName("ID_USUARIO")
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -673,7 +676,7 @@ namespace Mamba.Infra.Migrations
 
                     b.Property<int?>("CodigoUsuarioCadastro")
                         .IsRequired()
-                        .HasColumnName("COD_USUARIO_CADASTRO")
+                        .HasColumnName("ID_USUARIO_CADASTRO")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("DataCadastro")
@@ -736,8 +739,8 @@ namespace Mamba.Infra.Migrations
                         .HasColumnType("nvarchar(500)")
                         .HasMaxLength(500);
 
-                    b.HasKey("IdUsuario")
-                        .HasName("COD_USUARIO");
+                    b.HasKey("Id")
+                        .HasName("ID_USUARIO");
 
                     b.ToTable("USUARIO");
                 });
@@ -746,14 +749,12 @@ namespace Mamba.Infra.Migrations
                 {
                     b.HasOne("Mamba.Domain.Entities.Funcionario", "Funcionario")
                         .WithMany("Avaliacoes")
-                        .HasForeignKey("CodigoFuncionario")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasForeignKey("FuncionarioId")
                         .IsRequired();
 
                     b.HasOne("Mamba.Domain.Entities.Resposta", "Resposta")
                         .WithOne("Avaliacao")
-                        .HasForeignKey("Mamba.Domain.Entities.Avaliacao", "CodigoResposta")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasForeignKey("Mamba.Domain.Entities.Avaliacao", "RespostaId")
                         .IsRequired();
                 });
 
@@ -761,14 +762,12 @@ namespace Mamba.Infra.Migrations
                 {
                     b.HasOne("Mamba.Domain.Entities.Cidade", "Cidade")
                         .WithMany("Candidatos")
-                        .HasForeignKey("CodigoCidade")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasForeignKey("CidadeId")
                         .IsRequired();
 
                     b.HasOne("Mamba.Domain.Entities.Usuario", "Usuario")
                         .WithMany("Candidatos")
-                        .HasForeignKey("CodigoUsuario")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasForeignKey("UsuarioId")
                         .IsRequired();
                 });
 
@@ -776,14 +775,12 @@ namespace Mamba.Infra.Migrations
                 {
                     b.HasOne("Mamba.Domain.Entities.AreaAtuacao", "AreaAtuacao")
                         .WithMany("Cargos")
-                        .HasForeignKey("CodigoAreaAtuacao")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasForeignKey("AreaAtuacaoId")
                         .IsRequired();
 
                     b.HasOne("Mamba.Domain.Entities.Empresa", "Empresa")
                         .WithMany("Cargos")
-                        .HasForeignKey("CodigoEmpresa")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasForeignKey("EmpresaId")
                         .IsRequired();
                 });
 
@@ -791,8 +788,7 @@ namespace Mamba.Infra.Migrations
                 {
                     b.HasOne("Mamba.Domain.Entities.Estado", "Estado")
                         .WithMany("Cidades")
-                        .HasForeignKey("CodigoEstado")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasForeignKey("EstadoId")
                         .IsRequired();
                 });
 
@@ -800,13 +796,11 @@ namespace Mamba.Infra.Migrations
                 {
                     b.HasOne("Mamba.Domain.Entities.Cargo", "Cargo")
                         .WithMany("Desafios")
-                        .HasForeignKey("CodigoCargo")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .HasForeignKey("CargoId");
 
                     b.HasOne("Mamba.Domain.Entities.Empresa", "Empresa")
                         .WithMany("Desafios")
-                        .HasForeignKey("CodigoEmpresa")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasForeignKey("EmpresaId")
                         .IsRequired();
                 });
 
@@ -814,8 +808,7 @@ namespace Mamba.Infra.Migrations
                 {
                     b.HasOne("Mamba.Domain.Entities.Cidade", "Cidade")
                         .WithMany("Empresas")
-                        .HasForeignKey("CodigoCidade")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasForeignKey("CidadeId")
                         .IsRequired();
                 });
 
@@ -823,19 +816,16 @@ namespace Mamba.Infra.Migrations
                 {
                     b.HasOne("Mamba.Domain.Entities.Cargo", "Cargo")
                         .WithMany("Funcionarios")
-                        .HasForeignKey("CodigoCargo")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .HasForeignKey("CargoId");
 
                     b.HasOne("Mamba.Domain.Entities.Empresa", "Empresa")
                         .WithMany("Funcionarios")
-                        .HasForeignKey("CodigoEmpresa")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasForeignKey("EmpresaId")
                         .IsRequired();
 
                     b.HasOne("Mamba.Domain.Entities.Usuario", "Usuario")
                         .WithMany("Funcionarios")
-                        .HasForeignKey("CodigoUsuario")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasForeignKey("UsuarioId")
                         .IsRequired();
                 });
 
@@ -843,14 +833,12 @@ namespace Mamba.Infra.Migrations
                 {
                     b.HasOne("Mamba.Domain.Entities.Candidato", "Candidato")
                         .WithMany("Inscricoes")
-                        .HasForeignKey("CodigoCandidato")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasForeignKey("CandidatoId")
                         .IsRequired();
 
                     b.HasOne("Mamba.Domain.Entities.Desafio", "Desafio")
                         .WithMany("Inscricoes")
-                        .HasForeignKey("CodigoDesafio")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasForeignKey("DesafioId")
                         .IsRequired();
                 });
 
@@ -858,8 +846,7 @@ namespace Mamba.Infra.Migrations
                 {
                     b.HasOne("Mamba.Domain.Entities.Desafio", "Desafio")
                         .WithMany("Questoes")
-                        .HasForeignKey("CodigoDesafio")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasForeignKey("DesafioId")
                         .IsRequired();
                 });
 
@@ -867,14 +854,12 @@ namespace Mamba.Infra.Migrations
                 {
                     b.HasOne("Mamba.Domain.Entities.Inscricao", "Inscricao")
                         .WithMany("Respostas")
-                        .HasForeignKey("CodigoInscricao")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasForeignKey("InscricaoId")
                         .IsRequired();
 
                     b.HasOne("Mamba.Domain.Entities.Questao", "Questao")
                         .WithMany("Respostas")
-                        .HasForeignKey("CodigoQuestao")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasForeignKey("QuestaoId")
                         .IsRequired();
                 });
 #pragma warning restore 612, 618

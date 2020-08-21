@@ -6,9 +6,9 @@ namespace Mamba.Domain.Interfaces
     public interface IUser
     {
         string Name { get; }
-        int GetUserId();
+        int? GetUserId();
         string GetUserEmail();
-        bool IsAutheticated();
+        bool IsAuthenticated();
         bool IsInRole(string role);
         IEnumerable<Claim> GetClaimsIdentity();
     }

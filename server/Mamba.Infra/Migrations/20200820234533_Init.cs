@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Mamba.Infra.Migrations
 {
-    public partial class First_Migration : Migration
+    public partial class Init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -11,43 +11,48 @@ namespace Mamba.Infra.Migrations
                 name: "AREA_ATUACAO",
                 columns: table => new
                 {
-                    COD_AREA_ATUACAO = table.Column<int>(nullable: false)
+                    ID_AREA_ATUACAO = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    DSC_AREA_ATUACAO = table.Column<string>(maxLength: 300, nullable: false),
                     DAT_CADASTRO = table.Column<DateTime>(nullable: false),
-                    COD_USUARIO_CADASTRO = table.Column<int>(nullable: false),
+                    ID_USUARIO_CADASTRO = table.Column<int>(nullable: false),
                     NOM_PROCESSO_CADASTRO = table.Column<string>(maxLength: 300, nullable: false),
-                    DAT_ULTIMA_ALTERACAO = table.Column<DateTime>(nullable: true)
+                    DAT_ULTIMA_ALTERACAO = table.Column<DateTime>(nullable: true),
+                    DSC_AREA_ATUACAO = table.Column<string>(maxLength: 300, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("COD_AREA_ATUACAO", x => x.COD_AREA_ATUACAO);
+                    table.PrimaryKey("ID_AREA_ATUACAO", x => x.ID_AREA_ATUACAO);
                 });
 
             migrationBuilder.CreateTable(
                 name: "ESTADO",
                 columns: table => new
                 {
-                    COD_ESTADO = table.Column<int>(nullable: false)
+                    ID_ESTADO = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    NOM_ESTADO = table.Column<string>(maxLength: 500, nullable: false),
-                    SGL_ESTADO = table.Column<string>(maxLength: 2, nullable: false),
                     DAT_CADASTRO = table.Column<DateTime>(nullable: false),
-                    COD_USUARIO_CADASTRO = table.Column<int>(nullable: false),
+                    ID_USUARIO_CADASTRO = table.Column<int>(nullable: false),
                     NOM_PROCESSO_CADASTRO = table.Column<string>(maxLength: 300, nullable: false),
-                    DAT_ULTIMA_ALTERACAO = table.Column<DateTime>(nullable: true)
+                    DAT_ULTIMA_ALTERACAO = table.Column<DateTime>(nullable: true),
+                    EstadoId = table.Column<int>(nullable: false),
+                    NOM_ESTADO = table.Column<string>(maxLength: 500, nullable: false),
+                    SGL_ESTADO = table.Column<string>(maxLength: 2, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("COD_ESTADO", x => x.COD_ESTADO);
+                    table.PrimaryKey("ID_ESTADO", x => x.ID_ESTADO);
                 });
 
             migrationBuilder.CreateTable(
                 name: "USUARIO",
                 columns: table => new
                 {
-                    COD_USUARIO = table.Column<int>(nullable: false)
+                    ID_USUARIO = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    DAT_CADASTRO = table.Column<DateTime>(nullable: false),
+                    ID_USUARIO_CADASTRO = table.Column<int>(nullable: false),
+                    NOM_PROCESSO_CADASTRO = table.Column<string>(maxLength: 300, nullable: false),
+                    DAT_ULTIMA_ALTERACAO = table.Column<DateTime>(nullable: true),
                     NOM_USUARIO = table.Column<string>(maxLength: 300, nullable: false),
                     DAT_NASCIMENTO = table.Column<DateTime>(nullable: false),
                     END_EMAIL = table.Column<string>(maxLength: 100, nullable: false),
@@ -59,39 +64,35 @@ namespace Mamba.Infra.Migrations
                     DSC_MOTIVO_BLOQUEIO = table.Column<string>(maxLength: 500, nullable: true),
                     DSC_LINK_LINKEDIN = table.Column<string>(maxLength: 100, nullable: true),
                     DSC_LINK_GITHUB = table.Column<string>(maxLength: 100, nullable: true),
-                    NOM_ARQUIVO_FOTO = table.Column<string>(maxLength: 200, nullable: true),
-                    DAT_CADASTRO = table.Column<DateTime>(nullable: false),
-                    COD_USUARIO_CADASTRO = table.Column<int>(nullable: false),
-                    NOM_PROCESSO_CADASTRO = table.Column<string>(maxLength: 300, nullable: false),
-                    DAT_ULTIMA_ALTERACAO = table.Column<DateTime>(nullable: true)
+                    NOM_ARQUIVO_FOTO = table.Column<string>(maxLength: 200, nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("COD_USUARIO", x => x.COD_USUARIO);
+                    table.PrimaryKey("ID_USUARIO", x => x.ID_USUARIO);
                 });
 
             migrationBuilder.CreateTable(
                 name: "CIDADE",
                 columns: table => new
                 {
-                    COD_CIDADE = table.Column<int>(nullable: false)
+                    ID_CIDADE = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    COD_ESTADO = table.Column<int>(nullable: false),
-                    NOM_CIDADE = table.Column<string>(maxLength: 500, nullable: false),
-                    SGL_CIDADE = table.Column<string>(maxLength: 3, nullable: false),
                     DAT_CADASTRO = table.Column<DateTime>(nullable: false),
-                    COD_USUARIO_CADASTRO = table.Column<int>(nullable: false),
+                    ID_USUARIO_CADASTRO = table.Column<int>(nullable: false),
                     NOM_PROCESSO_CADASTRO = table.Column<string>(maxLength: 300, nullable: false),
-                    DAT_ULTIMA_ALTERACAO = table.Column<DateTime>(nullable: true)
+                    DAT_ULTIMA_ALTERACAO = table.Column<DateTime>(nullable: true),
+                    ID_ESTADO = table.Column<int>(nullable: false),
+                    NOM_CIDADE = table.Column<string>(maxLength: 500, nullable: false),
+                    SGL_CIDADE = table.Column<string>(maxLength: 3, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("COD_CIDADE", x => x.COD_CIDADE);
+                    table.PrimaryKey("ID_CIDADE", x => x.ID_CIDADE);
                     table.ForeignKey(
-                        name: "FK_CIDADE_ESTADO_COD_ESTADO",
-                        column: x => x.COD_ESTADO,
+                        name: "FK_CIDADE_ESTADO_ID_ESTADO",
+                        column: x => x.ID_ESTADO,
                         principalTable: "ESTADO",
-                        principalColumn: "COD_ESTADO",
+                        principalColumn: "ID_ESTADO",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -99,30 +100,30 @@ namespace Mamba.Infra.Migrations
                 name: "CANDIDATO",
                 columns: table => new
                 {
-                    COD_CANDIDATO = table.Column<int>(nullable: false)
+                    ID_CANDIDATO = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    COD_USUARIO = table.Column<int>(nullable: false),
-                    COD_CIDADE = table.Column<int>(nullable: false),
-                    DSC_PROFISSAO = table.Column<string>(nullable: false),
                     DAT_CADASTRO = table.Column<DateTime>(nullable: false),
-                    COD_USUARIO_CADASTRO = table.Column<int>(nullable: false),
+                    ID_USUARIO_CADASTRO = table.Column<int>(nullable: false),
                     NOM_PROCESSO_CADASTRO = table.Column<string>(maxLength: 300, nullable: false),
-                    DAT_ULTIMA_ALTERACAO = table.Column<DateTime>(nullable: true)
+                    DAT_ULTIMA_ALTERACAO = table.Column<DateTime>(nullable: true),
+                    ID_USUARIO = table.Column<int>(nullable: false),
+                    ID_CIDADE = table.Column<int>(nullable: false),
+                    DSC_PROFISSAO = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("COD_CANDIDATO", x => x.COD_CANDIDATO);
+                    table.PrimaryKey("ID_CANDIDATO", x => x.ID_CANDIDATO);
                     table.ForeignKey(
-                        name: "FK_CANDIDATO_CIDADE_COD_CIDADE",
-                        column: x => x.COD_CIDADE,
+                        name: "FK_CANDIDATO_CIDADE_ID_CIDADE",
+                        column: x => x.ID_CIDADE,
                         principalTable: "CIDADE",
-                        principalColumn: "COD_CIDADE",
+                        principalColumn: "ID_CIDADE",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_CANDIDATO_USUARIO_COD_USUARIO",
-                        column: x => x.COD_USUARIO,
+                        name: "FK_CANDIDATO_USUARIO_ID_USUARIO",
+                        column: x => x.ID_USUARIO,
                         principalTable: "USUARIO",
-                        principalColumn: "COD_USUARIO",
+                        principalColumn: "ID_USUARIO",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -130,26 +131,26 @@ namespace Mamba.Infra.Migrations
                 name: "EMPRESA",
                 columns: table => new
                 {
-                    COD_EMPRESA = table.Column<int>(nullable: false)
+                    ID_EMPRESA = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    COD_CIDADE = table.Column<int>(nullable: false),
-                    NOM_EMPRESA = table.Column<string>(maxLength: 500, nullable: false),
-                    NUM_CNPJ = table.Column<int>(nullable: false),
-                    DSC_EMPRESA = table.Column<string>(maxLength: 500, nullable: true),
-                    NOM_ARQUIVO_LOGO = table.Column<string>(maxLength: 200, nullable: true),
                     DAT_CADASTRO = table.Column<DateTime>(nullable: false),
-                    COD_USUARIO_CADASTRO = table.Column<int>(nullable: false),
+                    ID_USUARIO_CADASTRO = table.Column<int>(nullable: false),
                     NOM_PROCESSO_CADASTRO = table.Column<string>(maxLength: 300, nullable: false),
-                    DAT_ULTIMA_ALTERACAO = table.Column<DateTime>(nullable: true)
+                    DAT_ULTIMA_ALTERACAO = table.Column<DateTime>(nullable: true),
+                    ID_CIDADE = table.Column<int>(nullable: false),
+                    NOM_EMPRESA = table.Column<string>(maxLength: 500, nullable: false),
+                    NUM_CNPJ = table.Column<string>(maxLength: 18, nullable: false),
+                    DSC_EMPRESA = table.Column<string>(maxLength: 500, nullable: true),
+                    NOM_ARQUIVO_LOGO = table.Column<string>(maxLength: 200, nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("COD_EMPRESA", x => x.COD_EMPRESA);
+                    table.PrimaryKey("ID_EMPRESA", x => x.ID_EMPRESA);
                     table.ForeignKey(
-                        name: "FK_EMPRESA_CIDADE_COD_CIDADE",
-                        column: x => x.COD_CIDADE,
+                        name: "FK_EMPRESA_CIDADE_ID_CIDADE",
+                        column: x => x.ID_CIDADE,
                         principalTable: "CIDADE",
-                        principalColumn: "COD_CIDADE",
+                        principalColumn: "ID_CIDADE",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -157,30 +158,30 @@ namespace Mamba.Infra.Migrations
                 name: "CARGO",
                 columns: table => new
                 {
-                    COD_CARGO = table.Column<int>(nullable: false)
+                    ID_CARGO = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    COD_EMPRESA = table.Column<int>(nullable: false),
-                    COD_AREA_ATUACAO = table.Column<int>(nullable: false),
-                    NOM_CARGO = table.Column<string>(nullable: false),
                     DAT_CADASTRO = table.Column<DateTime>(nullable: false),
-                    COD_USUARIO_CADASTRO = table.Column<int>(nullable: false),
+                    ID_USUARIO_CADASTRO = table.Column<int>(nullable: false),
                     NOM_PROCESSO_CADASTRO = table.Column<string>(maxLength: 300, nullable: false),
-                    DAT_ULTIMA_ALTERACAO = table.Column<DateTime>(nullable: true)
+                    DAT_ULTIMA_ALTERACAO = table.Column<DateTime>(nullable: true),
+                    ID_EMPRESA = table.Column<int>(nullable: false),
+                    ID_AREA_ATUACAO = table.Column<int>(nullable: false),
+                    NOM_CARGO = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("COD_CARGO", x => x.COD_CARGO);
+                    table.PrimaryKey("ID_CARGO", x => x.ID_CARGO);
                     table.ForeignKey(
-                        name: "FK_CARGO_AREA_ATUACAO_COD_AREA_ATUACAO",
-                        column: x => x.COD_AREA_ATUACAO,
+                        name: "FK_CARGO_AREA_ATUACAO_ID_AREA_ATUACAO",
+                        column: x => x.ID_AREA_ATUACAO,
                         principalTable: "AREA_ATUACAO",
-                        principalColumn: "COD_AREA_ATUACAO",
+                        principalColumn: "ID_AREA_ATUACAO",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_CARGO_EMPRESA_COD_EMPRESA",
-                        column: x => x.COD_EMPRESA,
+                        name: "FK_CARGO_EMPRESA_ID_EMPRESA",
+                        column: x => x.ID_EMPRESA,
                         principalTable: "EMPRESA",
-                        principalColumn: "COD_EMPRESA",
+                        principalColumn: "ID_EMPRESA",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -188,34 +189,34 @@ namespace Mamba.Infra.Migrations
                 name: "DESAFIO",
                 columns: table => new
                 {
-                    COD_DESAFIO = table.Column<int>(nullable: false)
+                    ID_DESAFIO = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    COD_EMPRESA = table.Column<int>(nullable: false),
-                    COD_CARGO = table.Column<int>(nullable: true),
+                    DAT_CADASTRO = table.Column<DateTime>(nullable: false),
+                    ID_USUARIO_CADASTRO = table.Column<int>(nullable: false),
+                    NOM_PROCESSO_CADASTRO = table.Column<string>(maxLength: 300, nullable: false),
+                    DAT_ULTIMA_ALTERACAO = table.Column<DateTime>(nullable: true),
+                    ID_EMPRESA = table.Column<int>(nullable: false),
+                    ID_CARGO = table.Column<int>(nullable: true),
                     NOM_TITULO = table.Column<string>(nullable: false),
                     DSC_DESAFIO = table.Column<string>(nullable: false),
                     QTD_LIMITE_INSCRICAO = table.Column<int>(nullable: true),
                     DAT_ABERTURA = table.Column<DateTime>(nullable: false),
-                    DAT_FECHAMENTO = table.Column<DateTime>(nullable: true),
-                    DAT_CADASTRO = table.Column<DateTime>(nullable: false),
-                    COD_USUARIO_CADASTRO = table.Column<int>(nullable: false),
-                    NOM_PROCESSO_CADASTRO = table.Column<string>(maxLength: 300, nullable: false),
-                    DAT_ULTIMA_ALTERACAO = table.Column<DateTime>(nullable: true)
+                    DAT_FECHAMENTO = table.Column<DateTime>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("COD_DESAFIO", x => x.COD_DESAFIO);
+                    table.PrimaryKey("ID_DESAFIO", x => x.ID_DESAFIO);
                     table.ForeignKey(
-                        name: "FK_DESAFIO_CARGO_COD_CARGO",
-                        column: x => x.COD_CARGO,
+                        name: "FK_DESAFIO_CARGO_ID_CARGO",
+                        column: x => x.ID_CARGO,
                         principalTable: "CARGO",
-                        principalColumn: "COD_CARGO",
+                        principalColumn: "ID_CARGO",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_DESAFIO_EMPRESA_COD_EMPRESA",
-                        column: x => x.COD_EMPRESA,
+                        name: "FK_DESAFIO_EMPRESA_ID_EMPRESA",
+                        column: x => x.ID_EMPRESA,
                         principalTable: "EMPRESA",
-                        principalColumn: "COD_EMPRESA",
+                        principalColumn: "ID_EMPRESA",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -223,36 +224,36 @@ namespace Mamba.Infra.Migrations
                 name: "FUNCIONARIO",
                 columns: table => new
                 {
-                    COD_FUNCIONARIO = table.Column<int>(nullable: false)
+                    ID_FUNCIONARIO = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    COD_EMPRESA = table.Column<int>(nullable: false),
-                    COD_CARGO = table.Column<int>(nullable: true),
-                    COD_USUARIO = table.Column<int>(nullable: false),
                     DAT_CADASTRO = table.Column<DateTime>(nullable: false),
-                    COD_USUARIO_CADASTRO = table.Column<int>(nullable: false),
+                    ID_USUARIO_CADASTRO = table.Column<int>(nullable: false),
                     NOM_PROCESSO_CADASTRO = table.Column<string>(maxLength: 300, nullable: false),
-                    DAT_ULTIMA_ALTERACAO = table.Column<DateTime>(nullable: true)
+                    DAT_ULTIMA_ALTERACAO = table.Column<DateTime>(nullable: true),
+                    ID_EMPRESA = table.Column<int>(nullable: false),
+                    ID_CARGO = table.Column<int>(nullable: true),
+                    ID_USUARIO = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("COD_FUNCIONARIO", x => x.COD_FUNCIONARIO);
+                    table.PrimaryKey("ID_FUNCIONARIO", x => x.ID_FUNCIONARIO);
                     table.ForeignKey(
-                        name: "FK_FUNCIONARIO_CARGO_COD_CARGO",
-                        column: x => x.COD_CARGO,
+                        name: "FK_FUNCIONARIO_CARGO_ID_CARGO",
+                        column: x => x.ID_CARGO,
                         principalTable: "CARGO",
-                        principalColumn: "COD_CARGO",
+                        principalColumn: "ID_CARGO",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_FUNCIONARIO_EMPRESA_COD_EMPRESA",
-                        column: x => x.COD_EMPRESA,
+                        name: "FK_FUNCIONARIO_EMPRESA_ID_EMPRESA",
+                        column: x => x.ID_EMPRESA,
                         principalTable: "EMPRESA",
-                        principalColumn: "COD_EMPRESA",
+                        principalColumn: "ID_EMPRESA",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_FUNCIONARIO_USUARIO_COD_USUARIO",
-                        column: x => x.COD_USUARIO,
+                        name: "FK_FUNCIONARIO_USUARIO_ID_USUARIO",
+                        column: x => x.ID_USUARIO,
                         principalTable: "USUARIO",
-                        principalColumn: "COD_USUARIO",
+                        principalColumn: "ID_USUARIO",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -260,33 +261,33 @@ namespace Mamba.Infra.Migrations
                 name: "INSCRICAO",
                 columns: table => new
                 {
-                    COD_INSCRICAO = table.Column<int>(nullable: false)
+                    ID_INSCRICAO = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    COD_DESAFIO = table.Column<int>(nullable: false),
-                    COD_CANDIDATO = table.Column<int>(nullable: false),
+                    DAT_CADASTRO = table.Column<DateTime>(nullable: false),
+                    ID_USUARIO_CADASTRO = table.Column<int>(nullable: false),
+                    NOM_PROCESSO_CADASTRO = table.Column<string>(maxLength: 300, nullable: false),
+                    DAT_ULTIMA_ALTERACAO = table.Column<DateTime>(nullable: true),
+                    ID_DESAFIO = table.Column<int>(nullable: false),
+                    ID_CANDIDATO = table.Column<int>(nullable: false),
                     DAT_INSCRICAO = table.Column<DateTime>(nullable: false),
                     DAT_FINALIZACAO = table.Column<DateTime>(nullable: true),
                     DSC_RESULTADO = table.Column<string>(maxLength: 500, nullable: true),
-                    IND_APROVADO = table.Column<bool>(nullable: true),
-                    DAT_CADASTRO = table.Column<DateTime>(nullable: false),
-                    COD_USUARIO_CADASTRO = table.Column<int>(nullable: false),
-                    NOM_PROCESSO_CADASTRO = table.Column<string>(maxLength: 300, nullable: false),
-                    DAT_ULTIMA_ALTERACAO = table.Column<DateTime>(nullable: true)
+                    IND_APROVADO = table.Column<bool>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("COD_INSCRICAO", x => x.COD_INSCRICAO);
+                    table.PrimaryKey("ID_INSCRICAO", x => x.ID_INSCRICAO);
                     table.ForeignKey(
-                        name: "FK_INSCRICAO_CANDIDATO_COD_CANDIDATO",
-                        column: x => x.COD_CANDIDATO,
+                        name: "FK_INSCRICAO_CANDIDATO_ID_CANDIDATO",
+                        column: x => x.ID_CANDIDATO,
                         principalTable: "CANDIDATO",
-                        principalColumn: "COD_CANDIDATO",
+                        principalColumn: "ID_CANDIDATO",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_INSCRICAO_DESAFIO_COD_DESAFIO",
-                        column: x => x.COD_DESAFIO,
+                        name: "FK_INSCRICAO_DESAFIO_ID_DESAFIO",
+                        column: x => x.ID_DESAFIO,
                         principalTable: "DESAFIO",
-                        principalColumn: "COD_DESAFIO",
+                        principalColumn: "ID_DESAFIO",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -294,23 +295,23 @@ namespace Mamba.Infra.Migrations
                 name: "QUESTAO",
                 columns: table => new
                 {
-                    COD_QUESTAO = table.Column<int>(nullable: false)
+                    ID_QUESTAO = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    COD_DESAFIO = table.Column<int>(nullable: false),
-                    DSC_QUESTAO = table.Column<string>(nullable: false),
                     DAT_CADASTRO = table.Column<DateTime>(nullable: false),
-                    COD_USUARIO_CADASTRO = table.Column<int>(nullable: false),
+                    ID_USUARIO_CADASTRO = table.Column<int>(nullable: false),
                     NOM_PROCESSO_CADASTRO = table.Column<string>(maxLength: 300, nullable: false),
-                    DAT_ULTIMA_ALTERACAO = table.Column<DateTime>(nullable: true)
+                    DAT_ULTIMA_ALTERACAO = table.Column<DateTime>(nullable: true),
+                    ID_DESAFIO = table.Column<int>(nullable: false),
+                    DSC_QUESTAO = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("COD_QUESTAO", x => x.COD_QUESTAO);
+                    table.PrimaryKey("ID_QUESTAO", x => x.ID_QUESTAO);
                     table.ForeignKey(
-                        name: "FK_QUESTAO_DESAFIO_COD_DESAFIO",
-                        column: x => x.COD_DESAFIO,
+                        name: "FK_QUESTAO_DESAFIO_ID_DESAFIO",
+                        column: x => x.ID_DESAFIO,
                         principalTable: "DESAFIO",
-                        principalColumn: "COD_DESAFIO",
+                        principalColumn: "ID_DESAFIO",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -318,30 +319,30 @@ namespace Mamba.Infra.Migrations
                 name: "RESPOSTA",
                 columns: table => new
                 {
-                    COD_RESPOSTA = table.Column<int>(nullable: false)
+                    ID_RESPOSTA = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    COD_INSCRICAO = table.Column<int>(nullable: false),
-                    COD_QUESTAO = table.Column<int>(nullable: false),
-                    DSC_RESPOSTA = table.Column<string>(maxLength: 500, nullable: false),
                     DAT_CADASTRO = table.Column<DateTime>(nullable: false),
-                    COD_USUARIO_CADASTRO = table.Column<int>(nullable: false),
+                    ID_USUARIO_CADASTRO = table.Column<int>(nullable: false),
                     NOM_PROCESSO_CADASTRO = table.Column<string>(maxLength: 300, nullable: false),
-                    DAT_ULTIMA_ALTERACAO = table.Column<DateTime>(nullable: true)
+                    DAT_ULTIMA_ALTERACAO = table.Column<DateTime>(nullable: true),
+                    ID_INSCRICAO = table.Column<int>(nullable: false),
+                    ID_QUESTAO = table.Column<int>(nullable: false),
+                    DSC_RESPOSTA = table.Column<string>(maxLength: 500, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("COD_RESPOSTA", x => x.COD_RESPOSTA);
+                    table.PrimaryKey("ID_RESPOSTA", x => x.ID_RESPOSTA);
                     table.ForeignKey(
-                        name: "FK_RESPOSTA_INSCRICAO_COD_INSCRICAO",
-                        column: x => x.COD_INSCRICAO,
+                        name: "FK_RESPOSTA_INSCRICAO_ID_INSCRICAO",
+                        column: x => x.ID_INSCRICAO,
                         principalTable: "INSCRICAO",
-                        principalColumn: "COD_INSCRICAO",
+                        principalColumn: "ID_INSCRICAO",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_RESPOSTA_QUESTAO_COD_QUESTAO",
-                        column: x => x.COD_QUESTAO,
+                        name: "FK_RESPOSTA_QUESTAO_ID_QUESTAO",
+                        column: x => x.ID_QUESTAO,
                         principalTable: "QUESTAO",
-                        principalColumn: "COD_QUESTAO",
+                        principalColumn: "ID_QUESTAO",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -349,125 +350,125 @@ namespace Mamba.Infra.Migrations
                 name: "AVALIACAO",
                 columns: table => new
                 {
-                    COD_AVALIACAO = table.Column<int>(nullable: false)
+                    ID_AVALIACAO = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    COD_FUNCIONARIO = table.Column<int>(nullable: false),
-                    COD_RESPOSTA = table.Column<int>(nullable: false),
+                    DAT_CADASTRO = table.Column<DateTime>(nullable: false),
+                    ID_USUARIO_CADASTRO = table.Column<int>(nullable: false),
+                    NOM_PROCESSO_CADASTRO = table.Column<string>(maxLength: 300, nullable: false),
+                    DAT_ULTIMA_ALTERACAO = table.Column<DateTime>(nullable: true),
+                    ID_FUNCIONARIO = table.Column<int>(nullable: false),
+                    ID_RESPOSTA = table.Column<int>(nullable: false),
                     Descricao = table.Column<string>(nullable: true),
                     IND_APROVADO = table.Column<bool>(nullable: false),
-                    NUM_NOTA = table.Column<int>(nullable: false),
-                    DAT_CADASTRO = table.Column<DateTime>(nullable: false),
-                    COD_USUARIO_CADASTRO = table.Column<int>(nullable: false),
-                    NOM_PROCESSO_CADASTRO = table.Column<string>(maxLength: 300, nullable: false),
-                    DAT_ULTIMA_ALTERACAO = table.Column<DateTime>(nullable: true)
+                    NUM_NOTA = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("COD_AVALIACAO", x => x.COD_AVALIACAO);
+                    table.PrimaryKey("ID_AVALIACAO", x => x.ID_AVALIACAO);
                     table.ForeignKey(
-                        name: "FK_AVALIACAO_FUNCIONARIO_COD_FUNCIONARIO",
-                        column: x => x.COD_FUNCIONARIO,
+                        name: "FK_AVALIACAO_FUNCIONARIO_ID_FUNCIONARIO",
+                        column: x => x.ID_FUNCIONARIO,
                         principalTable: "FUNCIONARIO",
-                        principalColumn: "COD_FUNCIONARIO",
+                        principalColumn: "ID_FUNCIONARIO",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_AVALIACAO_RESPOSTA_COD_RESPOSTA",
-                        column: x => x.COD_RESPOSTA,
+                        name: "FK_AVALIACAO_RESPOSTA_ID_RESPOSTA",
+                        column: x => x.ID_RESPOSTA,
                         principalTable: "RESPOSTA",
-                        principalColumn: "COD_RESPOSTA",
+                        principalColumn: "ID_RESPOSTA",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_AVALIACAO_COD_FUNCIONARIO",
+                name: "IX_AVALIACAO_ID_FUNCIONARIO",
                 table: "AVALIACAO",
-                column: "COD_FUNCIONARIO");
+                column: "ID_FUNCIONARIO");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AVALIACAO_COD_RESPOSTA",
+                name: "IX_AVALIACAO_ID_RESPOSTA",
                 table: "AVALIACAO",
-                column: "COD_RESPOSTA",
+                column: "ID_RESPOSTA",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_CANDIDATO_COD_CIDADE",
+                name: "IX_CANDIDATO_ID_CIDADE",
                 table: "CANDIDATO",
-                column: "COD_CIDADE");
+                column: "ID_CIDADE");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CANDIDATO_COD_USUARIO",
+                name: "IX_CANDIDATO_ID_USUARIO",
                 table: "CANDIDATO",
-                column: "COD_USUARIO");
+                column: "ID_USUARIO");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CARGO_COD_AREA_ATUACAO",
+                name: "IX_CARGO_ID_AREA_ATUACAO",
                 table: "CARGO",
-                column: "COD_AREA_ATUACAO");
+                column: "ID_AREA_ATUACAO");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CARGO_COD_EMPRESA",
+                name: "IX_CARGO_ID_EMPRESA",
                 table: "CARGO",
-                column: "COD_EMPRESA");
+                column: "ID_EMPRESA");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CIDADE_COD_ESTADO",
+                name: "IX_CIDADE_ID_ESTADO",
                 table: "CIDADE",
-                column: "COD_ESTADO");
+                column: "ID_ESTADO");
 
             migrationBuilder.CreateIndex(
-                name: "IX_DESAFIO_COD_CARGO",
+                name: "IX_DESAFIO_ID_CARGO",
                 table: "DESAFIO",
-                column: "COD_CARGO");
+                column: "ID_CARGO");
 
             migrationBuilder.CreateIndex(
-                name: "IX_DESAFIO_COD_EMPRESA",
+                name: "IX_DESAFIO_ID_EMPRESA",
                 table: "DESAFIO",
-                column: "COD_EMPRESA");
+                column: "ID_EMPRESA");
 
             migrationBuilder.CreateIndex(
-                name: "IX_EMPRESA_COD_CIDADE",
+                name: "IX_EMPRESA_ID_CIDADE",
                 table: "EMPRESA",
-                column: "COD_CIDADE");
+                column: "ID_CIDADE");
 
             migrationBuilder.CreateIndex(
-                name: "IX_FUNCIONARIO_COD_CARGO",
+                name: "IX_FUNCIONARIO_ID_CARGO",
                 table: "FUNCIONARIO",
-                column: "COD_CARGO");
+                column: "ID_CARGO");
 
             migrationBuilder.CreateIndex(
-                name: "IX_FUNCIONARIO_COD_EMPRESA",
+                name: "IX_FUNCIONARIO_ID_EMPRESA",
                 table: "FUNCIONARIO",
-                column: "COD_EMPRESA");
+                column: "ID_EMPRESA");
 
             migrationBuilder.CreateIndex(
-                name: "IX_FUNCIONARIO_COD_USUARIO",
+                name: "IX_FUNCIONARIO_ID_USUARIO",
                 table: "FUNCIONARIO",
-                column: "COD_USUARIO");
+                column: "ID_USUARIO");
 
             migrationBuilder.CreateIndex(
-                name: "IX_INSCRICAO_COD_CANDIDATO",
+                name: "IX_INSCRICAO_ID_CANDIDATO",
                 table: "INSCRICAO",
-                column: "COD_CANDIDATO");
+                column: "ID_CANDIDATO");
 
             migrationBuilder.CreateIndex(
-                name: "IX_INSCRICAO_COD_DESAFIO",
+                name: "IX_INSCRICAO_ID_DESAFIO",
                 table: "INSCRICAO",
-                column: "COD_DESAFIO");
+                column: "ID_DESAFIO");
 
             migrationBuilder.CreateIndex(
-                name: "IX_QUESTAO_COD_DESAFIO",
+                name: "IX_QUESTAO_ID_DESAFIO",
                 table: "QUESTAO",
-                column: "COD_DESAFIO");
+                column: "ID_DESAFIO");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RESPOSTA_COD_INSCRICAO",
+                name: "IX_RESPOSTA_ID_INSCRICAO",
                 table: "RESPOSTA",
-                column: "COD_INSCRICAO");
+                column: "ID_INSCRICAO");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RESPOSTA_COD_QUESTAO",
+                name: "IX_RESPOSTA_ID_QUESTAO",
                 table: "RESPOSTA",
-                column: "COD_QUESTAO");
+                column: "ID_QUESTAO");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

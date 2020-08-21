@@ -1,9 +1,9 @@
-using System.Collections.Generic;
 using AutoMapper;
 using Mamba.API.Configurations;
 using Mamba.Infra.Context;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,32 +27,27 @@ namespace Mamba.API
                 options.UseSqlServer(Configuration.GetConnectionString("Conexao"));
             });
 
+            services.AddIdentityConfig(Configuration);
+
             services.AddAutoMapper(typeof(Startup));
 
-            services.AddControllers();
+            services.AddWebApiConfig();
 
             services.AddSwaggerConfig();
 
             services.ResolveDepedencies();
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IApiVersionDescriptionProvider apiVersionDescriptionProvider)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseDefaultFiles(new DefaultFilesOptions { DefaultFileNames = new List<string> { "index.html" } });
+            app.UseSwaggerConfig(apiVersionDescriptionProvider);
 
-            app.UseSwaggerConfig();
-
-            app.UseRouting();
-
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+            app.UseWebApiConfig();
         }
     }
 }

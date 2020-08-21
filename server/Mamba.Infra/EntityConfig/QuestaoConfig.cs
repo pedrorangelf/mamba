@@ -18,6 +18,7 @@ namespace Mamba.Infra.EntityConfig
 
             builder.Property(p => p.Descricao)
                 .HasColumnName("DSC_QUESTAO")
+                .HasMaxLength(300)
                 .IsRequired();
         }
     }

@@ -45,7 +45,8 @@ namespace Mamba.Infra.Context
                 if (entry.State == EntityState.Added)
                 {
                     entry.Property("DataCadastro").CurrentValue = DateTime.Now;
-                    if (_user.IsAutheticated())
+
+                    if (_user.IsAuthenticated())
                         entry.Property("CodigoUsuarioCadastro").CurrentValue = _user.GetUserId();
 
                     entry.Property("DataUltimaAlteracao").IsModified = false;

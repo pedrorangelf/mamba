@@ -20,6 +20,11 @@ namespace Mamba.Infra.EntityConfig
                 .HasColumnName("ID_RESPOSTA")
                 .IsRequired();
 
+            builder.Property(p => p.Descricao)
+                .HasColumnName("DSC_AVALIACAO")
+                .HasMaxLength(300)
+                .IsRequired();
+
             builder.Property(p => p.Aprovado)
                 .HasColumnName("IND_APROVADO")
                 .IsRequired();
