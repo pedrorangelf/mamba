@@ -8,21 +8,6 @@ namespace Mamba.Infra.Repositories
 {
     public class EmpresaRepository : RepositoryBase<Empresa>, IEmpresaRepository
     {
-        public EmpresaRepository(ContextBase contextBase) : base(contextBase)
-        {
-        }
-
-        public Empresa BuscarEmpresaPorId(int id)
-        {
-            try
-            {
-               return _contextBase.Empresa.FirstOrDefault(f => f.Id == id);
-            }
-            catch (System.Exception)
-            {
-
-                throw;
-            }
-        }
+        public EmpresaRepository(ContextBase contextBase) : base(contextBase) { }
     }
 }

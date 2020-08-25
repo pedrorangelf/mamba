@@ -9,11 +9,11 @@ namespace Mamba.Infra.EntityConfig
         public void Configure(EntityTypeBuilder<Empresa> builder)
         {
             builder.SetMainEntityConfig("EMPRESA");
-            builder.HasOne(p => p.Cidade).WithMany(p => p.Empresas).HasForeignKey(p => p.CidadeId);
+            //builder.HasOne(p => p.Endereco).WithOne(p => p.Empresa);
 
             // CAMPOS DA TABELA
-            builder.Property(p => p.CidadeId)
-                .HasColumnName("ID_CIDADE")
+            builder.Property(p => p.EnderecoId)
+                .HasColumnName("ID_ENDERECO")
                 .IsRequired();
 
             builder.Property(p => p.Nome)

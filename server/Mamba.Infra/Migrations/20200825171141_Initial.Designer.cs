@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Mamba.Infra.Migrations
 {
     [DbContext(typeof(ContextBase))]
-    [Migration("20200820234533_Init")]
-    partial class Init
+    [Migration("20200825171141_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,18 +21,112 @@ namespace Mamba.Infra.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("Mamba.Domain.Entities.ApplicationUser", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Bloqueado")
+                        .HasColumnName("IND_BLOQUEADO")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DataNascimento")
+                        .HasColumnName("DAT_NASCIMENTO")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(256)")
+                        .HasMaxLength(256);
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Foto")
+                        .HasColumnName("NOM_ARQUIVO_FOTO")
+                        .HasColumnType("nvarchar(200)")
+                        .HasMaxLength(200);
+
+                    b.Property<string>("LinkGithub")
+                        .HasColumnName("DSC_LINK_GITHUB")
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
+
+                    b.Property<string>("LinkLinkedin")
+                        .HasColumnName("DSC_LINK_LINKEDIN")
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("MotivoBloqueio")
+                        .HasColumnName("DSC_MOTIVO_BLOQUEIO")
+                        .HasColumnType("nvarchar(500)")
+                        .HasMaxLength(500);
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasColumnName("NOM_USUARIO")
+                        .HasColumnType("nvarchar(300)")
+                        .HasMaxLength(300);
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasColumnType("nvarchar(256)")
+                        .HasMaxLength(256);
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasColumnType("nvarchar(256)")
+                        .HasMaxLength(256);
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("nvarchar(256)")
+                        .HasMaxLength(256);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedEmail")
+                        .HasName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasName("UserNameIndex")
+                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.ToTable("AspNetUsers");
+                });
+
             modelBuilder.Entity("Mamba.Domain.Entities.AreaAtuacao", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnName("ID_AREA_ATUACAO")
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("CodigoUsuarioCadastro")
-                        .IsRequired()
-                        .HasColumnName("ID_USUARIO_CADASTRO")
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("DataCadastro")
                         .HasColumnName("DAT_CADASTRO")
@@ -54,6 +148,11 @@ namespace Mamba.Infra.Migrations
                         .HasColumnType("nvarchar(300)")
                         .HasMaxLength(300);
 
+                    b.Property<Guid?>("UsuarioCadastroId")
+                        .IsRequired()
+                        .HasColumnName("ID_USUARIO_CADASTRO")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id")
                         .HasName("ID_AREA_ATUACAO");
 
@@ -62,20 +161,14 @@ namespace Mamba.Infra.Migrations
 
             modelBuilder.Entity("Mamba.Domain.Entities.Avaliacao", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnName("ID_AVALIACAO")
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("Aprovado")
                         .HasColumnName("IND_APROVADO")
                         .HasColumnType("bit");
-
-                    b.Property<int?>("CodigoUsuarioCadastro")
-                        .IsRequired()
-                        .HasColumnName("ID_USUARIO_CADASTRO")
-                        .HasColumnType("int");
 
                     b.Property<DateTime>("DataCadastro")
                         .HasColumnName("DAT_CADASTRO")
@@ -86,11 +179,14 @@ namespace Mamba.Infra.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Descricao")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnName("DSC_AVALIACAO")
+                        .HasColumnType("nvarchar(300)")
+                        .HasMaxLength(300);
 
-                    b.Property<int>("FuncionarioId")
+                    b.Property<Guid>("FuncionarioId")
                         .HasColumnName("ID_FUNCIONARIO")
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Nota")
                         .HasColumnName("NUM_NOTA")
@@ -102,9 +198,14 @@ namespace Mamba.Infra.Migrations
                         .HasColumnType("nvarchar(300)")
                         .HasMaxLength(300);
 
-                    b.Property<int>("RespostaId")
+                    b.Property<Guid>("RespostaId")
                         .HasColumnName("ID_RESPOSTA")
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("UsuarioCadastroId")
+                        .IsRequired()
+                        .HasColumnName("ID_USUARIO_CADASTRO")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id")
                         .HasName("ID_AVALIACAO");
@@ -119,20 +220,18 @@ namespace Mamba.Infra.Migrations
 
             modelBuilder.Entity("Mamba.Domain.Entities.Candidato", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnName("ID_CANDIDATO")
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("CidadeId")
+                    b.Property<Guid>("ApplicationUserId")
+                        .HasColumnName("ID_USUARIO")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CidadeId")
                         .HasColumnName("ID_CIDADE")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("CodigoUsuarioCadastro")
-                        .IsRequired()
-                        .HasColumnName("ID_USUARIO_CADASTRO")
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("DataCadastro")
                         .HasColumnName("DAT_CADASTRO")
@@ -151,38 +250,34 @@ namespace Mamba.Infra.Migrations
                     b.Property<string>("Profissao")
                         .IsRequired()
                         .HasColumnName("DSC_PROFISSAO")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(300)")
+                        .HasMaxLength(300);
 
-                    b.Property<int>("UsuarioId")
-                        .HasColumnName("ID_USUARIO")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("UsuarioCadastroId")
+                        .IsRequired()
+                        .HasColumnName("ID_USUARIO_CADASTRO")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id")
                         .HasName("ID_CANDIDATO");
 
-                    b.HasIndex("CidadeId");
+                    b.HasIndex("ApplicationUserId");
 
-                    b.HasIndex("UsuarioId");
+                    b.HasIndex("CidadeId");
 
                     b.ToTable("CANDIDATO");
                 });
 
             modelBuilder.Entity("Mamba.Domain.Entities.Cargo", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnName("ID_CARGO")
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("AreaAtuacaoId")
+                    b.Property<Guid>("AreaAtuacaoId")
                         .HasColumnName("ID_AREA_ATUACAO")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("CodigoUsuarioCadastro")
-                        .IsRequired()
-                        .HasColumnName("ID_USUARIO_CADASTRO")
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("DataCadastro")
                         .HasColumnName("DAT_CADASTRO")
@@ -192,20 +287,26 @@ namespace Mamba.Infra.Migrations
                         .HasColumnName("DAT_ULTIMA_ALTERACAO")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("EmpresaId")
+                    b.Property<Guid>("EmpresaId")
                         .HasColumnName("ID_EMPRESA")
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasColumnName("NOM_CARGO")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(300)")
+                        .HasMaxLength(300);
 
                     b.Property<string>("ProcessoCadastro")
                         .IsRequired()
                         .HasColumnName("NOM_PROCESSO_CADASTRO")
                         .HasColumnType("nvarchar(300)")
                         .HasMaxLength(300);
+
+                    b.Property<Guid?>("UsuarioCadastroId")
+                        .IsRequired()
+                        .HasColumnName("ID_USUARIO_CADASTRO")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id")
                         .HasName("ID_CARGO");
@@ -219,16 +320,10 @@ namespace Mamba.Infra.Migrations
 
             modelBuilder.Entity("Mamba.Domain.Entities.Cidade", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnName("ID_CIDADE")
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("CodigoUsuarioCadastro")
-                        .IsRequired()
-                        .HasColumnName("ID_USUARIO_CADASTRO")
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("DataCadastro")
                         .HasColumnName("DAT_CADASTRO")
@@ -238,9 +333,9 @@ namespace Mamba.Infra.Migrations
                         .HasColumnName("DAT_ULTIMA_ALTERACAO")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("EstadoId")
+                    b.Property<Guid>("EstadoId")
                         .HasColumnName("ID_ESTADO")
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Nome")
                         .IsRequired()
@@ -260,6 +355,11 @@ namespace Mamba.Infra.Migrations
                         .HasColumnType("nvarchar(3)")
                         .HasMaxLength(3);
 
+                    b.Property<Guid?>("UsuarioCadastroId")
+                        .IsRequired()
+                        .HasColumnName("ID_USUARIO_CADASTRO")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id")
                         .HasName("ID_CIDADE");
 
@@ -270,20 +370,14 @@ namespace Mamba.Infra.Migrations
 
             modelBuilder.Entity("Mamba.Domain.Entities.Desafio", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnName("ID_DESAFIO")
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int?>("CargoId")
+                    b.Property<Guid?>("CargoId")
                         .HasColumnName("ID_CARGO")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("CodigoUsuarioCadastro")
-                        .IsRequired()
-                        .HasColumnName("ID_USUARIO_CADASTRO")
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("DataAbertura")
                         .HasColumnName("DAT_ABERTURA")
@@ -304,11 +398,11 @@ namespace Mamba.Infra.Migrations
                     b.Property<string>("Descricao")
                         .IsRequired()
                         .HasColumnName("DSC_DESAFIO")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("NTEXT");
 
-                    b.Property<int>("EmpresaId")
+                    b.Property<Guid>("EmpresaId")
                         .HasColumnName("ID_EMPRESA")
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int?>("LimiteInscricao")
                         .HasColumnName("QTD_LIMITE_INSCRICAO")
@@ -323,7 +417,13 @@ namespace Mamba.Infra.Migrations
                     b.Property<string>("Titulo")
                         .IsRequired()
                         .HasColumnName("NOM_TITULO")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(300)")
+                        .HasMaxLength(300);
+
+                    b.Property<Guid?>("UsuarioCadastroId")
+                        .IsRequired()
+                        .HasColumnName("ID_USUARIO_CADASTRO")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id")
                         .HasName("ID_DESAFIO");
@@ -337,11 +437,10 @@ namespace Mamba.Infra.Migrations
 
             modelBuilder.Entity("Mamba.Domain.Entities.Empresa", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnName("ID_EMPRESA")
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("CNPJ")
                         .IsRequired()
@@ -349,14 +448,9 @@ namespace Mamba.Infra.Migrations
                         .HasColumnType("nvarchar(18)")
                         .HasMaxLength(18);
 
-                    b.Property<int>("CidadeId")
+                    b.Property<Guid>("CidadeId")
                         .HasColumnName("ID_CIDADE")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("CodigoUsuarioCadastro")
-                        .IsRequired()
-                        .HasColumnName("ID_USUARIO_CADASTRO")
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("DataCadastro")
                         .HasColumnName("DAT_CADASTRO")
@@ -388,6 +482,11 @@ namespace Mamba.Infra.Migrations
                         .HasColumnType("nvarchar(300)")
                         .HasMaxLength(300);
 
+                    b.Property<Guid?>("UsuarioCadastroId")
+                        .IsRequired()
+                        .HasColumnName("ID_USUARIO_CADASTRO")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id")
                         .HasName("ID_EMPRESA");
 
@@ -398,16 +497,10 @@ namespace Mamba.Infra.Migrations
 
             modelBuilder.Entity("Mamba.Domain.Entities.Estado", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnName("ID_ESTADO")
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("CodigoUsuarioCadastro")
-                        .IsRequired()
-                        .HasColumnName("ID_USUARIO_CADASTRO")
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("DataCadastro")
                         .HasColumnName("DAT_CADASTRO")
@@ -416,9 +509,6 @@ namespace Mamba.Infra.Migrations
                     b.Property<DateTime?>("DataUltimaAlteracao")
                         .HasColumnName("DAT_ULTIMA_ALTERACAO")
                         .HasColumnType("datetime2");
-
-                    b.Property<int>("EstadoId")
-                        .HasColumnType("int");
 
                     b.Property<string>("Nome")
                         .IsRequired()
@@ -438,6 +528,11 @@ namespace Mamba.Infra.Migrations
                         .HasColumnType("nvarchar(2)")
                         .HasMaxLength(2);
 
+                    b.Property<Guid?>("UsuarioCadastroId")
+                        .IsRequired()
+                        .HasColumnName("ID_USUARIO_CADASTRO")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id")
                         .HasName("ID_ESTADO");
 
@@ -446,20 +541,18 @@ namespace Mamba.Infra.Migrations
 
             modelBuilder.Entity("Mamba.Domain.Entities.Funcionario", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnName("ID_FUNCIONARIO")
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int?>("CargoId")
+                    b.Property<Guid>("ApplicationUserId")
+                        .HasColumnName("ID_USUARIO")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("CargoId")
                         .HasColumnName("ID_CARGO")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("CodigoUsuarioCadastro")
-                        .IsRequired()
-                        .HasColumnName("ID_USUARIO_CADASTRO")
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("DataCadastro")
                         .HasColumnName("DAT_CADASTRO")
@@ -469,9 +562,9 @@ namespace Mamba.Infra.Migrations
                         .HasColumnName("DAT_ULTIMA_ALTERACAO")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("EmpresaId")
+                    b.Property<Guid>("EmpresaId")
                         .HasColumnName("ID_EMPRESA")
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ProcessoCadastro")
                         .IsRequired()
@@ -479,42 +572,37 @@ namespace Mamba.Infra.Migrations
                         .HasColumnType("nvarchar(300)")
                         .HasMaxLength(300);
 
-                    b.Property<int>("UsuarioId")
-                        .HasColumnName("ID_USUARIO")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("UsuarioCadastroId")
+                        .IsRequired()
+                        .HasColumnName("ID_USUARIO_CADASTRO")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id")
                         .HasName("ID_FUNCIONARIO");
 
+                    b.HasIndex("ApplicationUserId");
+
                     b.HasIndex("CargoId");
 
                     b.HasIndex("EmpresaId");
-
-                    b.HasIndex("UsuarioId");
 
                     b.ToTable("FUNCIONARIO");
                 });
 
             modelBuilder.Entity("Mamba.Domain.Entities.Inscricao", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnName("ID_INSCRICAO")
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool?>("Aprovado")
                         .HasColumnName("IND_APROVADO")
                         .HasColumnType("bit");
 
-                    b.Property<int>("CandidatoId")
+                    b.Property<Guid>("CandidatoId")
                         .HasColumnName("ID_CANDIDATO")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("CodigoUsuarioCadastro")
-                        .IsRequired()
-                        .HasColumnName("ID_USUARIO_CADASTRO")
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("DataCadastro")
                         .HasColumnName("DAT_CADASTRO")
@@ -532,9 +620,9 @@ namespace Mamba.Infra.Migrations
                         .HasColumnName("DAT_ULTIMA_ALTERACAO")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("DesafioId")
+                    b.Property<Guid>("DesafioId")
                         .HasColumnName("ID_DESAFIO")
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ProcessoCadastro")
                         .IsRequired()
@@ -546,6 +634,11 @@ namespace Mamba.Infra.Migrations
                         .HasColumnName("DSC_RESULTADO")
                         .HasColumnType("nvarchar(500)")
                         .HasMaxLength(500);
+
+                    b.Property<Guid?>("UsuarioCadastroId")
+                        .IsRequired()
+                        .HasColumnName("ID_USUARIO_CADASTRO")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id")
                         .HasName("ID_INSCRICAO");
@@ -559,16 +652,10 @@ namespace Mamba.Infra.Migrations
 
             modelBuilder.Entity("Mamba.Domain.Entities.Questao", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnName("ID_QUESTAO")
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("CodigoUsuarioCadastro")
-                        .IsRequired()
-                        .HasColumnName("ID_USUARIO_CADASTRO")
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("DataCadastro")
                         .HasColumnName("DAT_CADASTRO")
@@ -578,20 +665,26 @@ namespace Mamba.Infra.Migrations
                         .HasColumnName("DAT_ULTIMA_ALTERACAO")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("DesafioId")
+                    b.Property<Guid>("DesafioId")
                         .HasColumnName("ID_DESAFIO")
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Descricao")
                         .IsRequired()
                         .HasColumnName("DSC_QUESTAO")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(300)")
+                        .HasMaxLength(300);
 
                     b.Property<string>("ProcessoCadastro")
                         .IsRequired()
                         .HasColumnName("NOM_PROCESSO_CADASTRO")
                         .HasColumnType("nvarchar(300)")
                         .HasMaxLength(300);
+
+                    b.Property<Guid?>("UsuarioCadastroId")
+                        .IsRequired()
+                        .HasColumnName("ID_USUARIO_CADASTRO")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id")
                         .HasName("ID_QUESTAO");
@@ -603,16 +696,10 @@ namespace Mamba.Infra.Migrations
 
             modelBuilder.Entity("Mamba.Domain.Entities.Resposta", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnName("ID_RESPOSTA")
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("CodigoUsuarioCadastro")
-                        .IsRequired()
-                        .HasColumnName("ID_USUARIO_CADASTRO")
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("DataCadastro")
                         .HasColumnName("DAT_CADASTRO")
@@ -628,9 +715,9 @@ namespace Mamba.Infra.Migrations
                         .HasColumnType("nvarchar(500)")
                         .HasMaxLength(500);
 
-                    b.Property<int>("InscricaoId")
+                    b.Property<Guid>("InscricaoId")
                         .HasColumnName("ID_INSCRICAO")
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ProcessoCadastro")
                         .IsRequired()
@@ -638,9 +725,14 @@ namespace Mamba.Infra.Migrations
                         .HasColumnType("nvarchar(300)")
                         .HasMaxLength(300);
 
-                    b.Property<int>("QuestaoId")
+                    b.Property<Guid>("QuestaoId")
                         .HasColumnName("ID_QUESTAO")
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("UsuarioCadastroId")
+                        .IsRequired()
+                        .HasColumnName("ID_USUARIO_CADASTRO")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id")
                         .HasName("ID_RESPOSTA");
@@ -652,97 +744,137 @@ namespace Mamba.Infra.Migrations
                     b.ToTable("RESPOSTA");
                 });
 
-            modelBuilder.Entity("Mamba.Domain.Entities.Usuario", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(256)")
+                        .HasMaxLength(256);
+
+                    b.Property<string>("NormalizedName")
+                        .HasColumnType("nvarchar(256)")
+                        .HasMaxLength(256);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasName("RoleNameIndex")
+                        .HasFilter("[NormalizedName] IS NOT NULL");
+
+                    b.ToTable("AspNetRoles");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("ID_USUARIO")
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<bool>("Administrador")
-                        .HasColumnName("IND_ADMINISTRADOR")
-                        .HasColumnType("bit");
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("Bloqueado")
-                        .HasColumnName("IND_BLOQUEADO")
-                        .HasColumnType("bit");
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Celular")
-                        .IsRequired()
-                        .HasColumnName("NUM_CELULAR")
-                        .HasColumnType("nvarchar(14)")
-                        .HasMaxLength(14);
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int?>("CodigoUsuarioCadastro")
-                        .IsRequired()
-                        .HasColumnName("ID_USUARIO_CADASTRO")
-                        .HasColumnType("int");
+                    b.HasKey("Id");
 
-                    b.Property<DateTime>("DataCadastro")
-                        .HasColumnName("DAT_CADASTRO")
-                        .HasColumnType("datetime2");
+                    b.HasIndex("RoleId");
 
-                    b.Property<DateTime>("DataNascimento")
-                        .HasColumnName("DAT_NASCIMENTO")
-                        .HasColumnType("datetime2");
+                    b.ToTable("AspNetRoleClaims");
+                });
 
-                    b.Property<DateTime?>("DataUltimaAlteracao")
-                        .HasColumnName("DAT_ULTIMA_ALTERACAO")
-                        .HasColumnType("datetime2");
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnName("END_EMAIL")
-                        .HasColumnType("nvarchar(100)")
-                        .HasMaxLength(100);
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("EmailConfirmado")
-                        .HasColumnName("IND_EMAIL_CONFIRMADO")
-                        .HasColumnType("bit");
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Foto")
-                        .HasColumnName("NOM_ARQUIVO_FOTO")
-                        .HasColumnType("nvarchar(200)")
-                        .HasMaxLength(200);
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("LinkGithub")
-                        .HasColumnName("DSC_LINK_GITHUB")
-                        .HasColumnType("nvarchar(100)")
-                        .HasMaxLength(100);
+                    b.HasKey("Id");
 
-                    b.Property<string>("LinkLinkedin")
-                        .HasColumnName("DSC_LINK_LINKEDIN")
-                        .HasColumnType("nvarchar(100)")
-                        .HasMaxLength(100);
+                    b.HasIndex("UserId");
 
-                    b.Property<string>("MotivoBloqueio")
-                        .HasColumnName("DSC_MOTIVO_BLOQUEIO")
-                        .HasColumnType("nvarchar(500)")
-                        .HasMaxLength(500);
+                    b.ToTable("AspNetUserClaims");
+                });
 
-                    b.Property<string>("Nome")
-                        .IsRequired()
-                        .HasColumnName("NOM_USUARIO")
-                        .HasColumnType("nvarchar(300)")
-                        .HasMaxLength(300);
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
+                {
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("nvarchar(128)")
+                        .HasMaxLength(128);
 
-                    b.Property<string>("ProcessoCadastro")
-                        .IsRequired()
-                        .HasColumnName("NOM_PROCESSO_CADASTRO")
-                        .HasColumnType("nvarchar(300)")
-                        .HasMaxLength(300);
+                    b.Property<string>("ProviderKey")
+                        .HasColumnType("nvarchar(128)")
+                        .HasMaxLength(128);
 
-                    b.Property<string>("Senha")
-                        .IsRequired()
-                        .HasColumnName("DSC_SENHA")
-                        .HasColumnType("nvarchar(500)")
-                        .HasMaxLength(500);
+                    b.Property<string>("ProviderDisplayName")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id")
-                        .HasName("ID_USUARIO");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.ToTable("USUARIO");
+                    b.HasKey("LoginProvider", "ProviderKey");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserLogins");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
+                {
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetUserRoles");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
+                {
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("nvarchar(128)")
+                        .HasMaxLength(128);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(128)")
+                        .HasMaxLength(128);
+
+                    b.Property<string>("Value")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("UserId", "LoginProvider", "Name");
+
+                    b.ToTable("AspNetUserTokens");
                 });
 
             modelBuilder.Entity("Mamba.Domain.Entities.Avaliacao", b =>
@@ -760,14 +892,14 @@ namespace Mamba.Infra.Migrations
 
             modelBuilder.Entity("Mamba.Domain.Entities.Candidato", b =>
                 {
+                    b.HasOne("Mamba.Domain.Entities.ApplicationUser", "ApplicationUser")
+                        .WithMany("Candidatos")
+                        .HasForeignKey("ApplicationUserId")
+                        .IsRequired();
+
                     b.HasOne("Mamba.Domain.Entities.Cidade", "Cidade")
                         .WithMany("Candidatos")
                         .HasForeignKey("CidadeId")
-                        .IsRequired();
-
-                    b.HasOne("Mamba.Domain.Entities.Usuario", "Usuario")
-                        .WithMany("Candidatos")
-                        .HasForeignKey("UsuarioId")
                         .IsRequired();
                 });
 
@@ -814,6 +946,11 @@ namespace Mamba.Infra.Migrations
 
             modelBuilder.Entity("Mamba.Domain.Entities.Funcionario", b =>
                 {
+                    b.HasOne("Mamba.Domain.Entities.ApplicationUser", "ApplicationUser")
+                        .WithMany("Funcionarios")
+                        .HasForeignKey("ApplicationUserId")
+                        .IsRequired();
+
                     b.HasOne("Mamba.Domain.Entities.Cargo", "Cargo")
                         .WithMany("Funcionarios")
                         .HasForeignKey("CargoId");
@@ -821,11 +958,6 @@ namespace Mamba.Infra.Migrations
                     b.HasOne("Mamba.Domain.Entities.Empresa", "Empresa")
                         .WithMany("Funcionarios")
                         .HasForeignKey("EmpresaId")
-                        .IsRequired();
-
-                    b.HasOne("Mamba.Domain.Entities.Usuario", "Usuario")
-                        .WithMany("Funcionarios")
-                        .HasForeignKey("UsuarioId")
                         .IsRequired();
                 });
 
@@ -860,6 +992,57 @@ namespace Mamba.Infra.Migrations
                     b.HasOne("Mamba.Domain.Entities.Questao", "Questao")
                         .WithMany("Respostas")
                         .HasForeignKey("QuestaoId")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
+                {
+                    b.HasOne("Mamba.Domain.Entities.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
+                {
+                    b.HasOne("Mamba.Domain.Entities.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Mamba.Domain.Entities.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
+                {
+                    b.HasOne("Mamba.Domain.Entities.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 #pragma warning restore 612, 618

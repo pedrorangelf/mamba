@@ -1,17 +1,13 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 
-namespace Mamba.Domain.Entities
+namespace Mamba.API.DTOs.Domain
 {
-    public class Usuario : MainEntity
+    public class ApplicationUserViewModel : IdentityUser<Guid>
     {
         public string Nome { get; set; }
         public DateTime DataNascimento { get; set; }
-        public string Email { get; set; }
-        public string Celular { get; set; }
-        public string Senha { get; set; }
-        public bool EmailConfirmado { get; set; }
-        public bool Administrador { get; set; }
         public bool Bloqueado { get; set; }
         public string MotivoBloqueio { get; set; }
         public string LinkLinkedin { get; set; }
@@ -19,8 +15,8 @@ namespace Mamba.Domain.Entities
         public string Foto { get; set; }
 
         // RELACIONAMENTO
-        public List<Candidato> Candidatos { get; set; }
-        public List<Funcionario> Funcionarios { get; set; }
+        public List<CandidatoViewModel> Candidatos { get; set; }
+        public List<FuncionarioViewModel> Funcionarios { get; set; }
 
         // AUXILIARES
         public string Idade

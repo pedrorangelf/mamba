@@ -4,13 +4,10 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Mamba.Infra.EntityConfig
 {
-    public class UsuarioConfig : IEntityTypeConfiguration<Usuario>
+    public class ApplicationUserConfig : IEntityTypeConfiguration<ApplicationUser>
     {
-        public void Configure(EntityTypeBuilder<Usuario> builder)
+        public void Configure(EntityTypeBuilder<ApplicationUser> builder)
         {
-            builder.SetMainEntityConfig("USUARIO");
-
-            // CAMPOS DA TABELA
             builder.Property(p => p.Nome)
                 .HasColumnName("NOM_USUARIO")
                 .HasMaxLength(300)
@@ -18,29 +15,6 @@ namespace Mamba.Infra.EntityConfig
 
             builder.Property(p => p.DataNascimento)
                 .HasColumnName("DAT_NASCIMENTO")
-                .IsRequired();
-
-            builder.Property(p => p.Email)
-                .HasColumnName("END_EMAIL")
-                .HasMaxLength(100)
-                .IsRequired();
-
-            builder.Property(p => p.Celular)
-                .HasColumnName("NUM_CELULAR")
-                .HasMaxLength(14)
-                .IsRequired();
-
-            builder.Property(p => p.Senha)
-                .HasColumnName("DSC_SENHA")
-                .HasMaxLength(500)
-                .IsRequired();
-
-            builder.Property(p => p.EmailConfirmado)
-                .HasColumnName("IND_EMAIL_CONFIRMADO")
-                .IsRequired();
-
-            builder.Property(p => p.Administrador)
-                .HasColumnName("IND_ADMINISTRADOR")
                 .IsRequired();
 
             builder.Property(p => p.Bloqueado)

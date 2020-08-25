@@ -1,12 +1,16 @@
 ﻿using Mamba.Domain.Entities;
 using Mamba.Domain.Interfaces;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Mamba.Infra.Context
 {
-    public class ContextBase : DbContext
+    public class ContextBase : IdentityDbContext<ApplicationUser, IdentityRole<Guid>, Guid>
     {
         private readonly IUser _user;
         public ContextBase(DbContextOptions<ContextBase> options, IUser user) : base(options)
@@ -14,19 +18,16 @@ namespace Mamba.Infra.Context
             _user = user;
         }
 
-        public DbSet<AreaAtuacao> AreaAtuacao { get; set; }
         public DbSet<Avaliacao> Avaliacao { get; set; }
         public DbSet<Candidato> Candidato { get; set; }
         public DbSet<Cargo> Cargo { get; set; }
-        public DbSet<Cidade> Cidade { get; set; }
         public DbSet<Desafio> Desafio { get; set; }
         public DbSet<Empresa> Empresa { get; set; }
-        public DbSet<Estado> Estado { get; set; }
+        public DbSet<Endereco> Endereco { get; set; }
         public DbSet<Funcionario> Funcionario { get; set; }
         public DbSet<Inscricao> Inscricao { get; set; }
         public DbSet<Questao> Questao { get; set; }
         public DbSet<Resposta> Resposta { get; set; }
-        public DbSet<Usuario> Usuario { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -38,13 +39,14 @@ namespace Mamba.Infra.Context
             base.OnModelCreating(modelBuilder);
         }
 
-        public override int SaveChanges()
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             foreach (var entry in ChangeTracker.Entries().Where(entry => entry.Entity.GetType().GetProperty("DataCadastro") != null))
             {
                 if (entry.State == EntityState.Added)
                 {
                     entry.Property("DataCadastro").CurrentValue = DateTime.Now;
+                    entry.Property("ProcessoCadastro").CurrentValue = _user.GetCurrentPath();
 
                     if (_user.IsAuthenticated())
                         entry.Property("CodigoUsuarioCadastro").CurrentValue = _user.GetUserId();
@@ -61,8 +63,7 @@ namespace Mamba.Infra.Context
                 }
             }
 
-            return base.SaveChanges();
+            return await base.SaveChangesAsync(cancellationToken);
         }
-
     }
 }

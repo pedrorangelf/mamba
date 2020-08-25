@@ -1,9 +1,11 @@
-﻿namespace Mamba.Domain.Entities
+﻿using System;
+
+namespace Mamba.Domain.Entities
 {
     public class Avaliacao : MainEntity
     {
-        public int FuncionarioId { get; set; }
-        public int RespostaId { get; set; }
+        public Guid FuncionarioId { get; set; }
+        public Guid RespostaId { get; set; }
 
         public string Descricao { get; set; }
         public bool Aprovado { get; set; }

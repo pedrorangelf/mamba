@@ -12,5 +12,6 @@ namespace Mamba.Domain.Interfaces
         bool IsAuthenticated();
         bool IsInRole(string role);
         IEnumerable<Claim> GetClaimsIdentity();
+        string GetCurrentPath();
     }
 }

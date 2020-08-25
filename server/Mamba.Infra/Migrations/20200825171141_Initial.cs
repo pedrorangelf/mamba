@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Mamba.Infra.Migrations
 {
-    public partial class Init : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -11,10 +11,9 @@ namespace Mamba.Infra.Migrations
                 name: "AREA_ATUACAO",
                 columns: table => new
                 {
-                    ID_AREA_ATUACAO = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ID_AREA_ATUACAO = table.Column<Guid>(nullable: false),
                     DAT_CADASTRO = table.Column<DateTime>(nullable: false),
-                    ID_USUARIO_CADASTRO = table.Column<int>(nullable: false),
+                    ID_USUARIO_CADASTRO = table.Column<Guid>(nullable: false),
                     NOM_PROCESSO_CADASTRO = table.Column<string>(maxLength: 300, nullable: false),
                     DAT_ULTIMA_ALTERACAO = table.Column<DateTime>(nullable: true),
                     DSC_AREA_ATUACAO = table.Column<string>(maxLength: 300, nullable: false)
@@ -25,16 +24,60 @@ namespace Mamba.Infra.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "AspNetRoles",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    Name = table.Column<string>(maxLength: 256, nullable: true),
+                    NormalizedName = table.Column<string>(maxLength: 256, nullable: true),
+                    ConcurrencyStamp = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetRoles", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUsers",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    UserName = table.Column<string>(maxLength: 256, nullable: true),
+                    NormalizedUserName = table.Column<string>(maxLength: 256, nullable: true),
+                    Email = table.Column<string>(maxLength: 256, nullable: true),
+                    NormalizedEmail = table.Column<string>(maxLength: 256, nullable: true),
+                    EmailConfirmed = table.Column<bool>(nullable: false),
+                    PasswordHash = table.Column<string>(nullable: true),
+                    SecurityStamp = table.Column<string>(nullable: true),
+                    ConcurrencyStamp = table.Column<string>(nullable: true),
+                    PhoneNumber = table.Column<string>(nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>(nullable: false),
+                    TwoFactorEnabled = table.Column<bool>(nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
+                    LockoutEnabled = table.Column<bool>(nullable: false),
+                    AccessFailedCount = table.Column<int>(nullable: false),
+                    NOM_USUARIO = table.Column<string>(maxLength: 300, nullable: false),
+                    DAT_NASCIMENTO = table.Column<DateTime>(nullable: false),
+                    IND_BLOQUEADO = table.Column<bool>(nullable: false),
+                    DSC_MOTIVO_BLOQUEIO = table.Column<string>(maxLength: 500, nullable: true),
+                    DSC_LINK_LINKEDIN = table.Column<string>(maxLength: 100, nullable: true),
+                    DSC_LINK_GITHUB = table.Column<string>(maxLength: 100, nullable: true),
+                    NOM_ARQUIVO_FOTO = table.Column<string>(maxLength: 200, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ESTADO",
                 columns: table => new
                 {
-                    ID_ESTADO = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ID_ESTADO = table.Column<Guid>(nullable: false),
                     DAT_CADASTRO = table.Column<DateTime>(nullable: false),
-                    ID_USUARIO_CADASTRO = table.Column<int>(nullable: false),
+                    ID_USUARIO_CADASTRO = table.Column<Guid>(nullable: false),
                     NOM_PROCESSO_CADASTRO = table.Column<string>(maxLength: 300, nullable: false),
                     DAT_ULTIMA_ALTERACAO = table.Column<DateTime>(nullable: true),
-                    EstadoId = table.Column<int>(nullable: false),
                     NOM_ESTADO = table.Column<string>(maxLength: 500, nullable: false),
                     SGL_ESTADO = table.Column<string>(maxLength: 2, nullable: false)
                 },
@@ -44,44 +87,121 @@ namespace Mamba.Infra.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "USUARIO",
+                name: "AspNetRoleClaims",
                 columns: table => new
                 {
-                    ID_USUARIO = table.Column<int>(nullable: false)
+                    Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    DAT_CADASTRO = table.Column<DateTime>(nullable: false),
-                    ID_USUARIO_CADASTRO = table.Column<int>(nullable: false),
-                    NOM_PROCESSO_CADASTRO = table.Column<string>(maxLength: 300, nullable: false),
-                    DAT_ULTIMA_ALTERACAO = table.Column<DateTime>(nullable: true),
-                    NOM_USUARIO = table.Column<string>(maxLength: 300, nullable: false),
-                    DAT_NASCIMENTO = table.Column<DateTime>(nullable: false),
-                    END_EMAIL = table.Column<string>(maxLength: 100, nullable: false),
-                    NUM_CELULAR = table.Column<string>(maxLength: 14, nullable: false),
-                    DSC_SENHA = table.Column<string>(maxLength: 500, nullable: false),
-                    IND_EMAIL_CONFIRMADO = table.Column<bool>(nullable: false),
-                    IND_ADMINISTRADOR = table.Column<bool>(nullable: false),
-                    IND_BLOQUEADO = table.Column<bool>(nullable: false),
-                    DSC_MOTIVO_BLOQUEIO = table.Column<string>(maxLength: 500, nullable: true),
-                    DSC_LINK_LINKEDIN = table.Column<string>(maxLength: 100, nullable: true),
-                    DSC_LINK_GITHUB = table.Column<string>(maxLength: 100, nullable: true),
-                    NOM_ARQUIVO_FOTO = table.Column<string>(maxLength: 200, nullable: true)
+                    RoleId = table.Column<Guid>(nullable: false),
+                    ClaimType = table.Column<string>(nullable: true),
+                    ClaimValue = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("ID_USUARIO", x => x.ID_USUARIO);
+                    table.PrimaryKey("PK_AspNetRoleClaims", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AspNetRoleClaims_AspNetRoles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "AspNetRoles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUserClaims",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<Guid>(nullable: false),
+                    ClaimType = table.Column<string>(nullable: true),
+                    ClaimValue = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUserClaims", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AspNetUserClaims_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUserLogins",
+                columns: table => new
+                {
+                    LoginProvider = table.Column<string>(maxLength: 128, nullable: false),
+                    ProviderKey = table.Column<string>(maxLength: 128, nullable: false),
+                    ProviderDisplayName = table.Column<string>(nullable: true),
+                    UserId = table.Column<Guid>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUserLogins", x => new { x.LoginProvider, x.ProviderKey });
+                    table.ForeignKey(
+                        name: "FK_AspNetUserLogins_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUserRoles",
+                columns: table => new
+                {
+                    UserId = table.Column<Guid>(nullable: false),
+                    RoleId = table.Column<Guid>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUserRoles", x => new { x.UserId, x.RoleId });
+                    table.ForeignKey(
+                        name: "FK_AspNetUserRoles_AspNetRoles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "AspNetRoles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_AspNetUserRoles_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUserTokens",
+                columns: table => new
+                {
+                    UserId = table.Column<Guid>(nullable: false),
+                    LoginProvider = table.Column<string>(maxLength: 128, nullable: false),
+                    Name = table.Column<string>(maxLength: 128, nullable: false),
+                    Value = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUserTokens", x => new { x.UserId, x.LoginProvider, x.Name });
+                    table.ForeignKey(
+                        name: "FK_AspNetUserTokens_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
                 name: "CIDADE",
                 columns: table => new
                 {
-                    ID_CIDADE = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ID_CIDADE = table.Column<Guid>(nullable: false),
                     DAT_CADASTRO = table.Column<DateTime>(nullable: false),
-                    ID_USUARIO_CADASTRO = table.Column<int>(nullable: false),
+                    ID_USUARIO_CADASTRO = table.Column<Guid>(nullable: false),
                     NOM_PROCESSO_CADASTRO = table.Column<string>(maxLength: 300, nullable: false),
                     DAT_ULTIMA_ALTERACAO = table.Column<DateTime>(nullable: true),
-                    ID_ESTADO = table.Column<int>(nullable: false),
+                    ID_ESTADO = table.Column<Guid>(nullable: false),
                     NOM_CIDADE = table.Column<string>(maxLength: 500, nullable: false),
                     SGL_CIDADE = table.Column<string>(maxLength: 3, nullable: false)
                 },
@@ -100,30 +220,29 @@ namespace Mamba.Infra.Migrations
                 name: "CANDIDATO",
                 columns: table => new
                 {
-                    ID_CANDIDATO = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ID_CANDIDATO = table.Column<Guid>(nullable: false),
                     DAT_CADASTRO = table.Column<DateTime>(nullable: false),
-                    ID_USUARIO_CADASTRO = table.Column<int>(nullable: false),
+                    ID_USUARIO_CADASTRO = table.Column<Guid>(nullable: false),
                     NOM_PROCESSO_CADASTRO = table.Column<string>(maxLength: 300, nullable: false),
                     DAT_ULTIMA_ALTERACAO = table.Column<DateTime>(nullable: true),
-                    ID_USUARIO = table.Column<int>(nullable: false),
-                    ID_CIDADE = table.Column<int>(nullable: false),
-                    DSC_PROFISSAO = table.Column<string>(nullable: false)
+                    ID_USUARIO = table.Column<Guid>(nullable: false),
+                    ID_CIDADE = table.Column<Guid>(nullable: false),
+                    DSC_PROFISSAO = table.Column<string>(maxLength: 300, nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("ID_CANDIDATO", x => x.ID_CANDIDATO);
                     table.ForeignKey(
+                        name: "FK_CANDIDATO_AspNetUsers_ID_USUARIO",
+                        column: x => x.ID_USUARIO,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
                         name: "FK_CANDIDATO_CIDADE_ID_CIDADE",
                         column: x => x.ID_CIDADE,
                         principalTable: "CIDADE",
                         principalColumn: "ID_CIDADE",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_CANDIDATO_USUARIO_ID_USUARIO",
-                        column: x => x.ID_USUARIO,
-                        principalTable: "USUARIO",
-                        principalColumn: "ID_USUARIO",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -131,13 +250,12 @@ namespace Mamba.Infra.Migrations
                 name: "EMPRESA",
                 columns: table => new
                 {
-                    ID_EMPRESA = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ID_EMPRESA = table.Column<Guid>(nullable: false),
                     DAT_CADASTRO = table.Column<DateTime>(nullable: false),
-                    ID_USUARIO_CADASTRO = table.Column<int>(nullable: false),
+                    ID_USUARIO_CADASTRO = table.Column<Guid>(nullable: false),
                     NOM_PROCESSO_CADASTRO = table.Column<string>(maxLength: 300, nullable: false),
                     DAT_ULTIMA_ALTERACAO = table.Column<DateTime>(nullable: true),
-                    ID_CIDADE = table.Column<int>(nullable: false),
+                    ID_CIDADE = table.Column<Guid>(nullable: false),
                     NOM_EMPRESA = table.Column<string>(maxLength: 500, nullable: false),
                     NUM_CNPJ = table.Column<string>(maxLength: 18, nullable: false),
                     DSC_EMPRESA = table.Column<string>(maxLength: 500, nullable: true),
@@ -158,15 +276,14 @@ namespace Mamba.Infra.Migrations
                 name: "CARGO",
                 columns: table => new
                 {
-                    ID_CARGO = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ID_CARGO = table.Column<Guid>(nullable: false),
                     DAT_CADASTRO = table.Column<DateTime>(nullable: false),
-                    ID_USUARIO_CADASTRO = table.Column<int>(nullable: false),
+                    ID_USUARIO_CADASTRO = table.Column<Guid>(nullable: false),
                     NOM_PROCESSO_CADASTRO = table.Column<string>(maxLength: 300, nullable: false),
                     DAT_ULTIMA_ALTERACAO = table.Column<DateTime>(nullable: true),
-                    ID_EMPRESA = table.Column<int>(nullable: false),
-                    ID_AREA_ATUACAO = table.Column<int>(nullable: false),
-                    NOM_CARGO = table.Column<string>(nullable: false)
+                    ID_EMPRESA = table.Column<Guid>(nullable: false),
+                    ID_AREA_ATUACAO = table.Column<Guid>(nullable: false),
+                    NOM_CARGO = table.Column<string>(maxLength: 300, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -189,16 +306,15 @@ namespace Mamba.Infra.Migrations
                 name: "DESAFIO",
                 columns: table => new
                 {
-                    ID_DESAFIO = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ID_DESAFIO = table.Column<Guid>(nullable: false),
                     DAT_CADASTRO = table.Column<DateTime>(nullable: false),
-                    ID_USUARIO_CADASTRO = table.Column<int>(nullable: false),
+                    ID_USUARIO_CADASTRO = table.Column<Guid>(nullable: false),
                     NOM_PROCESSO_CADASTRO = table.Column<string>(maxLength: 300, nullable: false),
                     DAT_ULTIMA_ALTERACAO = table.Column<DateTime>(nullable: true),
-                    ID_EMPRESA = table.Column<int>(nullable: false),
-                    ID_CARGO = table.Column<int>(nullable: true),
-                    NOM_TITULO = table.Column<string>(nullable: false),
-                    DSC_DESAFIO = table.Column<string>(nullable: false),
+                    ID_EMPRESA = table.Column<Guid>(nullable: false),
+                    ID_CARGO = table.Column<Guid>(nullable: true),
+                    NOM_TITULO = table.Column<string>(maxLength: 300, nullable: false),
+                    DSC_DESAFIO = table.Column<string>(type: "NTEXT", nullable: false),
                     QTD_LIMITE_INSCRICAO = table.Column<int>(nullable: true),
                     DAT_ABERTURA = table.Column<DateTime>(nullable: false),
                     DAT_FECHAMENTO = table.Column<DateTime>(nullable: true)
@@ -224,19 +340,24 @@ namespace Mamba.Infra.Migrations
                 name: "FUNCIONARIO",
                 columns: table => new
                 {
-                    ID_FUNCIONARIO = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ID_FUNCIONARIO = table.Column<Guid>(nullable: false),
                     DAT_CADASTRO = table.Column<DateTime>(nullable: false),
-                    ID_USUARIO_CADASTRO = table.Column<int>(nullable: false),
+                    ID_USUARIO_CADASTRO = table.Column<Guid>(nullable: false),
                     NOM_PROCESSO_CADASTRO = table.Column<string>(maxLength: 300, nullable: false),
                     DAT_ULTIMA_ALTERACAO = table.Column<DateTime>(nullable: true),
-                    ID_EMPRESA = table.Column<int>(nullable: false),
-                    ID_CARGO = table.Column<int>(nullable: true),
-                    ID_USUARIO = table.Column<int>(nullable: false)
+                    ID_EMPRESA = table.Column<Guid>(nullable: false),
+                    ID_CARGO = table.Column<Guid>(nullable: true),
+                    ID_USUARIO = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("ID_FUNCIONARIO", x => x.ID_FUNCIONARIO);
+                    table.ForeignKey(
+                        name: "FK_FUNCIONARIO_AspNetUsers_ID_USUARIO",
+                        column: x => x.ID_USUARIO,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_FUNCIONARIO_CARGO_ID_CARGO",
                         column: x => x.ID_CARGO,
@@ -249,26 +370,19 @@ namespace Mamba.Infra.Migrations
                         principalTable: "EMPRESA",
                         principalColumn: "ID_EMPRESA",
                         onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_FUNCIONARIO_USUARIO_ID_USUARIO",
-                        column: x => x.ID_USUARIO,
-                        principalTable: "USUARIO",
-                        principalColumn: "ID_USUARIO",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
                 name: "INSCRICAO",
                 columns: table => new
                 {
-                    ID_INSCRICAO = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ID_INSCRICAO = table.Column<Guid>(nullable: false),
                     DAT_CADASTRO = table.Column<DateTime>(nullable: false),
-                    ID_USUARIO_CADASTRO = table.Column<int>(nullable: false),
+                    ID_USUARIO_CADASTRO = table.Column<Guid>(nullable: false),
                     NOM_PROCESSO_CADASTRO = table.Column<string>(maxLength: 300, nullable: false),
                     DAT_ULTIMA_ALTERACAO = table.Column<DateTime>(nullable: true),
-                    ID_DESAFIO = table.Column<int>(nullable: false),
-                    ID_CANDIDATO = table.Column<int>(nullable: false),
+                    ID_DESAFIO = table.Column<Guid>(nullable: false),
+                    ID_CANDIDATO = table.Column<Guid>(nullable: false),
                     DAT_INSCRICAO = table.Column<DateTime>(nullable: false),
                     DAT_FINALIZACAO = table.Column<DateTime>(nullable: true),
                     DSC_RESULTADO = table.Column<string>(maxLength: 500, nullable: true),
@@ -295,14 +409,13 @@ namespace Mamba.Infra.Migrations
                 name: "QUESTAO",
                 columns: table => new
                 {
-                    ID_QUESTAO = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ID_QUESTAO = table.Column<Guid>(nullable: false),
                     DAT_CADASTRO = table.Column<DateTime>(nullable: false),
-                    ID_USUARIO_CADASTRO = table.Column<int>(nullable: false),
+                    ID_USUARIO_CADASTRO = table.Column<Guid>(nullable: false),
                     NOM_PROCESSO_CADASTRO = table.Column<string>(maxLength: 300, nullable: false),
                     DAT_ULTIMA_ALTERACAO = table.Column<DateTime>(nullable: true),
-                    ID_DESAFIO = table.Column<int>(nullable: false),
-                    DSC_QUESTAO = table.Column<string>(nullable: false)
+                    ID_DESAFIO = table.Column<Guid>(nullable: false),
+                    DSC_QUESTAO = table.Column<string>(maxLength: 300, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -319,14 +432,13 @@ namespace Mamba.Infra.Migrations
                 name: "RESPOSTA",
                 columns: table => new
                 {
-                    ID_RESPOSTA = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ID_RESPOSTA = table.Column<Guid>(nullable: false),
                     DAT_CADASTRO = table.Column<DateTime>(nullable: false),
-                    ID_USUARIO_CADASTRO = table.Column<int>(nullable: false),
+                    ID_USUARIO_CADASTRO = table.Column<Guid>(nullable: false),
                     NOM_PROCESSO_CADASTRO = table.Column<string>(maxLength: 300, nullable: false),
                     DAT_ULTIMA_ALTERACAO = table.Column<DateTime>(nullable: true),
-                    ID_INSCRICAO = table.Column<int>(nullable: false),
-                    ID_QUESTAO = table.Column<int>(nullable: false),
+                    ID_INSCRICAO = table.Column<Guid>(nullable: false),
+                    ID_QUESTAO = table.Column<Guid>(nullable: false),
                     DSC_RESPOSTA = table.Column<string>(maxLength: 500, nullable: false)
                 },
                 constraints: table =>
@@ -350,15 +462,14 @@ namespace Mamba.Infra.Migrations
                 name: "AVALIACAO",
                 columns: table => new
                 {
-                    ID_AVALIACAO = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ID_AVALIACAO = table.Column<Guid>(nullable: false),
                     DAT_CADASTRO = table.Column<DateTime>(nullable: false),
-                    ID_USUARIO_CADASTRO = table.Column<int>(nullable: false),
+                    ID_USUARIO_CADASTRO = table.Column<Guid>(nullable: false),
                     NOM_PROCESSO_CADASTRO = table.Column<string>(maxLength: 300, nullable: false),
                     DAT_ULTIMA_ALTERACAO = table.Column<DateTime>(nullable: true),
-                    ID_FUNCIONARIO = table.Column<int>(nullable: false),
-                    ID_RESPOSTA = table.Column<int>(nullable: false),
-                    Descricao = table.Column<string>(nullable: true),
+                    ID_FUNCIONARIO = table.Column<Guid>(nullable: false),
+                    ID_RESPOSTA = table.Column<Guid>(nullable: false),
+                    DSC_AVALIACAO = table.Column<string>(maxLength: 300, nullable: false),
                     IND_APROVADO = table.Column<bool>(nullable: false),
                     NUM_NOTA = table.Column<int>(nullable: false)
                 },
@@ -380,6 +491,45 @@ namespace Mamba.Infra.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_AspNetRoleClaims_RoleId",
+                table: "AspNetRoleClaims",
+                column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "RoleNameIndex",
+                table: "AspNetRoles",
+                column: "NormalizedName",
+                unique: true,
+                filter: "[NormalizedName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUserClaims_UserId",
+                table: "AspNetUserClaims",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUserLogins_UserId",
+                table: "AspNetUserLogins",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUserRoles_RoleId",
+                table: "AspNetUserRoles",
+                column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "EmailIndex",
+                table: "AspNetUsers",
+                column: "NormalizedEmail");
+
+            migrationBuilder.CreateIndex(
+                name: "UserNameIndex",
+                table: "AspNetUsers",
+                column: "NormalizedUserName",
+                unique: true,
+                filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_AVALIACAO_ID_FUNCIONARIO",
                 table: "AVALIACAO",
                 column: "ID_FUNCIONARIO");
@@ -391,14 +541,14 @@ namespace Mamba.Infra.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_CANDIDATO_ID_CIDADE",
-                table: "CANDIDATO",
-                column: "ID_CIDADE");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_CANDIDATO_ID_USUARIO",
                 table: "CANDIDATO",
                 column: "ID_USUARIO");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CANDIDATO_ID_CIDADE",
+                table: "CANDIDATO",
+                column: "ID_CIDADE");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CARGO_ID_AREA_ATUACAO",
@@ -431,6 +581,11 @@ namespace Mamba.Infra.Migrations
                 column: "ID_CIDADE");
 
             migrationBuilder.CreateIndex(
+                name: "IX_FUNCIONARIO_ID_USUARIO",
+                table: "FUNCIONARIO",
+                column: "ID_USUARIO");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_FUNCIONARIO_ID_CARGO",
                 table: "FUNCIONARIO",
                 column: "ID_CARGO");
@@ -439,11 +594,6 @@ namespace Mamba.Infra.Migrations
                 name: "IX_FUNCIONARIO_ID_EMPRESA",
                 table: "FUNCIONARIO",
                 column: "ID_EMPRESA");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_FUNCIONARIO_ID_USUARIO",
-                table: "FUNCIONARIO",
-                column: "ID_USUARIO");
 
             migrationBuilder.CreateIndex(
                 name: "IX_INSCRICAO_ID_CANDIDATO",
@@ -474,7 +624,25 @@ namespace Mamba.Infra.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "AspNetRoleClaims");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUserClaims");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUserLogins");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUserRoles");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
                 name: "AVALIACAO");
+
+            migrationBuilder.DropTable(
+                name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "FUNCIONARIO");
@@ -495,7 +663,7 @@ namespace Mamba.Infra.Migrations
                 name: "DESAFIO");
 
             migrationBuilder.DropTable(
-                name: "USUARIO");
+                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
                 name: "CARGO");

@@ -1,11 +1,13 @@
 ﻿using Mamba.API.Extensions;
-using Mamba.API.Identity;
+using Mamba.Domain.Entities;
+using Mamba.Infra.Context;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using System;
 using System.Text;
 
 namespace Mamba.API.Configurations
@@ -14,15 +16,15 @@ namespace Mamba.API.Configurations
     {
         public static IServiceCollection AddIdentityConfig(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<AuthDbContext>(options =>
+            services.AddDbContext<ContextBase>(options =>
             {
                 options.UseSqlServer(configuration.GetConnectionString("Conexao"));
             });
 
-            services.AddDefaultIdentity<IdentityUser>()
-                .AddRoles<IdentityRole>()
+            services.AddDefaultIdentity<ApplicationUser>()
+                .AddRoles<IdentityRole<Guid>>()
                 .AddErrorDescriber<IdentityMensagensPortugues>()
-                .AddEntityFrameworkStores<AuthDbContext>()
+                .AddEntityFrameworkStores<ContextBase>()
                 .AddDefaultTokenProviders();
 
             var jwtSettingsSection = configuration.GetSection("JwtSettings");

@@ -5,7 +5,7 @@ namespace Mamba.Domain.Entities
 {
     public class Questao : MainEntity
     {
-        public int DesafioId { get; set; }
+        public Guid DesafioId { get; set; }
         public string Descricao { get; set; }
 
         // RELACIONAMENTO

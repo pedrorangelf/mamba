@@ -1,5 +1,4 @@
 ﻿using Mamba.Domain.Entities;
-using System.Collections.Generic;
 
 namespace Mamba.Domain.Interfaces.Repositories
 {

@@ -5,13 +5,13 @@ namespace Mamba.API.DTOs.Domain
 {
     public class CandidatoViewModel : MainEntityViewModel
     {
-        public int UsuarioId { get; set; }
-        public int CidadeId { get; set; }
+        public Guid ApplicationUserId { get; set; }
+        public Guid EnderecoId { get; set; }
         public string Profissao { get; set; }
 
         // RELACIONAMENTO
-        public UsuarioViewModel Usuario { get; set; }
-        public CidadeViewModel Cidade { get; set; }
+        public ApplicationUserViewModel ApplicationUser { get; set; }
+        public EnderecoViewModel EnderecoViewModel { get; set; }
         public List<InscricaoViewModel> Inscricoes { get; set; }
     }
 }

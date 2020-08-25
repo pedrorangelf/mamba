@@ -1,9 +1,11 @@
-﻿namespace Mamba.API.DTOs.Domain
+﻿using System;
+
+namespace Mamba.API.DTOs.Domain
 {
     public class AvaliacaoViewModel : MainEntityViewModel
     {
-        public int FuncionarioId { get; set; }
-        public int RespostaId { get; set; }
+        public Guid FuncionarioId { get; set; }
+        public Guid RespostaId { get; set; }
 
         public string Descricao { get; set; }
         public bool Aprovado { get; set; }

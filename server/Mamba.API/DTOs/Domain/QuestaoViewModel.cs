@@ -5,7 +5,7 @@ namespace Mamba.API.DTOs.Domain
 {
     public class QuestaoViewModel : MainEntityViewModel
     {
-        public int DesafioId { get; set; }
+        public Guid DesafioId { get; set; }
         public string Descricao { get; set; }
 
         // RELACIONAMENTO

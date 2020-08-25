@@ -1,7 +1,6 @@
 ﻿using Mamba.Domain.Entities;
 using Mamba.Domain.Interfaces.Repositories;
 using Mamba.Domain.Interfaces.Services;
-using System.Collections.Generic;
 
 namespace Mamba.Domain.Services
 {

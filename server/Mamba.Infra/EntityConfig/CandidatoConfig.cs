@@ -9,14 +9,14 @@ namespace Mamba.Infra.EntityConfig
         public void Configure(EntityTypeBuilder<Candidato> builder)
         {
             builder.SetMainEntityConfig("CANDIDATO");
-            builder.HasOne(p => p.Usuario).WithMany(p => p.Candidatos).HasForeignKey(p => p.UsuarioId);
-            builder.HasOne(p => p.Cidade).WithMany(p => p.Candidatos).HasForeignKey(p => p.CidadeId);
+            builder.HasOne(p => p.ApplicationUser).WithMany(p => p.Candidatos).HasForeignKey(p => p.ApplicationUserId);
+            //builder.HasOne(p => p.Endereco).WithOne(p => p.Candidato);
 
-            builder.Property(p => p.CidadeId)
-                .HasColumnName("ID_CIDADE")
+            builder.Property(p => p.EnderecoId)
+                .HasColumnName("ID_ENDERECO")
                 .IsRequired();
 
-            builder.Property(p => p.UsuarioId)
+            builder.Property(p => p.ApplicationUserId)
                 .HasColumnName("ID_USUARIO")
                 .IsRequired();
 

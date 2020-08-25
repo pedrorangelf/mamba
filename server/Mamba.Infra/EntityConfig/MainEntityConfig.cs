@@ -21,9 +21,8 @@ namespace Mamba.Infra.EntityConfig
                 .HasColumnName("DAT_CADASTRO")
                 .IsRequired();
 
-            builder.Property(p => p.CodigoUsuarioCadastro)
-                .HasColumnName("ID_USUARIO_CADASTRO")
-                .IsRequired();
+            builder.Property(p => p.UsuarioCadastroId)
+                .HasColumnName("ID_USUARIO_CADASTRO");
 
             builder.Property(p => p.ProcessoCadastro)
                 .HasColumnName("NOM_PROCESSO_CADASTRO")

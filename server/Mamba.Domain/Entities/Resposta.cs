@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace Mamba.Domain.Entities
 {
     public class Resposta : MainEntity
     {
-        public int InscricaoId { get; set; }
-        public int QuestaoId { get; set; }
+        public Guid InscricaoId { get; set; }
+        public Guid QuestaoId { get; set; }
         public string Descricao { get; set; }
 
         // RELACIONAMENTO

@@ -2,7 +2,7 @@
 
 namespace Mamba.Domain.Interfaces.Services
 {
-    public interface ICidadeService : IServiceBase<Cidade>
+    public interface IEnderecoService : IServiceBase<Endereco>
     {
     }
 }

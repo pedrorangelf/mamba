@@ -4,9 +4,9 @@ using Mamba.Infra.Context;
 
 namespace Mamba.Infra.Repositories
 {
-    public class UsuarioRepository : RepositoryBase<Usuario>, IUsuarioRepository
+    public class EnderecoRepository : RepositoryBase<Endereco>, IEnderecoRepository
     {
-        public UsuarioRepository(ContextBase contextBase) : base(contextBase)
+        public EnderecoRepository(ContextBase contextBase) : base(contextBase)
         {
         }
     }

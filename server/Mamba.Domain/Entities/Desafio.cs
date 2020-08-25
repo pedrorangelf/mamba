@@ -5,8 +5,8 @@ namespace Mamba.Domain.Entities
 {
     public class Desafio : MainEntity
     {
-        public int EmpresaId { get; set; }
-        public int? CargoId { get; set; }
+        public Guid EmpresaId { get; set; }
+        public Guid? CargoId { get; set; }
         public string Titulo { get; set; }
         public string Descricao { get; set; }
         public int? LimiteInscricao { get; set; }

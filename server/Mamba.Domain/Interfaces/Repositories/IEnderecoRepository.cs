@@ -2,7 +2,7 @@
 
 namespace Mamba.Domain.Interfaces.Repositories
 {
-    public interface IUsuarioRepository : IRepositoryBase<Usuario>
+    public interface IEnderecoRepository : IRepositoryBase<Endereco>
     {
     }
 }

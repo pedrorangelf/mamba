@@ -1,5 +1,6 @@
 ﻿using Mamba.Domain.Interfaces;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Features;
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;
@@ -20,6 +21,11 @@ namespace Mamba.API.Extensions
         public IEnumerable<Claim> GetClaimsIdentity()
         {
             return _httpContextAccessor.HttpContext.User.Claims;
+        }
+
+        public string GetCurrentPath()
+        {
+            return _httpContextAccessor.HttpContext.Features.Get<IHttpRequestFeature>().Path;
         }
 
         public string GetUserEmail()

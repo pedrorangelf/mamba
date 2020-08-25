@@ -5,8 +5,8 @@ namespace Mamba.API.DTOs.Domain
 {
     public class InscricaoViewModel : MainEntityViewModel
     {
-        public int DesafioId { get; set; }
-        public int CandidatoId { get; set; }
+        public Guid DesafioId { get; set; }
+        public Guid CandidatoId { get; set; }
         public DateTime DataInscricao { get; set; }
         public DateTime? DataFinalizacao { get; set; }
         public string Resultado { get; set; }
