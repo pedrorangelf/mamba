@@ -40,6 +40,13 @@ namespace Mamba.API.Extensions
             return Guid.Parse(_httpContextAccessor.HttpContext.User.GetUserId());
         }
 
+        public Guid GetEmpresaId()
+        {
+            if (!IsAuthenticated() || !IsInRole("Empresa")) return Guid.Empty;
+
+            return Guid.Parse(_httpContextAccessor.HttpContext.User.GetEmpresaId());
+        }
+
         public bool IsAuthenticated()
         {
             return _httpContextAccessor.HttpContext.User.Identity.IsAuthenticated;
@@ -69,5 +76,9 @@ namespace Mamba.API.Extensions
             return claimsPrincipal.FindFirst(ClaimTypes.Email)?.Value;
         }
 
+        public static string GetEmpresaId(this ClaimsPrincipal claimsPrincipal)
+        {
+            return claimsPrincipal.FindFirstValue("EmpresaId");
+        }
     }
 }

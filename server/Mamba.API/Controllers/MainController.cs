@@ -11,7 +11,7 @@ namespace Mamba.API.Controllers
     public class MainController : ControllerBase
     {
         private readonly INotificator _notificator;
-        private readonly IUser _user;
+        protected readonly IUser _user;
 
         protected MainController(INotificator notificator, IUser user)
         {
@@ -19,10 +19,12 @@ namespace Mamba.API.Controllers
             _user = user;
 
             UsuarioId = user.GetUserId();
+            EmpresaId = user.GetEmpresaId();
             UsuarioAutenticado = user.IsAuthenticated();
         }
 
         protected Guid UsuarioId { get; set; }
+        protected Guid EmpresaId { get; set; }
         protected bool UsuarioAutenticado { get; set; }
 
 

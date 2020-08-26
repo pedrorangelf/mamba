@@ -13,5 +13,6 @@ namespace Mamba.Domain.Interfaces
         bool IsInRole(string role);
         IEnumerable<Claim> GetClaimsIdentity();
         string GetCurrentPath();
+        Guid GetEmpresaId();
     }
 }

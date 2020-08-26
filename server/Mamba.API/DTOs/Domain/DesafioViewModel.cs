@@ -4,7 +4,6 @@ using System.Collections.Generic;
 namespace Mamba.API.DTOs.Domain
 {
     public class DesafioViewModel : MainEntityViewModel
-
     {
         public Guid EmpresaId { get; set; }
         public Guid? CargoId { get; set; }

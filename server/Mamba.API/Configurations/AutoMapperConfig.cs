@@ -15,10 +15,10 @@ namespace Mamba.API.Configurations
             CreateMap<Desafio, DesafioViewModel>().ReverseMap();
 
             CreateMap<Empresa, EmpresaViewModel>().ReverseMap();
-            CreateMap<Empresa, EmpresaRegistrarEmpresaViewModel>().ReverseMap();
+            CreateMap<Empresa, EmpresaDto>().ReverseMap();
 
             CreateMap<Endereco, EnderecoViewModel>().ReverseMap();
-            CreateMap<Endereco, EnderecoRegistrarEmpresaViewModel>().ReverseMap();
+            CreateMap<Endereco, EnderecoDto>().ReverseMap();
 
             CreateMap<Funcionario, FuncionarioViewModel>().ReverseMap();
             CreateMap<Inscricao, InscricaoViewModel>().ReverseMap();

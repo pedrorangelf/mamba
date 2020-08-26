@@ -18,10 +18,13 @@ using System.Threading.Tasks;
 
 namespace Mamba.API.Controllers.V1
 {
+    [AllowAnonymous]
     [ApiVersion("1.0")]
     [Route("api/v{version:apiVersion}/")]
     public class AuthController : MainController
     {
+        private readonly IEnderecoService _enderecoService;
+        private readonly ICandidatoService _candidatoService;
         private readonly ICargoService _cargoService;
         private readonly IFuncionarioService _funcionarioService;
         private readonly IEmpresaService _empresaService;
@@ -31,9 +34,17 @@ namespace Mamba.API.Controllers.V1
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly JwtSettings _jwtSettings;
 
-        public AuthController(INotificator notificator, IUser user, IEmpresaService empresaService, IMapper mapper,
-                                SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager,
-                                IOptions<JwtSettings> jwtSettings, IFuncionarioService funcionarioService, ICargoService cargoService)
+        public AuthController(INotificator notificator,
+                              IUser user,
+                              IEmpresaService empresaService,
+                              IMapper mapper,
+                              SignInManager<ApplicationUser> signInManager,
+                              UserManager<ApplicationUser> userManager,
+                              IOptions<JwtSettings> jwtSettings,
+                              IFuncionarioService funcionarioService,
+                              ICargoService cargoService,
+                              ICandidatoService candidatoService,
+                              IEnderecoService enderecoService)
             : base(notificator, user)
         {
             _empresaService = empresaService;
@@ -43,36 +54,40 @@ namespace Mamba.API.Controllers.V1
             _jwtSettings = jwtSettings.Value;
             _funcionarioService = funcionarioService;
             _cargoService = cargoService;
+            _candidatoService = candidatoService;
+            _enderecoService = enderecoService;
         }
 
         [HttpPost("registrar-empresa")]
-        public async Task<IActionResult> RegistrarEmpresa(RegistrarEmpresaViewModel registrarViewModel)
+        public async Task<IActionResult> RegistrarEmpresa(NovoFuncionarioDto novoFuncionarioDto)
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
+            var empresa = _mapper.Map<Empresa>(novoFuncionarioDto.Empresa);
+            await _empresaService.Add(empresa);
+
+            if (!OperacaoValida()) return CustomResponse();
+
             var identityUser = new ApplicationUser
             {
-                Nome = registrarViewModel.Nome,
-                Email = registrarViewModel.Email,
-                UserName = registrarViewModel.Email,
-                DataNascimento = registrarViewModel.DataNascimento,
-                PhoneNumber = registrarViewModel.Celular,
-                LinkLinkedin = registrarViewModel.LinkLinkedin,
-                LinkGithub = registrarViewModel.LinkGithub,
-                EmailConfirmed = true
+                DataNascimento = novoFuncionarioDto.DataNascimento,
+                Email = novoFuncionarioDto.Email,
+                EmailConfirmed = true,
+                LinkGithub = novoFuncionarioDto.LinkGithub,
+                LinkLinkedin = novoFuncionarioDto.LinkLinkedin,
+                Nome = novoFuncionarioDto.Nome,
+                PhoneNumber = novoFuncionarioDto.Celular,
+                PhoneNumberConfirmed = true,
+                UserName = novoFuncionarioDto.Email
             };
 
-            var result = await _userManager.CreateAsync(identityUser, registrarViewModel.Senha);
+            var result = await _userManager.CreateAsync(identityUser, novoFuncionarioDto.Senha);
             if (result.Succeeded)
             {
-                var empresa = _mapper.Map<Empresa>(registrarViewModel.Empresa);
-
-                await _empresaService.Add(empresa);
-
                 var cargo = new Cargo
                 {
                     EmpresaId = empresa.Id,
-                    Nome = registrarViewModel.Cargo
+                    Nome = novoFuncionarioDto.Cargo
                 };
                 await _cargoService.Add(cargo);
 
@@ -84,8 +99,51 @@ namespace Mamba.API.Controllers.V1
 
                 await _userManager.AddToRoleAsync(identityUser, "Empresa");
 
-                await _signInManager.SignInAsync(identityUser, false);
                 return CustomResponse(await GeraJWT(identityUser.Email));
+            }
+
+            await _empresaService.Remove(empresa);
+            await _enderecoService.Remove(empresa.Endereco);
+
+            foreach (var erro in result.Errors)
+            {
+                NotificarErro(erro.Description);
+            }
+
+            return CustomResponse();
+        }
+
+        [HttpPost("registrar-candidato")]
+        public async Task<IActionResult> RegistrarCandidato(NovoCandidatoDto novoCandidatoDto)
+        {
+            if (!ModelState.IsValid) return CustomResponse(ModelState);
+
+            var user = new ApplicationUser
+            {
+                DataNascimento = novoCandidatoDto.DataNascimento,
+                Email = novoCandidatoDto.Email,
+                EmailConfirmed = true,
+                LinkGithub = novoCandidatoDto.LinkGithub,
+                LinkLinkedin = novoCandidatoDto.LinkLinkedin,
+                Nome = novoCandidatoDto.Nome,
+                PhoneNumber = novoCandidatoDto.Celular,
+                PhoneNumberConfirmed = true,
+                UserName = novoCandidatoDto.Email
+            };
+
+            var result = await _userManager.CreateAsync(user, novoCandidatoDto.Senha);
+            if (result.Succeeded)
+            {
+                await _candidatoService.Add(new Candidato
+                {
+                    ApplicationUserId = user.Id,
+                    Profissao = novoCandidatoDto.Profissao,
+                    Endereco = _mapper.Map<Endereco>(novoCandidatoDto.Endereco)
+                });
+
+                await _userManager.AddToRoleAsync(user, "Candidato");
+
+                return CustomResponse(await GeraJWT(user.Email));
             }
 
             foreach (var erro in result.Errors)
@@ -116,12 +174,19 @@ namespace Mamba.API.Controllers.V1
             return CustomResponse();
         }
 
-
         private async Task<AuthResponseViewModel> GeraJWT(string email)
         {
             var user = await _userManager.FindByEmailAsync(email);
             var claims = await _userManager.GetClaimsAsync(user);
             var roles = await _userManager.GetRolesAsync(user);
+
+            if (roles.Contains("Empresa"))
+            {
+                var empresa = await _empresaService.ObterEmpresaUsuario(user.Id);
+
+                if (empresa != null)
+                    claims.Add(new Claim("EmpresaId", empresa.Id.ToString()));
+            }
 
             claims.Add(new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()));
             claims.Add(new Claim(JwtRegisteredClaimNames.Email, user.Email));
@@ -157,6 +222,8 @@ namespace Mamba.API.Controllers.V1
                 {
                     Id = user.Id.ToString(),
                     Email = user.Email,
+                    Nome = user.Nome,
+                    Foto = user.Foto,
                     Claims = claims.Select(c => new ClaimTokenViewModel { Type = c.Type, Value = c.Value })
                 }
             };

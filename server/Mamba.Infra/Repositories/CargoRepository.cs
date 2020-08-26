@@ -6,8 +6,6 @@ namespace Mamba.Infra.Repositories
 {
     public class CargoRepository : RepositoryBase<Cargo>, ICargoRepository
     {
-        public CargoRepository(ContextBase contextBase) : base(contextBase)
-        {
-        }
+        public CargoRepository(ContextBase contextBase) : base(contextBase)  { }
     }
 }

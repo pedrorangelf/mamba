@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Mamba.API.DTOs.Domain
+namespace Mamba.API.DTOs
 {
-    public class EnderecoViewModel : MainEntityViewModel
+    public class EnderecoDto
     {
         [Required(ErrorMessage = "O campo {0} é obrigatório")]
         [StringLength(300, ErrorMessage = "O campo {0} deve conter no máximo {1} caracteres")]

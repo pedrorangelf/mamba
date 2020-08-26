@@ -13,6 +13,8 @@ namespace Mamba.API.DTOs
     {
         public string Id { get; set; }
         public string Email { get; set; }
+        public string Nome { get; set; }
+        public string Foto { get; set; }
         public IEnumerable<ClaimTokenViewModel> Claims { get; set; }
     }
 
