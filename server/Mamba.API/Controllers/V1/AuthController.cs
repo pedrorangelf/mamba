@@ -155,7 +155,7 @@ namespace Mamba.API.Controllers.V1
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login(LoginViewModel loginViewModel)
+        public async Task<IActionResult> Login(LoginDto loginViewModel)
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 

@@ -25,6 +25,9 @@ namespace Mamba.Infra.EntityConfig
                 .HasColumnName("DAT_INSCRICAO")
                 .IsRequired();
 
+            builder.Property(p => p.DataInicializacao)
+                .HasColumnName("DAT_INICIALIZACAO");
+
             builder.Property(p => p.DataFinalizacao)
                 .HasColumnName("DAT_FINALIZACAO");
 

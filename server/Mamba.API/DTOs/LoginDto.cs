@@ -2,7 +2,7 @@
 
 namespace Mamba.API.DTOs
 {
-    public class LoginViewModel
+    public class LoginDto
     {
         [Required(ErrorMessage = "O campo {0} é obrigatório")]
         [EmailAddress(ErrorMessage = "O {0} informado é inválido")]

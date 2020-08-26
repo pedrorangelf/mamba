@@ -8,5 +8,6 @@ namespace Mamba.Domain.Interfaces.Repositories
     public interface IDesafioRepository : IRepositoryBase<Desafio>
     {
         Task<IEnumerable<Desafio>> ObterDesafiosEmpresa(Guid idEmpresa);
+        Task<Desafio> ObterDesafioCargoInscricoes(Guid id);
     }
 }
