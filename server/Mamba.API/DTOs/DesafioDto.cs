@@ -37,7 +37,6 @@ namespace Mamba.API.DTOs
         public DateTime? DataUltimaInicializacao { get; set; }
         public DateTime? DataUltimaFinalizacao { get; set; }
 
-
         public string TempoAbertura
         {
             get
@@ -79,6 +78,16 @@ namespace Mamba.API.DTOs
             }
         }
 
+        public int PorcentagemConclusao
+        {
+            get
+            {
+                if (TotalInscricoes == 0 || TotalInscricoesFinalizadas == 0)
+                    return 0;
+
+                return (TotalInscricoesFinalizadas * 100) / TotalInscricoes;
+            }
+        }
 
     }
 }
