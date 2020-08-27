@@ -26,10 +26,11 @@ namespace Mamba.API.Controllers.V1
         }
 
         [Authorize(Roles = "Empresa")]
-        [HttpGet]
+        [HttpGet("{id:guid}")]
         public async Task<IActionResult> ObterDesafio(Guid id)
         {
             var desafio = await _desafioService.ObterDesafioCargoInscricoes(id);
+
             if (desafio == null) return CustomResponse();
 
             return CustomResponse(ObterDesafioDto(desafio));
@@ -40,7 +41,6 @@ namespace Mamba.API.Controllers.V1
         public async Task<IActionResult> ObterDesafiosAbertos()
         {
             var desafios = await _desafioService.ObterDesafiosEmpresa(EmpresaId);
-            if (desafios.Count() == 0) return CustomResponse();
 
             var desafiosAbertos = desafios.Where(d => d.DataFechamento.HasValue == false || d.DataFechamento > DateTime.Now)
                 .Select(d => ObterDesafioDto(d));
@@ -53,8 +53,7 @@ namespace Mamba.API.Controllers.V1
         public async Task<IActionResult> ObterDesafiosFechados()
         {
             var desafios = await _desafioService.ObterDesafiosEmpresa(EmpresaId);
-            if (desafios.Count() == 0) return CustomResponse();
-
+            
             var desafiosAbertos = desafios.Where(d => d.DataFechamento.HasValue && d.DataFechamento <= DateTime.Now)
                 .Select(d => ObterDesafioDto(d));
 
