@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Mamba.Infra.Migrations
 {
     [DbContext(typeof(ContextBase))]
-    [Migration("20200825203947_CorrecaoIdentity")]
-    partial class CorrecaoIdentity
+    [Migration("20200901201023_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -348,8 +348,8 @@ namespace Mamba.Infra.Migrations
                     b.Property<string>("CNPJ")
                         .IsRequired()
                         .HasColumnName("NUM_CNPJ")
-                        .HasColumnType("nvarchar(18)")
-                        .HasMaxLength(18);
+                        .HasColumnType("nvarchar(14)")
+                        .HasMaxLength(14);
 
                     b.Property<DateTime>("DataCadastro")
                         .HasColumnName("DAT_CADASTRO")
@@ -534,6 +534,10 @@ namespace Mamba.Infra.Migrations
 
                     b.Property<DateTime?>("DataFinalizacao")
                         .HasColumnName("DAT_FINALIZACAO")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DataInicializacao")
+                        .HasColumnName("DAT_INICIALIZACAO")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("DataInscricao")

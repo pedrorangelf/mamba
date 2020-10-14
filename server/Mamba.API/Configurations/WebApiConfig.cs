@@ -8,6 +8,14 @@ namespace Mamba.API.Configurations
     {
         public static IServiceCollection AddWebApiConfig(this IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddPolicy("Default", builder =>
+                {
+                    builder.AllowAnyOrigin();
+                });
+            });
+
             services.AddApiVersioning(o =>
             {
                 o.AssumeDefaultVersionWhenUnspecified = true;
@@ -36,6 +44,7 @@ namespace Mamba.API.Configurations
             app.UseAuthentication();
             app.UseHttpsRedirection();
             app.UseRouting();
+            app.UseCors("Default");
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

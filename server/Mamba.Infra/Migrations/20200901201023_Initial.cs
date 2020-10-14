@@ -8,22 +8,6 @@ namespace Mamba.Infra.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "AREA_ATUACAO",
-                columns: table => new
-                {
-                    ID_AREA_ATUACAO = table.Column<Guid>(nullable: false),
-                    DAT_CADASTRO = table.Column<DateTime>(nullable: false),
-                    ID_USUARIO_CADASTRO = table.Column<Guid>(nullable: false),
-                    NOM_PROCESSO_CADASTRO = table.Column<string>(maxLength: 300, nullable: false),
-                    DAT_ULTIMA_ALTERACAO = table.Column<DateTime>(nullable: true),
-                    DSC_AREA_ATUACAO = table.Column<string>(maxLength: 300, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("ID_AREA_ATUACAO", x => x.ID_AREA_ATUACAO);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
                 {
@@ -70,20 +54,25 @@ namespace Mamba.Infra.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ESTADO",
+                name: "ENDERECO",
                 columns: table => new
                 {
-                    ID_ESTADO = table.Column<Guid>(nullable: false),
+                    ID_ENDERECO = table.Column<Guid>(nullable: false),
                     DAT_CADASTRO = table.Column<DateTime>(nullable: false),
-                    ID_USUARIO_CADASTRO = table.Column<Guid>(nullable: false),
+                    ID_USUARIO_CADASTRO = table.Column<Guid>(nullable: true),
                     NOM_PROCESSO_CADASTRO = table.Column<string>(maxLength: 300, nullable: false),
                     DAT_ULTIMA_ALTERACAO = table.Column<DateTime>(nullable: true),
-                    NOM_ESTADO = table.Column<string>(maxLength: 500, nullable: false),
-                    SGL_ESTADO = table.Column<string>(maxLength: 2, nullable: false)
+                    DSC_LOGRADOURO = table.Column<string>(maxLength: 300, nullable: false),
+                    NUM_ENDERECO = table.Column<string>(maxLength: 5, nullable: false),
+                    DSC_COMPLEMENTO = table.Column<string>(maxLength: 10, nullable: true),
+                    NOM_BAIRRO = table.Column<string>(maxLength: 300, nullable: false),
+                    NOM_CIDADE = table.Column<string>(maxLength: 300, nullable: false),
+                    SGL_ESTADO = table.Column<string>(maxLength: 2, nullable: false),
+                    NUM_CEP = table.Column<string>(maxLength: 11, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("ID_ESTADO", x => x.ID_ESTADO);
+                    table.PrimaryKey("ID_ENDERECO", x => x.ID_ENDERECO);
                 });
 
             migrationBuilder.CreateTable(
@@ -193,40 +182,16 @@ namespace Mamba.Infra.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CIDADE",
-                columns: table => new
-                {
-                    ID_CIDADE = table.Column<Guid>(nullable: false),
-                    DAT_CADASTRO = table.Column<DateTime>(nullable: false),
-                    ID_USUARIO_CADASTRO = table.Column<Guid>(nullable: false),
-                    NOM_PROCESSO_CADASTRO = table.Column<string>(maxLength: 300, nullable: false),
-                    DAT_ULTIMA_ALTERACAO = table.Column<DateTime>(nullable: true),
-                    ID_ESTADO = table.Column<Guid>(nullable: false),
-                    NOM_CIDADE = table.Column<string>(maxLength: 500, nullable: false),
-                    SGL_CIDADE = table.Column<string>(maxLength: 3, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("ID_CIDADE", x => x.ID_CIDADE);
-                    table.ForeignKey(
-                        name: "FK_CIDADE_ESTADO_ID_ESTADO",
-                        column: x => x.ID_ESTADO,
-                        principalTable: "ESTADO",
-                        principalColumn: "ID_ESTADO",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "CANDIDATO",
                 columns: table => new
                 {
                     ID_CANDIDATO = table.Column<Guid>(nullable: false),
                     DAT_CADASTRO = table.Column<DateTime>(nullable: false),
-                    ID_USUARIO_CADASTRO = table.Column<Guid>(nullable: false),
+                    ID_USUARIO_CADASTRO = table.Column<Guid>(nullable: true),
                     NOM_PROCESSO_CADASTRO = table.Column<string>(maxLength: 300, nullable: false),
                     DAT_ULTIMA_ALTERACAO = table.Column<DateTime>(nullable: true),
                     ID_USUARIO = table.Column<Guid>(nullable: false),
-                    ID_CIDADE = table.Column<Guid>(nullable: false),
+                    ID_ENDERECO = table.Column<Guid>(nullable: false),
                     DSC_PROFISSAO = table.Column<string>(maxLength: 300, nullable: false)
                 },
                 constraints: table =>
@@ -239,10 +204,10 @@ namespace Mamba.Infra.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_CANDIDATO_CIDADE_ID_CIDADE",
-                        column: x => x.ID_CIDADE,
-                        principalTable: "CIDADE",
-                        principalColumn: "ID_CIDADE",
+                        name: "FK_CANDIDATO_ENDERECO_ID_ENDERECO",
+                        column: x => x.ID_ENDERECO,
+                        principalTable: "ENDERECO",
+                        principalColumn: "ID_ENDERECO",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -252,12 +217,12 @@ namespace Mamba.Infra.Migrations
                 {
                     ID_EMPRESA = table.Column<Guid>(nullable: false),
                     DAT_CADASTRO = table.Column<DateTime>(nullable: false),
-                    ID_USUARIO_CADASTRO = table.Column<Guid>(nullable: false),
+                    ID_USUARIO_CADASTRO = table.Column<Guid>(nullable: true),
                     NOM_PROCESSO_CADASTRO = table.Column<string>(maxLength: 300, nullable: false),
                     DAT_ULTIMA_ALTERACAO = table.Column<DateTime>(nullable: true),
-                    ID_CIDADE = table.Column<Guid>(nullable: false),
+                    ID_ENDERECO = table.Column<Guid>(nullable: false),
                     NOM_EMPRESA = table.Column<string>(maxLength: 500, nullable: false),
-                    NUM_CNPJ = table.Column<string>(maxLength: 18, nullable: false),
+                    NUM_CNPJ = table.Column<string>(maxLength: 14, nullable: false),
                     DSC_EMPRESA = table.Column<string>(maxLength: 500, nullable: true),
                     NOM_ARQUIVO_LOGO = table.Column<string>(maxLength: 200, nullable: true)
                 },
@@ -265,10 +230,10 @@ namespace Mamba.Infra.Migrations
                 {
                     table.PrimaryKey("ID_EMPRESA", x => x.ID_EMPRESA);
                     table.ForeignKey(
-                        name: "FK_EMPRESA_CIDADE_ID_CIDADE",
-                        column: x => x.ID_CIDADE,
-                        principalTable: "CIDADE",
-                        principalColumn: "ID_CIDADE",
+                        name: "FK_EMPRESA_ENDERECO_ID_ENDERECO",
+                        column: x => x.ID_ENDERECO,
+                        principalTable: "ENDERECO",
+                        principalColumn: "ID_ENDERECO",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -278,22 +243,15 @@ namespace Mamba.Infra.Migrations
                 {
                     ID_CARGO = table.Column<Guid>(nullable: false),
                     DAT_CADASTRO = table.Column<DateTime>(nullable: false),
-                    ID_USUARIO_CADASTRO = table.Column<Guid>(nullable: false),
+                    ID_USUARIO_CADASTRO = table.Column<Guid>(nullable: true),
                     NOM_PROCESSO_CADASTRO = table.Column<string>(maxLength: 300, nullable: false),
                     DAT_ULTIMA_ALTERACAO = table.Column<DateTime>(nullable: true),
                     ID_EMPRESA = table.Column<Guid>(nullable: false),
-                    ID_AREA_ATUACAO = table.Column<Guid>(nullable: false),
                     NOM_CARGO = table.Column<string>(maxLength: 300, nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("ID_CARGO", x => x.ID_CARGO);
-                    table.ForeignKey(
-                        name: "FK_CARGO_AREA_ATUACAO_ID_AREA_ATUACAO",
-                        column: x => x.ID_AREA_ATUACAO,
-                        principalTable: "AREA_ATUACAO",
-                        principalColumn: "ID_AREA_ATUACAO",
-                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_CARGO_EMPRESA_ID_EMPRESA",
                         column: x => x.ID_EMPRESA,
@@ -308,7 +266,7 @@ namespace Mamba.Infra.Migrations
                 {
                     ID_DESAFIO = table.Column<Guid>(nullable: false),
                     DAT_CADASTRO = table.Column<DateTime>(nullable: false),
-                    ID_USUARIO_CADASTRO = table.Column<Guid>(nullable: false),
+                    ID_USUARIO_CADASTRO = table.Column<Guid>(nullable: true),
                     NOM_PROCESSO_CADASTRO = table.Column<string>(maxLength: 300, nullable: false),
                     DAT_ULTIMA_ALTERACAO = table.Column<DateTime>(nullable: true),
                     ID_EMPRESA = table.Column<Guid>(nullable: false),
@@ -342,11 +300,10 @@ namespace Mamba.Infra.Migrations
                 {
                     ID_FUNCIONARIO = table.Column<Guid>(nullable: false),
                     DAT_CADASTRO = table.Column<DateTime>(nullable: false),
-                    ID_USUARIO_CADASTRO = table.Column<Guid>(nullable: false),
+                    ID_USUARIO_CADASTRO = table.Column<Guid>(nullable: true),
                     NOM_PROCESSO_CADASTRO = table.Column<string>(maxLength: 300, nullable: false),
                     DAT_ULTIMA_ALTERACAO = table.Column<DateTime>(nullable: true),
-                    ID_EMPRESA = table.Column<Guid>(nullable: false),
-                    ID_CARGO = table.Column<Guid>(nullable: true),
+                    ID_CARGO = table.Column<Guid>(nullable: false),
                     ID_USUARIO = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
@@ -364,12 +321,6 @@ namespace Mamba.Infra.Migrations
                         principalTable: "CARGO",
                         principalColumn: "ID_CARGO",
                         onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_FUNCIONARIO_EMPRESA_ID_EMPRESA",
-                        column: x => x.ID_EMPRESA,
-                        principalTable: "EMPRESA",
-                        principalColumn: "ID_EMPRESA",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -378,12 +329,13 @@ namespace Mamba.Infra.Migrations
                 {
                     ID_INSCRICAO = table.Column<Guid>(nullable: false),
                     DAT_CADASTRO = table.Column<DateTime>(nullable: false),
-                    ID_USUARIO_CADASTRO = table.Column<Guid>(nullable: false),
+                    ID_USUARIO_CADASTRO = table.Column<Guid>(nullable: true),
                     NOM_PROCESSO_CADASTRO = table.Column<string>(maxLength: 300, nullable: false),
                     DAT_ULTIMA_ALTERACAO = table.Column<DateTime>(nullable: true),
                     ID_DESAFIO = table.Column<Guid>(nullable: false),
                     ID_CANDIDATO = table.Column<Guid>(nullable: false),
                     DAT_INSCRICAO = table.Column<DateTime>(nullable: false),
+                    DAT_INICIALIZACAO = table.Column<DateTime>(nullable: true),
                     DAT_FINALIZACAO = table.Column<DateTime>(nullable: true),
                     DSC_RESULTADO = table.Column<string>(maxLength: 500, nullable: true),
                     IND_APROVADO = table.Column<bool>(nullable: true)
@@ -411,7 +363,7 @@ namespace Mamba.Infra.Migrations
                 {
                     ID_QUESTAO = table.Column<Guid>(nullable: false),
                     DAT_CADASTRO = table.Column<DateTime>(nullable: false),
-                    ID_USUARIO_CADASTRO = table.Column<Guid>(nullable: false),
+                    ID_USUARIO_CADASTRO = table.Column<Guid>(nullable: true),
                     NOM_PROCESSO_CADASTRO = table.Column<string>(maxLength: 300, nullable: false),
                     DAT_ULTIMA_ALTERACAO = table.Column<DateTime>(nullable: true),
                     ID_DESAFIO = table.Column<Guid>(nullable: false),
@@ -434,7 +386,7 @@ namespace Mamba.Infra.Migrations
                 {
                     ID_RESPOSTA = table.Column<Guid>(nullable: false),
                     DAT_CADASTRO = table.Column<DateTime>(nullable: false),
-                    ID_USUARIO_CADASTRO = table.Column<Guid>(nullable: false),
+                    ID_USUARIO_CADASTRO = table.Column<Guid>(nullable: true),
                     NOM_PROCESSO_CADASTRO = table.Column<string>(maxLength: 300, nullable: false),
                     DAT_ULTIMA_ALTERACAO = table.Column<DateTime>(nullable: true),
                     ID_INSCRICAO = table.Column<Guid>(nullable: false),
@@ -464,7 +416,7 @@ namespace Mamba.Infra.Migrations
                 {
                     ID_AVALIACAO = table.Column<Guid>(nullable: false),
                     DAT_CADASTRO = table.Column<DateTime>(nullable: false),
-                    ID_USUARIO_CADASTRO = table.Column<Guid>(nullable: false),
+                    ID_USUARIO_CADASTRO = table.Column<Guid>(nullable: true),
                     NOM_PROCESSO_CADASTRO = table.Column<string>(maxLength: 300, nullable: false),
                     DAT_ULTIMA_ALTERACAO = table.Column<DateTime>(nullable: true),
                     ID_FUNCIONARIO = table.Column<Guid>(nullable: false),
@@ -546,24 +498,15 @@ namespace Mamba.Infra.Migrations
                 column: "ID_USUARIO");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CANDIDATO_ID_CIDADE",
+                name: "IX_CANDIDATO_ID_ENDERECO",
                 table: "CANDIDATO",
-                column: "ID_CIDADE");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_CARGO_ID_AREA_ATUACAO",
-                table: "CARGO",
-                column: "ID_AREA_ATUACAO");
+                column: "ID_ENDERECO",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_CARGO_ID_EMPRESA",
                 table: "CARGO",
                 column: "ID_EMPRESA");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_CIDADE_ID_ESTADO",
-                table: "CIDADE",
-                column: "ID_ESTADO");
 
             migrationBuilder.CreateIndex(
                 name: "IX_DESAFIO_ID_CARGO",
@@ -576,9 +519,10 @@ namespace Mamba.Infra.Migrations
                 column: "ID_EMPRESA");
 
             migrationBuilder.CreateIndex(
-                name: "IX_EMPRESA_ID_CIDADE",
+                name: "IX_EMPRESA_ID_ENDERECO",
                 table: "EMPRESA",
-                column: "ID_CIDADE");
+                column: "ID_ENDERECO",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_FUNCIONARIO_ID_USUARIO",
@@ -589,11 +533,6 @@ namespace Mamba.Infra.Migrations
                 name: "IX_FUNCIONARIO_ID_CARGO",
                 table: "FUNCIONARIO",
                 column: "ID_CARGO");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_FUNCIONARIO_ID_EMPRESA",
-                table: "FUNCIONARIO",
-                column: "ID_EMPRESA");
 
             migrationBuilder.CreateIndex(
                 name: "IX_INSCRICAO_ID_CANDIDATO",
@@ -669,16 +608,10 @@ namespace Mamba.Infra.Migrations
                 name: "CARGO");
 
             migrationBuilder.DropTable(
-                name: "AREA_ATUACAO");
-
-            migrationBuilder.DropTable(
                 name: "EMPRESA");
 
             migrationBuilder.DropTable(
-                name: "CIDADE");
-
-            migrationBuilder.DropTable(
-                name: "ESTADO");
+                name: "ENDERECO");
         }
     }
 }

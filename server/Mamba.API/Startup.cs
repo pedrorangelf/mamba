@@ -31,7 +31,9 @@ namespace Mamba.API
             services.ResolveDepedencies();
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IApiVersionDescriptionProvider apiVersionDescriptionProvider)
+        public void Configure(IApplicationBuilder app,
+                              IWebHostEnvironment env,
+                              IApiVersionDescriptionProvider apiVersionDescriptionProvider)
         {
             if (env.IsDevelopment())
             {
