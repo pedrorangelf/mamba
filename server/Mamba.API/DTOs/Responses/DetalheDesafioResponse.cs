@@ -1,9 +1,9 @@
 ﻿using Mamba.API.Extensions.Utilities;
 using System;
 
-namespace Mamba.API.DTOs
+namespace Mamba.API.DTOs.Responses
 {
-    public class DesafioDto
+    public class DetalheDesafioResponse
     {
         public Guid Id { get; set; }
         public Guid? CargoId { get; set; }

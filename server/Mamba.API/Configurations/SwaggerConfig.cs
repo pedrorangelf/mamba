@@ -41,6 +41,8 @@ namespace Mamba.API.Configurations
                         new string[] { }
                     }
                 });
+
+                options.EnableAnnotations();
             });
 
             return services;

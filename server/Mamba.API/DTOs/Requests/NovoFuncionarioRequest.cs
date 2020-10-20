@@ -1,9 +1,9 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Mamba.API.DTOs
+namespace Mamba.API.DTOs.Requests
 {
-    public class NovoFuncionarioDto
+    public class NovoFuncionarioRequest
     {
         [Required(ErrorMessage = "O campo {0} é obrigatório")]
         [StringLength(500, ErrorMessage = "O campo {0} deve conter no máximo {1} caracteres")]
@@ -35,7 +35,7 @@ namespace Mamba.API.DTOs
         public string LinkGithub { get; set; }
 
         [Required(ErrorMessage = "O campo {0} é obrigatório")]
-        public EmpresaDto Empresa { get; set; }
+        public EmpresaRequest Empresa { get; set; }
     }
 
 }

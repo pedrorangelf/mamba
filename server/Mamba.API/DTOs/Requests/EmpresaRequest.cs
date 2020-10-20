@@ -1,11 +1,10 @@
-﻿using Mamba.API.DTOs.Domain;
-using Mamba.API.Extensions.Attributes;
+﻿using Mamba.API.Extensions.Attributes;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace Mamba.API.DTOs
+namespace Mamba.API.DTOs.Requests
 {
-    public class EmpresaDto
+    public class EmpresaRequest
     {
         [Required(ErrorMessage = "O campo {0} é obrigatório")]
         [StringLength(500, ErrorMessage = "O campo {0} deve conter no máximo {1} caracteres")]
@@ -24,7 +23,7 @@ namespace Mamba.API.DTOs
 
         [DisplayName("Endereço")]
         [Required(ErrorMessage = "O campo {0} é obrigatório")]
-        public EnderecoDto Endereco { get; set; }
+        public EnderecoRequest Endereco { get; set; }
     }
 
 }

@@ -12,8 +12,8 @@ namespace Mamba.Domain.Interfaces.Repositories
         Task Update(TEntity obj);
         Task Remove(TEntity obj);
         Task RemoveInScale(IEnumerable<TEntity> objs);
-        Task<TEntity> GetById(int id);
-        Task<TEntity> FindAsNoTracking(int id);
+        Task<TEntity> GetById(Guid id);
+        Task<TEntity> FindAsNoTracking(Guid id);
         Task<IEnumerable<TEntity>> GetAll();
         IQueryable<TEntity> FindBy(Expression<Func<TEntity, bool>> predicate, params Expression<Func<TEntity, object>>[] includes);
         Task<int> SaveChanges();

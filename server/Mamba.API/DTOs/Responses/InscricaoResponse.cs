@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Mamba.API.DTOs
+namespace Mamba.API.DTOs.Responses
 {
-    public class InscricaoDto
+    public class InscricaoResponse
     {
         public Guid CandidatoId { get; set; }
         public string NomeCandidato { get; set; }

@@ -1,4 +1,5 @@
-﻿using Mamba.Domain.Interfaces;
+﻿using Mamba.API.DTOs.Responses;
+using Mamba.Domain.Interfaces;
 using Mamba.Domain.Notifications;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -32,17 +33,17 @@ namespace Mamba.API.Controllers
         {
             if (!OperacaoValida())
             {
-                return BadRequest(new
+                return BadRequest(new BadRequestCustomResponse
                 {
-                    success = false,
-                    errors = _notificator.GetNotifications().Select(n => n.Message)
+                    Success = false,
+                    Errors = _notificator.GetNotifications().Select(n => n.Message)
                 });
             }
 
-            return Ok(new
+            return Ok(new OkCustomResponse<object>
             {
-                success = true,
-                data = result
+                Success = true,
+                Data = result
             });
         }
 

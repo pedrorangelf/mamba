@@ -7,6 +7,7 @@ namespace Mamba.Domain.Interfaces.Services
 {
     public interface IDesafioService : IServiceBase<Desafio>
     {
+        Task<Desafio> ObterDesafioQuestoes(Guid id);
         Task<IEnumerable<Desafio>> ObterDesafiosEmpresa(Guid idEmpresa);
         Task<Desafio> ObterDesafioCargoInscricoes(Guid id);
     }

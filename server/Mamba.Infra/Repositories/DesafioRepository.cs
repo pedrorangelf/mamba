@@ -13,6 +13,13 @@ namespace Mamba.Infra.Repositories
     {
         public DesafioRepository(ContextBase contextBase) : base(contextBase) { }
 
+        public async Task<Desafio> ObterDesafioQuestoes(Guid id)
+        {
+            return await _contextBase.Desafio.AsNoTracking()
+                    .Include(d => d.Questoes)
+                    .FirstOrDefaultAsync(d => d.Id == id);
+        }
+
         public async Task<Desafio> ObterDesafioCargoInscricoes(Guid id)
         {
             return await _contextBase.Desafio.AsNoTracking()

@@ -1,14 +1,18 @@
 ﻿using AutoMapper;
 using Mamba.API.DTOs;
+using Mamba.API.DTOs.Requests;
+using Mamba.API.DTOs.Responses;
 using Mamba.API.Extensions;
 using Mamba.Domain.Entities;
 using Mamba.Domain.Interfaces;
 using Mamba.Domain.Interfaces.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Swashbuckle.AspNetCore.Annotations;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
@@ -59,7 +63,10 @@ namespace Mamba.API.Controllers.V1
         }
 
         [HttpPost("registrar-empresa")]
-        public async Task<IActionResult> RegistrarEmpresa(NovoFuncionarioDto novoFuncionarioDto)
+        [SwaggerOperation("Registra um novo usuário e empresa")]
+        [SwaggerResponse(StatusCodes.Status200OK, "Retorna o token de acesso e os dados do usuário cadastrado", typeof(OkCustomResponse<AuthResponse>))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, "Erros de validação da ModelState", typeof(BadRequestCustomResponse))]
+        public async Task<IActionResult> RegistrarEmpresa(NovoFuncionarioRequest novoFuncionarioDto)
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
@@ -114,7 +121,10 @@ namespace Mamba.API.Controllers.V1
         }
 
         [HttpPost("registrar-candidato")]
-        public async Task<IActionResult> RegistrarCandidato(NovoCandidatoDto novoCandidatoDto)
+        [SwaggerOperation("Registra um novo candidato")]
+        [SwaggerResponse(StatusCodes.Status200OK, "Retorna o token de acesso e os dados do usuário cadastrado", typeof(OkCustomResponse<AuthResponse>))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, "Erros de validação da ModelState", typeof(BadRequestCustomResponse))]
+        public async Task<IActionResult> RegistrarCandidato(NovoCandidatoRequest novoCandidatoDto)
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
@@ -155,7 +165,10 @@ namespace Mamba.API.Controllers.V1
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login(LoginDto loginViewModel)
+        [SwaggerOperation("Efetua a autenticação do usuário")]
+        [SwaggerResponse(StatusCodes.Status200OK, "Retorna o token de acesso e os dados do usuário cadastrado", typeof(OkCustomResponse<AuthResponse>))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, "Erros de validação da ModelState", typeof(BadRequestCustomResponse))]
+        public async Task<IActionResult> Login(LoginRequest loginViewModel)
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
@@ -174,7 +187,7 @@ namespace Mamba.API.Controllers.V1
             return CustomResponse();
         }
 
-        private async Task<AuthResponseViewModel> GeraJWT(string email)
+        private async Task<AuthResponse> GeraJWT(string email)
         {
             var user = await _userManager.FindByEmailAsync(email);
             var claims = await _userManager.GetClaimsAsync(user);
@@ -214,10 +227,11 @@ namespace Mamba.API.Controllers.V1
 
             var encodedToken = tokenHandler.WriteToken(token);
 
-            var response = new AuthResponseViewModel
+            var response = new AuthResponse
             {
                 AcessToken = encodedToken,
-                ExpiresIn = TimeSpan.FromHours(_jwtSettings.ExpiraEmHoras).TotalSeconds,
+                ExpiresIn = TimeSpan.FromDays(365).TotalSeconds,
+                //ExpiresIn = TimeSpan.FromHours(_jwtSettings.ExpiraEmHoras).TotalSeconds,
                 User = new UserTokenViewModel
                 {
                     Id = user.Id.ToString(),

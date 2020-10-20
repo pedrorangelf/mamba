@@ -11,12 +11,14 @@
     <Compile Remove="Migrations\20200825191033_Renomeacao_Usuario.Designer.cs" />
     <Compile Remove="Migrations\20200825203748_CorrecaoIdentity.cs" />
     <Compile Remove="Migrations\20200825203748_CorrecaoIdentity.Designer.cs" />
+    <Compile Remove="Migrations\20201020000853_Adaptacao_Desafio.cs" />
+    <Compile Remove="Migrations\20201020000853_Adaptacao_Desafio.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.7" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.7" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.7">
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.9" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.9" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.9">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>

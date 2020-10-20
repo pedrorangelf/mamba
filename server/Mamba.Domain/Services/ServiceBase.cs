@@ -63,12 +63,12 @@ namespace Mamba.Domain.Services
             await _repositoryBase.RemoveInScale(objs);
         }
 
-        public async Task<TEntity> GetById(int id)
+        public async Task<TEntity> GetById(Guid id)
         {
             return await _repositoryBase.GetById(id);
         }
 
-        public async Task<TEntity> FindAsNoTracking(int id)
+        public async Task<TEntity> FindAsNoTracking(Guid id)
         {
             return await _repositoryBase.FindAsNoTracking(id);
         }

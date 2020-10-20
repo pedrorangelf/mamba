@@ -1,4 +1,5 @@
 ﻿using Mamba.API.DTOs;
+using Mamba.API.DTOs.Responses;
 using Mamba.Domain.Entities;
 using Mamba.Domain.Interfaces;
 using Mamba.Domain.Interfaces.Services;
@@ -34,9 +35,9 @@ namespace Mamba.API.Controllers.V1
         }
 
 
-        private InscricaoDto ObterInscricaoDto(Inscricao inscricao)
+        private InscricaoResponse ObterInscricaoDto(Inscricao inscricao)
         {
-            return new InscricaoDto
+            return new InscricaoResponse
             {
                 CandidatoId = inscricao.CandidatoId,
                 NomeCandidato = inscricao.Candidato.ApplicationUser.Nome,

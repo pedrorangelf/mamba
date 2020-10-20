@@ -42,6 +42,7 @@ namespace Mamba.API
             else
             {
                 app.UseHsts();
+                app.UseDeveloperExceptionPage();
             }
 
             app.UseWebApiConfig();

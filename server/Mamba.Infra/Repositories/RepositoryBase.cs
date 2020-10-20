@@ -47,12 +47,12 @@ namespace Mamba.Infra.Repositories
             }
         }
 
-        public async Task<TEntity> GetById(int id)
+        public async Task<TEntity> GetById(Guid id)
         {
             return await _entity.FindAsync(id);
         }
 
-        public async Task<TEntity> FindAsNoTracking(int id)
+        public async Task<TEntity> FindAsNoTracking(Guid id)
         {
             var entity = await _entity.FindAsync(id);
 

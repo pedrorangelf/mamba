@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using Mamba.API.DTOs;
-using Mamba.API.DTOs.Domain;
+using Mamba.API.DTOs.Requests;
+using Mamba.API.DTOs.Responses;
 using Mamba.Domain.Entities;
 
 namespace Mamba.API.Configurations
@@ -9,22 +9,18 @@ namespace Mamba.API.Configurations
     {
         public AutoMapperConfig()
         {
-            CreateMap<Avaliacao, AvaliacaoViewModel>().ReverseMap();
-            CreateMap<Candidato, CandidatoViewModel>().ReverseMap();
-            CreateMap<Cargo, CargoViewModel>().ReverseMap();
-            CreateMap<Desafio, DesafioViewModel>().ReverseMap();
+            CreateMap<Desafio, DesafioCreateRequest>().ReverseMap();
+            CreateMap<Desafio, DesafioUpdateRequest>().ReverseMap();
+            CreateMap<Desafio, DesafioDetailResponse>().ReverseMap();
 
-            CreateMap<Empresa, EmpresaViewModel>().ReverseMap();
-            CreateMap<Empresa, EmpresaDto>().ReverseMap();
+            CreateMap<Questao, QuestaoCreateRequest>().ReverseMap();
+            CreateMap<Questao, QuestaoUpdateRequest>().ReverseMap();
+            CreateMap<Questao, QuestaoDetailResponse>().ReverseMap();
 
-            CreateMap<Endereco, EnderecoViewModel>().ReverseMap();
-            CreateMap<Endereco, EnderecoDto>().ReverseMap();
+            CreateMap<Empresa, EmpresaRequest>().ReverseMap();
+            CreateMap<Endereco, EnderecoRequest>().ReverseMap();
 
-            CreateMap<Funcionario, FuncionarioViewModel>().ReverseMap();
-            CreateMap<Inscricao, InscricaoViewModel>().ReverseMap();
-            CreateMap<Questao, QuestaoViewModel>().ReverseMap();
-            CreateMap<Resposta, RespostaViewModel>().ReverseMap();
-            CreateMap<ApplicationUser, ApplicationUserViewModel>().ReverseMap();
+            CreateMap<Cargo, CargoResponse>().ReverseMap();
         }
     }
 }

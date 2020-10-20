@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace Mamba.API.DTOs
+namespace Mamba.API.DTOs.Responses
 {
-    public class AuthResponseViewModel
+    public class AuthResponse
     {
         public string AcessToken { get; set; }
         public double ExpiresIn { get; set; }

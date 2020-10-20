@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Mamba.API.DTOs
+namespace Mamba.API.DTOs.Requests
 {
-    public class LoginDto
+    public class LoginRequest
     {
         [Required(ErrorMessage = "O campo {0} é obrigatório")]
         [EmailAddress(ErrorMessage = "O {0} informado é inválido")]

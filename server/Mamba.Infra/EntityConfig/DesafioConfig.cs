@@ -20,16 +20,6 @@ namespace Mamba.Infra.EntityConfig
             builder.Property(p => p.CargoId)
                 .HasColumnName("ID_CARGO");
 
-            builder.Property(p => p.Titulo)
-                .HasColumnName("NOM_TITULO")
-                .HasMaxLength(300)
-                .IsRequired();
-
-            builder.Property(p => p.Descricao)
-                .HasColumnName("DSC_DESAFIO")
-                .HasColumnType("NTEXT")
-                .IsRequired();
-
             builder.Property(p => p.LimiteInscricao)
                 .HasColumnName("QTD_LIMITE_INSCRICAO");
 

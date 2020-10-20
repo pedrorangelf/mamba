@@ -49,7 +49,7 @@ namespace Mamba.Infra.Context
                     entry.Property("ProcessoCadastro").CurrentValue = _user.GetCurrentPath();
 
                     if (_user.IsAuthenticated())
-                        entry.Property("CodigoUsuarioCadastro").CurrentValue = _user.GetUserId();
+                        entry.Property("UsuarioCadastroId").CurrentValue = _user.GetUserId();
 
                     entry.Property("DataUltimaAlteracao").IsModified = false;
                 }
@@ -59,7 +59,7 @@ namespace Mamba.Infra.Context
 
                     entry.Property("ProcessoCadastro").IsModified = false;
                     entry.Property("DataCadastro").IsModified = false;
-                    entry.Property("CodigoUsuarioCadastro").IsModified = false;
+                    entry.Property("UsuarioCadastroId").IsModified = false;
                 }
             }
 
