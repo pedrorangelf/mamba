@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Mamba.API.Controllers.DTOs.Responses;
 using Mamba.API.DTOs;
 using Mamba.API.DTOs.Requests;
 using Mamba.API.DTOs.Responses;
@@ -21,7 +22,9 @@ namespace Mamba.API.Controllers.V1
     [Route("api/v{version:apiVersion}/desafio")]
     public class DesafioController : MainController
     {
+        private readonly IQuestaoService _questaoService;
         private readonly ICargoService _cargoService;
+        private readonly IInscricaoService _inscricaoService;
         private readonly IDesafioService _desafioService;
         private readonly IMapper _mapper;
 
@@ -30,11 +33,15 @@ namespace Mamba.API.Controllers.V1
                                  IUser user,
                                  IDesafioService desafioService,
                                  IMapper mapper,
-                                 ICargoService cargoService) : base(notificator, user)
+                                 ICargoService cargoService,
+                                 IInscricaoService inscricaoService,
+                                 IQuestaoService questaoService) : base(notificator, user)
         {
             _desafioService = desafioService;
             _mapper = mapper;
             _cargoService = cargoService;
+            _inscricaoService = inscricaoService;
+            _questaoService = questaoService;
         }
 
         [Authorize(Roles = "Empresa")]
@@ -81,7 +88,9 @@ namespace Mamba.API.Controllers.V1
                 Cargo = d.Cargo?.Nome ?? "Sem cargo",
                 DataAbertura = d.DataAbertura,
                 DataFechamento = d.DataFechamento,
-                TotalCandidatos = d.Inscricoes.Count()
+                TotalCandidatos = d.Inscricoes.Count(),
+                QuestionariosFinalizados = d.Inscricoes.Count(i => i.DataFinalizacao.HasValue),
+                CorrecoesPendentes = d.Inscricoes.Sum(i => i.Respostas.Count(r => r.Avaliacao == null))
             });
 
             return CustomResponse(response);
@@ -159,10 +168,53 @@ namespace Mamba.API.Controllers.V1
             return CustomResponse("Desafio deletado com sucesso!");
         }
 
+        [Authorize(Roles = "Empresa")]
+        [HttpGet("{id:guid}/obter-inscricoes")]
+        [SwaggerOperation("Lista todas as inscrições do desafio")]
+        [SwaggerResponse(StatusCodes.Status200OK, "Lista os desafios", typeof(OkCustomResponse<InscricoesDesafioResponse>))]
+        [SwaggerResponse(StatusCodes.Status404NotFound, "Desafio não encontrado", typeof(string))]
+        public async Task<IActionResult> ObterInscricoesDesafio(Guid id)
+        {
+            var desafio = await _desafioService.ObterDesafioQuestoes(id);
+            if (desafio == null) return NotFound("Desafio não encontrado");
 
-        [Obsolete]
+            var inscricoes = await _inscricaoService.ObterInscricoesDesafioCandidato(id);
+            var inscricoesResponse = inscricoes.Select(i => new InscricoesDesafioResponse
+            {
+                InscricaoId = i.Id,
+                NomeCandidato = i.Candidato.ApplicationUser.Nome,
+                Aprovado = i.Aprovado,
+                TotalQuestoes = desafio.Questoes.Count(),
+                TotalAcertos = i.Respostas.Count(r => r.Avaliacao?.Aprovado ?? false == true)
+            });
+
+            return CustomResponse(inscricoesResponse);
+        }
+
+        [Authorize(Roles = "Empresa")]
+        [HttpGet("{id:guid}/obter-questoes")]
+        [SwaggerOperation("Lista todas as questões do desafio")]
+        [SwaggerResponse(StatusCodes.Status200OK, "Lista as questões", typeof(OkCustomResponse<QuestoesDesafioResponse>))]
+        [SwaggerResponse(StatusCodes.Status404NotFound, "Desafio não encontrado", typeof(string))]
+        public async Task<IActionResult> ObterQuestoesDesafio(Guid id)
+        {
+            var desafio = await _desafioService.ObterDesafioQuestoes(id);
+            if (desafio == null) return NotFound("Desafio não encontrado");
+
+            var inscricoesResponse = desafio.Questoes.Select(q => new QuestoesDesafioResponse
+            {
+                QuestaoId = q.Id,
+                Descricao = q.Descricao
+            });
+
+            return CustomResponse(inscricoesResponse);
+        }
+
+
+        // APP MOBILE
         [Authorize(Roles = "Empresa")]
         [HttpGet("desafios-abertos")]
+        [SwaggerOperation("Endpoint dedicado ao app mobile")]
         public async Task<IActionResult> ObterDesafiosAbertos()
         {
             var desafios = await _desafioService.ObterDesafiosEmpresa(EmpresaId);
@@ -174,6 +226,7 @@ namespace Mamba.API.Controllers.V1
         }
 
         [Authorize(Roles = "Empresa")]
+        [SwaggerOperation("Endpoint dedicado ao app mobile")]
         [HttpGet("desafios-fechados")]
         public async Task<IActionResult> ObterDesafiosFechados()
         {
@@ -184,7 +237,6 @@ namespace Mamba.API.Controllers.V1
 
             return CustomResponse(desafiosAbertos);
         }
-
 
         private DetalheDesafioResponse ObterDetalhesDesafio(Desafio desafio)
         {
@@ -209,5 +261,11 @@ namespace Mamba.API.Controllers.V1
                                                .FirstOrDefault()?.DataFinalizacao
             };
         }
+    }
+
+    public class QuestoesDesafioResponse
+    {
+        public Guid QuestaoId { get; set; }
+        public string Descricao { get; set; }
     }
 }

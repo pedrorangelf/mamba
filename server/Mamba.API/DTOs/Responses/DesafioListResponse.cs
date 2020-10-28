@@ -10,6 +10,8 @@ namespace Mamba.API.DTOs.Responses
         public DateTime DataAbertura { get; set; }
         public DateTime? DataFechamento { get; set; }
         public int TotalCandidatos { get; set; }
+        public int QuestionariosFinalizados { get; set; }
+        public int CorrecoesPendentes { get; set; }
 
         public string StatusDesafio
         {

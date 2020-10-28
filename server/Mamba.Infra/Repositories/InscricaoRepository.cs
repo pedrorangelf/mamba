@@ -19,6 +19,7 @@ namespace Mamba.Infra.Repositories
         {
             return await _contextBase.Inscricao.AsNoTracking()
                                      .Include(i => i.Candidato).ThenInclude(c => c.ApplicationUser)
+                                     .Include(i => i.Respostas).ThenInclude(r => r.Avaliacao)
                                      .Where(i => i.DesafioId == idDesafio)
                                      .ToListAsync();
         }
