@@ -28,12 +28,24 @@ namespace Mamba.API.Controllers.DTOs.Responses
                 return StatusAprovacaoInscricao.Reprovado;
             }
         }
+
+        public string DescricaoStatus
+        {
+            get
+            {
+                if (!Aprovado.HasValue) return StatusAprovacaoInscricao.Pendente.ToString();
+
+                if (Aprovado.Value) return StatusAprovacaoInscricao.Aprovado.ToString();
+
+                return StatusAprovacaoInscricao.Reprovado.ToString();
+            }
+        }
     }
 
     public enum StatusAprovacaoInscricao
     {
+        Pendente,
         Aprovado,
-        Reprovado,
-        Pendente
+        Reprovado
     }
 }

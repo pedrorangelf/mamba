@@ -32,8 +32,7 @@ namespace Mamba.API.Controllers.V1
         [Authorize(Roles = "Empresa")]
         [HttpGet]
         [SwaggerOperation("Retorna todos os cargos cadastrados da empresa do usuário")]
-        [SwaggerResponse(StatusCodes.Status200OK, "Retorna os cargos cadastrados da empresa do usuário",
-                         typeof(OkCustomResponse<IEnumerable<CargoResponse>>))]
+        [SwaggerResponse(StatusCodes.Status200OK, "Retorna os cargos cadastrados da empresa do usuário", typeof(OkCustomResponse<IEnumerable<CargoResponse>>))]
         public async Task<IActionResult> ObterTodos()
         {
             var cargos = await _cargoService.ObterCargosEmpresa(EmpresaId);

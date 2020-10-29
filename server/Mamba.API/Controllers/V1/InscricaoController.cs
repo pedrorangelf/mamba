@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Mamba.API.Controllers.DTOs.Requests;
-using Mamba.API.DTOs;
+using Mamba.API.Controllers.DTOs.Responses;
 using Mamba.API.DTOs.Responses;
 using Mamba.Domain.Entities;
 using Mamba.Domain.Interfaces;
@@ -34,7 +34,7 @@ namespace Mamba.API.Controllers.V1
                                    IDesafioService desafioService,
                                    UserManager<ApplicationUser> userManager,
                                    ICandidatoService candidatoService,
-                                   IMapper mapper, 
+                                   IMapper mapper,
                                    IRespostaService respostaService) : base(notificator, user)
         {
             _inscricaoService = inscricaoService;
@@ -77,6 +77,12 @@ namespace Mamba.API.Controllers.V1
                     return BadRequest("Este desafio já atingiu seu limite de inscrições.");
             }
 
+            if (desafio.DataFechamento.HasValue)
+            {
+                if (desafio.DataFechamento.Value <= DateTime.Now)
+                    return BadRequest("Este desafio já foi fechado e não permite novas inscrições.");
+            }
+
             var user = new ApplicationUser
             {
                 DataNascimento = inscricaoRequest.DataNascimento,
@@ -111,10 +117,12 @@ namespace Mamba.API.Controllers.V1
                 DesafioId = idDesafio,
                 CandidatoId = candidato.Id,
                 DataInscricao = DateTime.Now,
+                DataInicializacao = DateTime.Now,
+                DataFinalizacao = DateTime.Now
             };
             await _inscricaoService.Add(inscricao);
 
-            foreach(var resposta in inscricaoRequest.Respostas)
+            foreach (var resposta in inscricaoRequest.Respostas)
             {
                 await _respostaService.Add(new Resposta
                 {
@@ -131,6 +139,53 @@ namespace Mamba.API.Controllers.V1
             });
         }
 
+        [Authorize(Roles = "Empresa")]
+        [HttpGet("{id:guid}")]
+        [SwaggerOperation("Retorna os detalhes da inscrição")]
+        [SwaggerResponse(StatusCodes.Status200OK, "Retorna a inscrição detalhada", typeof(OkCustomResponse<InscricaoDetalhadaResponse>))]
+        [SwaggerResponse(StatusCodes.Status404NotFound, "Inscrição não encontrada", typeof(string))]
+        public async Task<IActionResult> ObterPorId(Guid id)
+        {
+            var inscricao = await _inscricaoService.ObterInscricaoDetalhada(id);
+            if (inscricao == null) return NotFound("Inscrição não encontrada");
+
+            var inscricaoResponse = new InscricaoDetalhadaResponse
+            {
+                DesafioId = inscricao.DesafioId,
+                VagaDesafio = inscricao.Desafio.Cargo.Nome,
+                NomeCandidato = inscricao.Candidato.ApplicationUser.Nome,
+                Telefone = inscricao.Candidato.ApplicationUser.PhoneNumber,
+                Email = inscricao.Candidato.ApplicationUser.Email,
+                LinkedIn = inscricao.Candidato.ApplicationUser.LinkGithub,
+                GitHub = inscricao.Candidato.ApplicationUser.LinkLinkedin,
+                Aprovado = inscricao.Aprovado,
+                ParecerFinal = inscricao.Resultado,
+                TotalQuestoes = inscricao.Desafio.Questoes.Count(),
+                TotalAcertos = inscricao.Desafio.Questoes.Select(q => q.Respostas.Count(r => r.Avaliacao?.Aprovado ?? false == true && r.InscricaoId == id)).Sum(),
+                Questoes = inscricao.Desafio.Questoes.Select(q => new InscricaoDetalhadaQuestaoResponse
+                {
+                    QuestaoId = q.Id,
+                    Descricao = q.Descricao,
+                    Resposta = q.Respostas.Where(r => r.InscricaoId == id && r.QuestaoId == q.Id)
+                        .Select(r => new InscricaoDetalhadaQuestaoRespostaResponse
+                        {
+                            RespostaId = r.Id,
+                            Descricao = r.Descricao,
+                        }).FirstOrDefault(),
+                    Avaliacao = q.Respostas.Where(r => r.InscricaoId == id && r.QuestaoId == q.Id && r.Avaliacao != null)
+                        .Select(r => new InscricaoDetalhadaQuestaoAvaliacaoResponse
+                        {
+                            Aprovado = r.Avaliacao.Aprovado,
+                            Descricao = r.Avaliacao.Descricao,
+                            Avaliador = r.Avaliacao.Funcionario.ApplicationUser.Nome
+                        }).FirstOrDefault()
+                }).ToList()
+            };
+
+            return CustomResponse(inscricaoResponse);
+        }
+
+
         private InscricaoResponse ObterInscricaoDto(Inscricao inscricao)
         {
             return new InscricaoResponse
@@ -145,5 +200,4 @@ namespace Mamba.API.Controllers.V1
             };
         }
     }
-
 }

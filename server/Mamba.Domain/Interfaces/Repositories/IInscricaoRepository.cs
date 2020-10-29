@@ -8,5 +8,6 @@ namespace Mamba.Domain.Interfaces.Repositories
     public interface IInscricaoRepository : IRepositoryBase<Inscricao>
     {
         Task<IEnumerable<Inscricao>> ObterInscricoesDesafioCandidato(Guid idDesafio);
+        Task<Inscricao> ObterInscricaoDetalhada(Guid id);
     }
 }

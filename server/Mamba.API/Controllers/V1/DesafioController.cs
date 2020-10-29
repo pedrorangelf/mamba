@@ -76,8 +76,7 @@ namespace Mamba.API.Controllers.V1
         [Authorize(Roles = "Empresa")]
         [HttpGet]
         [SwaggerOperation("Retorna todos os desafios cadastrados da empresa do usuário")]
-        [SwaggerResponse(StatusCodes.Status200OK, "Retorna os desafios cadastrados da empresa do usuário",
-                         typeof(OkCustomResponse<IEnumerable<DesafioListResponse>>))]
+        [SwaggerResponse(StatusCodes.Status200OK, "Retorna os desafios cadastrados da empresa do usuário", typeof(OkCustomResponse<IEnumerable<DesafioListResponse>>))]
         public async Task<IActionResult> ObterTodos()
         {
             var desafios = await _desafioService.ObterDesafiosEmpresa(EmpresaId);
@@ -210,6 +209,21 @@ namespace Mamba.API.Controllers.V1
             return CustomResponse(inscricoesResponse);
         }
 
+        [Authorize(Roles = "Empresa")]
+        [HttpPost("{id:guid}/fechar-desafio")]
+        [SwaggerOperation("Fecha o desafio para novas vagas")]
+        [SwaggerResponse(StatusCodes.Status200OK, "Desafio fechado com sucesso!", typeof(OkCustomResponse<string>))]
+        [SwaggerResponse(StatusCodes.Status404NotFound, "Desafio não encontrado", typeof(string))]
+        public async Task<IActionResult> FecharDesafio(Guid id)
+        {
+            var desafio = await _desafioService.GetById(id);
+            if (desafio == null) return NotFound("Desafio não encontrado");
+
+            desafio.DataFechamento = DateTime.Now;
+            await _desafioService.Update(desafio);
+
+            return CustomResponse("Desafio fechado com sucesso!");
+        }
 
         // APP MOBILE
         [Authorize(Roles = "Empresa")]

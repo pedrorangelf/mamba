@@ -32,7 +32,7 @@ namespace Mamba.Infra.Repositories
         {
             return await _contextBase.Desafio.AsNoTracking()
                             .Include(d => d.Cargo)
-                            .Include(d => d.Inscricoes).ThenInclude(i => i.Respostas)
+                            .Include(d => d.Inscricoes).ThenInclude(i => i.Respostas).ThenInclude(r => r.Avaliacao)
                             .Where(d => d.EmpresaId == idEmpresa)
                             .ToListAsync();
         }
