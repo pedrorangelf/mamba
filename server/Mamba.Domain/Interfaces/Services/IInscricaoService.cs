@@ -8,5 +8,6 @@ namespace Mamba.Domain.Interfaces.Services
     public interface IInscricaoService : IServiceBase<Inscricao>
     {
         Task<IEnumerable<Inscricao>> ObterInscricoesDesafioCandidato(Guid idDesafio);
+        Task<Inscricao> ObterInscricaoDetalhada(Guid id);
     }
 }

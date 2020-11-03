@@ -19,6 +19,11 @@ namespace Mamba.Domain.Services
             _notificator = notificator;
         }
 
+        public async Task<Inscricao> ObterInscricaoDetalhada(Guid id)
+        {
+            return await _inscricaoRepository.ObterInscricaoDetalhada(id);
+        }
+
         public async Task<IEnumerable<Inscricao>> ObterInscricoesDesafioCandidato(Guid idDesafio)
         {
             return await _inscricaoRepository.ObterInscricoesDesafioCandidato(idDesafio);
