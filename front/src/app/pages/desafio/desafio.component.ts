@@ -15,8 +15,8 @@ export class DesafioComponent implements OnInit {
 
   formGroup: FormGroup;
   idDesafio: number;
-  title = 'Cadastar Desafio';
-  subtitle = 'Novo Desafio';
+  title = 'Cadastar Vaga';
+  subtitle = 'Nova Vaga';
   desafio: any = {};
   questoes: QuestaoModel[] = [];
 
@@ -28,7 +28,7 @@ export class DesafioComponent implements OnInit {
     console.log(this._activatedRoute.snapshot.params.id);
 
     if (this._activatedRoute.snapshot.params.id > 0) {
-      this.title = 'Editar Desafio';
+      this.title = 'Editar Vaga';
       this.desafioService.buscarDesafioPorId(this.idDesafio).subscribe((result) => {
         this.desafio = result;
         this.subtitle = this.desafio.titulo;
@@ -56,7 +56,7 @@ export class DesafioComponent implements OnInit {
     if (this.idDesafio > 0) {
       this.desafioService.editar(model).subscribe(result => {
         Swal.fire({
-          title: 'Desafio salvo com sucesso!',
+          title: 'Vaga salva com sucesso!',
           // text: 'Deseja continuar cadastrando ?',
           showCancelButton: false,
           confirmButtonColor: '#29b6f6',

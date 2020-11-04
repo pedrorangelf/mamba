@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'http://mambafiap.azurewebsites.net',
+  apiUrl: 'https://api.victorsavoi.dev.br/api/v1',
 };
 
 /*
