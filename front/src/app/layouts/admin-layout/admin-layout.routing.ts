@@ -1,4 +1,4 @@
-import { DesafioComponent } from './../../pages/desafio/desafio.component';
+import { DesafioComponent } from '../../pages/desafio/desafio.component';
 import { Routes } from '@angular/router';
 
 import { DashboardComponent } from '../../pages/dashboard/dashboard.component';

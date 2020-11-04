@@ -1,7 +1,9 @@
 export interface DesafioModel {
-  idDesafio: number;
-  titulo: string;
-  descricao: string;
+  id: string;
+  cargoId: string;
+  limiteInscricao: number;
+  dataAbertura: Date;
+  dataFechamento: Date;
   questoes: QuestaoModel[];
 }
 

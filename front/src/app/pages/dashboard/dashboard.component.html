@@ -93,7 +93,7 @@
 </div>
 <div class="container-fluid mt--7">
   <div class="row">
-    <div class="col-xl-8 mb-5 mb-xl-0">
+    <div class="col-xl-12 mb-5 mb-xl-0">
       <div class="card shadow">
         <div class="card-header border-0">
           <div class="row align-items-center">
@@ -108,21 +108,28 @@
         <div class="table-responsive">
           <!-- Projects table -->
           <table class="table align-items-center table-flush">
-            <thead class="thead-light">
+            <!-- <thead class="thead-light">
               <tr>
                 <th scope="row" colspan="2">Descrição</th>
+                <th scope="row" colspan="1">Status</th>
               </tr>
-            </thead>
+            </thead> -->
             <tbody>
               <tr *ngFor="let item of desafios" >
-                <th scope="row">
-                  {{item.titulo}}
+                <th>
+                  {{item.cargo}}
+                </th>
+                <th>
+                  {{item.statusDesafio}}
+                </th>
+                <th>
+                  {{item.totalCandidatos}} candidatos
                 </th>
                 <th class="text-right">
-                    <a class="btn btn-sm btn-icon-only text-primary" (click)="editar(item.idDesafio)">
+                    <a class="btn btn-sm btn-icon-only text-primary" (click)="editar(item.id)">
                       <i class="fas fa-edit"></i>
                     </a>
-                    <a class="btn btn-sm btn-icon-only text-danger" (click)="excluir(item.idDesafio)">
+                    <a class="btn btn-sm btn-icon-only text-danger" (click)="excluir(item.id)">
                       <i class="fas fa-trash-alt"></i>
                     </a>
                 </th>

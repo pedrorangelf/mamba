@@ -17,14 +17,14 @@ export class DesafioService extends DataService {
     }
 
     editar(data: DesafioModel) {
-        return this.put<DesafioModel>('editar', data);
+        return this.put<DesafioModel>('', data);
     }
 
-    excluir(id: number) {
-        return this.delete<any>('excluir', id);
+    excluir(id: string) {
+        return this.delete<any>('', id);
     }
 
-    buscarDesafioPorId(id: number) {
+    buscarDesafioPorId(id: string) {
         return this.get<any>('', id);
     }
 

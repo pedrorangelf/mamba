@@ -31,16 +31,12 @@
               <div class="row">
                 <div class="col-lg-12">
                   <div class="form-group">
-                    <label class="form-control-label" for="input-username">Título</label>
-                    <input type="text" id="input-username" formControlName="titulo"
-                      class="form-control form-control-alternative" [value]="desafio.titulo">
-                  </div>
-                </div>
-                <div class="col-lg-12">
-                  <div class="form-group">
-                    <label class="form-control-label" for="input-email">Descrição</label>
-                    <textarea rows="4" class="form-control form-control-alternative"
-                    formControlName="descricao"  [value]="desafio.descricao"></textarea>
+                    <label for="Selecione o Cargo:">Selecione um Cargo:</label>
+                    <select class="form-control" formControlName="select">
+                      <option value="">Selecione</option>
+                      <option [ngValue]="cargo.id" *ngFor="let cargo of cargos">
+                        {{cargo.nome}}</option>
+                    </select>
                   </div>
                 </div>
               </div>
@@ -68,8 +64,8 @@
                         <button type="button" class="btn btn-danger btn-sm" (click)="removeQuestao(i)">Remover</button>
                       </div>
                     </div>
-                    <textarea rows="4" class="form-control form-control-alternative"
-                      [(ngModel)]="questao.descricao" [ngModelOptions]="{standalone: true}"></textarea>
+                    <textarea rows="4" class="form-control form-control-alternative" [(ngModel)]="questao.descricao"
+                      [ngModelOptions]="{standalone: true}"></textarea>
                   </div>
                 </div>
               </div>
@@ -78,7 +74,7 @@
             <div class="pl-lg-4">
               <div class="form-group">
                 <button type="button" class="btn btn-success btn-lg btn-block" [disabled]="formGroup.invalid"
-                  (click)="salvar()">Salvar Desafio</button>
+                  (click)="salvar()">Salvar</button>
                 <button type="button" class="btn btn-danger btn-lg btn-block" (click)="cancelar()">Cancelar</button>
               </div>
             </div>

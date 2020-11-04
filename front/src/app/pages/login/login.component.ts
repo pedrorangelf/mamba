@@ -27,7 +27,8 @@ export class LoginComponent implements OnInit, OnDestroy {
   login() {
     this.accountService.login(this.formGroup.value.email, this.formGroup.value.senha).subscribe((response: any) => {
 
-      const responseToken = response.data.json();
+      const responseToken = response.data;
+      console.log(response);
 
       if (responseToken) {
         this.accessToken = responseToken.acessToken;
@@ -39,12 +40,10 @@ export class LoginComponent implements OnInit, OnDestroy {
           accessToken: responseToken.acessToken
         }));
 
+        this.router.navigate(['dashboard/']);
       }
-    });
-
-    if (this.accessToken) {
-      this.router.navigate(['dashboard/']);
-    }
+    }, error => { console.log(error); }
+    );
   }
 
 }

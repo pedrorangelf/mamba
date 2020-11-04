@@ -25,7 +25,8 @@ export class DashboardComponent implements OnInit {
   public clicked1 = false;
   public desafios = [];
 
-  constructor(private desafioService: DesafioService, private router: Router) { }
+  constructor(private desafioService: DesafioService, private router: Router) {
+  }
 
   ngOnInit() {
 
@@ -61,7 +62,8 @@ export class DashboardComponent implements OnInit {
 
   listarDesafios() {
     this.desafioService.listarDesafios().subscribe(result => {
-      this.desafios = result;
+      console.log(result);
+      this.desafios = result.data;
     });
   }
 
@@ -72,7 +74,7 @@ export class DashboardComponent implements OnInit {
     this.salesChart.update();
   }
 
-  public excluir(id: number) {
+  public excluir(id: string) {
     this.desafioService.excluir(id).subscribe(() => {
       this.listarDesafios();
     });

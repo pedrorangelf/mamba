@@ -1,5 +1,5 @@
 import { DesafioService } from './../../services/desafio.service';
-import { DesafioComponent } from './../../pages/desafio/desafio.component';
+import { DesafioComponent } from '../../pages/desafio/desafio.component';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
@@ -15,6 +15,7 @@ import { MapsComponent } from '../../pages/maps/maps.component';
 import { UserProfileComponent } from '../../pages/user-profile/user-profile.component';
 import { TablesComponent } from '../../pages/tables/tables.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { CargoService } from 'src/app/services/cargo.service';
 // import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
@@ -36,7 +37,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     DesafioComponent
   ],
   providers: [
-    DesafioService
+    DesafioService,
+    CargoService
   ]
 })
 

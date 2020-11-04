@@ -5,7 +5,7 @@ import { DataService } from './data.service';
 @Injectable({
   providedIn: 'root'
 })
-export class AccountService extends DataService{
+export class AccountService extends DataService {
 
   private accessToken: string;
   context = 'login';
