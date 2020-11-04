@@ -13,9 +13,9 @@
 
 @mixin bg-gradient-variant($parent, $color) {
     #{$parent} {
-      background: #c31432 !important;  /* fallback for old browsers */
-      background: -webkit-linear-gradient(to right, #240b36, #c31432) !important;  /* Chrome 10-25, Safari 5.1-6 */
-      background: linear-gradient(to right, #240b36, #c31432) !important; /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+      background: #33B6BE !important;  /* fallback for old browsers */
+      background: -webkit-linear-gradient(to right, #33B6BE, #33B6BE) !important;  /* Chrome 10-25, Safari 5.1-6 */
+      background: linear-gradient(to right, #33B6BE, #33B6BE) !important; /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
     }
 }
