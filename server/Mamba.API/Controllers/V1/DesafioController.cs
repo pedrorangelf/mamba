@@ -143,6 +143,11 @@ namespace Mamba.API.Controllers.V1
             var desafioUpdate = _mapper.Map<Desafio>(desafioUpdateRequest);
             desafioUpdate.EmpresaId = EmpresaId;
 
+
+            Guid[] idQuestoesAdicionadas = desafioUpdateRequest.Questoes.Where(q => q.Id != Guid.Empty).Select(q => q.Id).ToArray();
+            var questoesDeletadas = await _questaoService.ObterQuestoesDeletadas(id, idQuestoesAdicionadas);
+            if (questoesDeletadas.Count() > 0) await _questaoService.RemoveInScale(questoesDeletadas);
+
             await _desafioService.Update(desafioUpdate);
 
             return CustomResponse("Desafio atualizado com sucesso!");

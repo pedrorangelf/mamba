@@ -19,5 +19,12 @@ namespace Mamba.Infra.Repositories
         {
             return await _contextBase.Questao.Where(q => q.DesafioId == desafioId).ToListAsync();
         }
+
+        public async Task<IEnumerable<Questao>> ObterQuestoesDeletadas(Guid desafioId, Guid[] questoesAdicionadas)
+        {
+            return await _contextBase.Questao
+                            .Where(q => q.DesafioId == desafioId && !questoesAdicionadas.Contains(q.Id))
+                            .ToListAsync();
+        }
     }
 }

@@ -2,6 +2,9 @@
 using Mamba.Domain.Interfaces.Repositories;
 using Mamba.Domain.Interfaces.Services;
 using Mamba.Domain.Interfaces;
+using System.Threading.Tasks;
+using System.Collections.Generic;
+using System;
 
 namespace Mamba.Domain.Services
 {
@@ -14,6 +17,11 @@ namespace Mamba.Domain.Services
         {
             _avaliacaoRepository = avaliacaoRepository;
             _notificator = notificator;
+        }
+
+        public async Task<List<Avaliacao>> ObterAvaliacoesResposta(Guid respostaId)
+        {
+            return await _avaliacaoRepository.ObterAvaliacoesResposta(respostaId);
         }
     }
 }

@@ -10,9 +10,11 @@ namespace Mamba.API.Configurations
         {
             services.AddCors(options =>
             {
-                options.AddPolicy("Default", builder =>
+                options.AddDefaultPolicy(builder =>
                 {
                     builder.AllowAnyOrigin();
+                    builder.AllowAnyHeader();
+                    builder.AllowAnyMethod();
                 });
             });
 
@@ -44,7 +46,7 @@ namespace Mamba.API.Configurations
             app.UseAuthentication();
             app.UseHttpsRedirection();
             app.UseRouting();
-            app.UseCors("Default");
+            app.UseCors();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
