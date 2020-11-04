@@ -1,5 +1,5 @@
-import { environment } from './../../environments/environment';
 import { Injectable, Injector } from '@angular/core';
+import { environment } from './../../environments/environment';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { retry } from 'rxjs/operators';
@@ -11,20 +11,24 @@ export abstract class DataService {
     abstract context: string;
     currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
+    protected getHttpOptions() {
+        if(this.currentUser == null) return;
 
-    protected httpOptions = {
-      headers: new HttpHeaders({ 'Content-Type': 'application/json',
-                                  Authorization: `Bearer ${this.currentUser.accessToken}`
-                               })
-  };
+        return {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${this.currentUser.accessToken}`
+            })
+        };
+    }
 
     constructor(protected http: HttpClient) {
-      console.log(this.currentUser);
+        console.log(this.currentUser);
     }
 
     protected get<T>(url?: string, resourceId?: number | string): Observable<T> {
         const apiUrl = this.config + '/' + this.context + (url ? '/' + url : '') + (resourceId ? '/' + resourceId : '');
-        return this.http.get<T>(apiUrl, this.httpOptions);
+        return this.http.get<T>(apiUrl, this.getHttpOptions());
     }
 
     protected getWithParams<T>(url?: string, params?: HttpParams | { [param: string]: string | string[] }): Observable<T> {
@@ -33,16 +37,16 @@ export abstract class DataService {
 
     protected post<T>(url: string, data: any): Observable<T> {
         console.log(this.config + '/' + this.context + '/' + (url ? url : ''));
-        return this.http.post<T>(this.config + '/' + this.context + '/' + (url ? url : ''), data, this.httpOptions);
+        return this.http.post<T>(this.config + '/' + this.context + '/' + (url ? url : ''), data, this.getHttpOptions());
     }
 
     protected put<T>(url: string, data: any): Observable<T> {
         console.log(this.config + '/' + this.context + '/' + (url ? url : ''));
-        return this.http.put<T>(this.config + '/' + this.context + '/' + (url ? url : ''), data, this.httpOptions);
+        return this.http.put<T>(this.config + '/' + this.context + '/' + (url ? url : ''), data, this.getHttpOptions());
     }
 
     protected delete<T>(url?: string, resourceId?: number | string): Observable<T> {
         console.log(this.config + '/' + this.context + '/' + (url ? url : '') + '/' + resourceId);
-        return this.http.delete<T>(this.config + '/' + this.context + '/' + resourceId, this.httpOptions);
+        return this.http.delete<T>(this.config + '/' + this.context + '/' + resourceId, this.getHttpOptions());
     }
 }

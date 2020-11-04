@@ -41,7 +41,7 @@ export class DesafioComponent implements OnInit {
         console.log(result);
         this.desafio = result.data;
         this.questoes = this.desafio.questoes;
-        this.formGroup.controls['select'].setValue(this.desafio.cargoId, {onlySelf: true});
+        this.formGroup.controls['select'].setValue(this.desafio.cargoId, { onlySelf: true });
       });
     }
   }
@@ -49,7 +49,7 @@ export class DesafioComponent implements OnInit {
   ngOnInit(): void {
 
     this.formGroup = this.formBuilder.group({
-      select : new FormControl(null)
+      select: new FormControl(null)
     });
 
   }
@@ -114,7 +114,7 @@ export class DesafioComponent implements OnInit {
     if (this.formGroup.dirty) {
       Swal.fire({
         title: 'Deseja abandonar?',
-        text: 'Se você sair os dados alterados não serão salvos.',
+        text: 'Se você sair, todos os dados alterados serão perdidos.',
         showCancelButton: true,
         confirmButtonColor: '#29b6f6',
         cancelButtonColor: '#ef9a9a',
@@ -128,6 +128,9 @@ export class DesafioComponent implements OnInit {
         }
       );
     }
+    else {
+      this.router.navigate(['dashboard']);
+    }
   }
 
   addQuestao() {
@@ -136,7 +139,6 @@ export class DesafioComponent implements OnInit {
       idQuestao: 0
     });
   }
-
 
   removeQuestao(i: number) {
     this.questoes.splice(i, 1);

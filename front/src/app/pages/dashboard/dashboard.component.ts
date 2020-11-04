@@ -38,25 +38,27 @@ export class DashboardComponent implements OnInit {
     ];
     this.data = this.datasets[0];
 
-
     const chartOrders = document.getElementById('chart-orders');
 
     parseOptions(Chart, chartOptions());
 
-
-    const ordersChart = new Chart(chartOrders, {
-      type: 'bar',
-      options: chartExample2.options,
-      data: chartExample2.data
-    });
+    if (chartOrders) {
+      const ordersChart = new Chart(chartOrders, {
+        type: 'bar',
+        options: chartExample2.options,
+        data: chartExample2.data
+      });
+    }
 
     const chartSales = document.getElementById('chart-sales');
 
-    this.salesChart = new Chart(chartSales, {
-      type: 'line',
-      options: chartExample1.options,
-      data: chartExample1.data
-    });
+    if (chartSales) {
+      this.salesChart = new Chart(chartSales, {
+        type: 'line',
+        options: chartExample1.options,
+        data: chartExample1.data
+      });
+    }
   }
 
 
@@ -87,6 +89,6 @@ export class DashboardComponent implements OnInit {
     //   .open({ title: `${acao} Funcionário`, model: row }, FuncionarioEditComponent)
     //   .pipe(take(1))
     //   .subscribe((res: boolean) => { if (res) { this.listarFuncionarios(); } });
-}
+  }
 
 }
