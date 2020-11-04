@@ -17,7 +17,7 @@ export class DesafioService extends DataService {
     }
 
     editar(data: DesafioModel) {
-        return this.put<DesafioModel>('', data);
+        return this.put<DesafioModel>(data.id, data);
     }
 
     excluir(id: string) {

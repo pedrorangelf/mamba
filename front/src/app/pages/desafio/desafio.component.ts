@@ -36,6 +36,7 @@ export class DesafioComponent implements OnInit {
 
     if (this._activatedRoute.snapshot.params.id) {
       this.title = 'Editar Vaga';
+      this.subtitle = 'Editar';
       this.desafioService.buscarDesafioPorId(this.idDesafio).subscribe((result) => {
         console.log(result);
         this.desafio = result.data;

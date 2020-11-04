@@ -43,6 +43,6 @@ export abstract class DataService {
 
     protected delete<T>(url?: string, resourceId?: number | string): Observable<T> {
         console.log(this.config + '/' + this.context + '/' + (url ? url : '') + '/' + resourceId);
-        return this.http.delete<T>(this.config + '/' + this.context + '/' + (url ? url : '') + '/' + resourceId, this.httpOptions);
+        return this.http.delete<T>(this.config + '/' + this.context + '/' + resourceId, this.httpOptions);
     }
 }
