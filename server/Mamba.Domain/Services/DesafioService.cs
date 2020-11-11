@@ -29,6 +29,7 @@ namespace Mamba.Domain.Services
             return await _desafioRepository.ObterDesafioCargoInscricoes(id);
         }
 
+
         public async Task<Desafio> ObterDesafioQuestoes(Guid id)
         {
             return await _desafioRepository.ObterDesafioQuestoes(id);
@@ -37,6 +38,11 @@ namespace Mamba.Domain.Services
         public async Task<IEnumerable<Desafio>> ObterDesafiosEmpresa(Guid idEmpresa)
         {
             return await _desafioRepository.ObterDesafiosEmpresa(idEmpresa);
+        }
+
+        public async Task<Desafio> ObterDesafioEmpresa(Guid idDesafio)
+        {
+            return await _desafioRepository.ObterDesafioEmpresa(idDesafio);
         }
 
         public override async Task Remove(Desafio obj)
