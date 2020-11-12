@@ -28,7 +28,6 @@ export class DesafioComponent implements OnInit {
     private cargoService: CargoService,
     private desafioService: DesafioService) {
     this.idDesafio = this._activatedRoute.snapshot.params.id ?? null;
-    console.log(this._activatedRoute.snapshot.params.id);
 
     this.cargoService.listarCargos().subscribe((result) => {
       this.cargos = result.data;

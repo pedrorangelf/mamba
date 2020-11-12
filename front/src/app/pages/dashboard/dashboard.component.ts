@@ -91,4 +91,8 @@ export class DashboardComponent implements OnInit {
     //   .subscribe((res: boolean) => { if (res) { this.listarFuncionarios(); } });
   }
 
+  visualizarDetalhes(id: any) {
+    this.router.navigate(['vaga/' + id]);
+  }
+
 }

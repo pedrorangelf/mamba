@@ -16,6 +16,8 @@ import { UserProfileComponent } from '../../pages/user-profile/user-profile.comp
 import { TablesComponent } from '../../pages/tables/tables.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CargoService } from 'src/app/services/cargo.service';
+import { CandidatoService } from 'src/app/services/candidato.service';
+import { VagaComponent } from 'src/app/pages/vaga/vaga.component';
 // import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
@@ -34,11 +36,13 @@ import { CargoService } from 'src/app/services/cargo.service';
     TablesComponent,
     IconsComponent,
     MapsComponent,
-    DesafioComponent
+    DesafioComponent,
+    VagaComponent
   ],
   providers: [
     DesafioService,
-    CargoService
+    CargoService,
+    CandidatoService
   ]
 })
 

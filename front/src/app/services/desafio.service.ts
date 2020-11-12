@@ -31,4 +31,8 @@ export class DesafioService extends DataService {
     listarDesafios() {
         return this.get<any>('');
     }
+
+    obterDetalhes(id: string) {
+      return this.get<any>('obter-detalhes', id);
+    }
 }
