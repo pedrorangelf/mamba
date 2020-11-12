@@ -10,5 +10,6 @@ namespace Mamba.Domain.Interfaces.Services
         Task<Desafio> ObterDesafioQuestoes(Guid id);
         Task<IEnumerable<Desafio>> ObterDesafiosEmpresa(Guid idEmpresa);
         Task<Desafio> ObterDesafioCargoInscricoes(Guid id);
+        Task<Desafio> ObterDesafioEmpresa(Guid idDesafio);
     }
 }

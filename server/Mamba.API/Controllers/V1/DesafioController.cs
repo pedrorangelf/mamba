@@ -97,7 +97,7 @@ namespace Mamba.API.Controllers.V1
 
         [Authorize(Roles = "Empresa")]
         [HttpGet("{id:guid}")]
-        [SwaggerOperation("Retorna os detalhes do desafio informado")]
+        [SwaggerOperation("Retorna o desafio informado")]
         [SwaggerResponse(StatusCodes.Status200OK, "Retorna os detalhes do desafio informado", typeof(OkCustomResponse<DesafioDetailResponse>))]
         [SwaggerResponse(StatusCodes.Status404NotFound, "Desafio não encontrado", typeof(string))]
         public async Task<IActionResult> ObterPorId(Guid id)
@@ -107,6 +107,48 @@ namespace Mamba.API.Controllers.V1
             if (desafio == null) return NotFound("Desafio não encontrado");
 
             return CustomResponse(_mapper.Map<DesafioDetailResponse>(desafio));
+        }
+
+        [Authorize(Roles = "Empresa")]
+        [HttpGet("obter-detalhes/{id:guid}")]
+        [SwaggerOperation("Retorna os detalhes do desafio informado")]
+        [SwaggerResponse(StatusCodes.Status200OK, "Retorna os detalhes do desafio informado", typeof(OkCustomResponse<DesafioListResponse>))]
+        [SwaggerResponse(StatusCodes.Status404NotFound, "Desafio não encontrado", typeof(string))]
+        public async Task<IActionResult> ObterDetalhes(Guid id)
+        {
+            var desafio = await _desafioService.ObterDesafioEmpresa(id);
+
+            if (desafio == null) return NotFound("Desafio não encontrado");
+
+            return CustomResponse(new DesafioListResponse
+            {
+                Id = desafio.Id,
+                Cargo = desafio.Cargo?.Nome ?? "Sem cargo",
+                DataAbertura = desafio.DataAbertura,
+                DataFechamento = desafio.DataFechamento,
+                TotalCandidatos = desafio.Inscricoes.Count(),
+                QuestionariosFinalizados = desafio.Inscricoes.Count(i => i.DataFinalizacao.HasValue),
+                CorrecoesPendentes = desafio.Inscricoes.Sum(i => i.Respostas.Count(r => r.Avaliacao == null))
+            });
+        }
+
+        [AllowAnonymous]
+        [HttpGet("obter-vaga-inscricao/{id:guid}")]
+        [SwaggerOperation("Retorna os detalhes da vaga para uma nova inscrição")]
+        [SwaggerResponse(StatusCodes.Status200OK, "Retorna os detalhes da vaga para uma nova inscrição", typeof(OkCustomResponse<DetalheDesafioInscricao>))]
+        [SwaggerResponse(StatusCodes.Status404NotFound, "Desafio não encontrado", typeof(string))]
+        public async Task<IActionResult> ObterDetalhesVagaInscricao(Guid id)
+        {
+            var desafio = await _desafioService.ObterDesafioEmpresa(id);
+
+            if (desafio == null) return NotFound("Desafio não encontrado");
+
+            return CustomResponse(new DetalheDesafioInscricao
+            {
+                Cargo = desafio.Cargo?.Nome ?? "Sem cargo",
+                DataAbertura = desafio.DataAbertura,
+                DataFechamento = desafio.DataFechamento
+            });
         }
 
         [Authorize(Roles = "Empresa")]
@@ -229,6 +271,8 @@ namespace Mamba.API.Controllers.V1
 
             return CustomResponse("Desafio fechado com sucesso!");
         }
+
+
 
         // APP MOBILE
         [Authorize(Roles = "Empresa")]
