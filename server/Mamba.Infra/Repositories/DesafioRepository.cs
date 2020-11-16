@@ -40,6 +40,7 @@ namespace Mamba.Infra.Repositories
         public async Task<Desafio> ObterDesafioEmpresa(Guid idDesafio)
         {
             return await _contextBase.Desafio.AsNoTracking()
+                            .Include(d => d.Questoes)
                             .Include(d => d.Cargo)
                             .Include(d => d.Inscricoes).ThenInclude(i => i.Respostas).ThenInclude(r => r.Avaliacao)
                             .FirstOrDefaultAsync(d => d.Id == idDesafio);

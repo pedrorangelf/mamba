@@ -147,7 +147,12 @@ namespace Mamba.API.Controllers.V1
             {
                 Cargo = desafio.Cargo?.Nome ?? "Sem cargo",
                 DataAbertura = desafio.DataAbertura,
-                DataFechamento = desafio.DataFechamento
+                DataFechamento = desafio.DataFechamento,
+                Questoes = desafio.Questoes.Select(q => new QuestoesDesafioResponse
+                {
+                    QuestaoId = q.Id,
+                    Descricao = q.Descricao
+                }).ToList()
             });
         }
 
@@ -324,11 +329,5 @@ namespace Mamba.API.Controllers.V1
                                                .FirstOrDefault()?.DataFinalizacao
             };
         }
-    }
-
-    public class QuestoesDesafioResponse
-    {
-        public Guid QuestaoId { get; set; }
-        public string Descricao { get; set; }
     }
 }
