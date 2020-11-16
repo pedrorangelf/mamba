@@ -6,13 +6,13 @@ import { DataService } from './data.service';
 @Injectable({
   providedIn: 'root'
 })
-export class AccountService extends DataService {
+export class CandidatoService extends DataService {
 
   private accessToken: string;
-  context = 'login';
+  context = 'desafio';
 
-  login(email: string, senha: string) {
-    return this.post<any>('', { email: email, senha: senha });
+  obterCandidatosPorVaga(id: any) {
+    return this.get<any>(id + '/obter-inscricoes');
   }
 
   getLoggedUser() {

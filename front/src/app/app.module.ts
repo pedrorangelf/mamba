@@ -12,7 +12,6 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppRoutingModule } from './app.routing';
 import { ComponentsModule } from './components/components.module';
-import { DesafioComponent } from './pages/desafio/desafio.component';
 import { BrowserModule } from '@angular/platform-browser';
 
 
