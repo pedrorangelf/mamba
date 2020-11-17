@@ -103,6 +103,7 @@
                 <th>Nome</th>
                 <th>Desempenho</th>
                 <th>Status</th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
@@ -126,6 +127,11 @@
                       class="{{item.descricaoStatus == 'Aprovado' ? 'bg-success' : item.descricaoStatus == 'Pendente' ? 'bg-info' : 'bg-danger'}}"></i>
                     {{item.descricaoStatus}}
                   </span>
+                </td>
+                <td>
+                  <div class="col text-right">
+                    <a href="#!" class="btn btn-sm"  [routerLink]="'/avaliacao/' + item.inscricaoId">Avaliar/Visualizar <i class="fas fa-paste"></i></a>
+                  </div>
                 </td>
               </tr>
             </tbody>

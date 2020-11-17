@@ -35,7 +35,7 @@
                       <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fas fa-signature"></i></span>
                       </div>
-                      <input class="form-control form-control-alternative" placeholder="Seu Nome" type="text">
+                      <input class="form-control form-control-alternative" placeholder="Seu Nome" type="text" formControlName="nome">
                     </div>
                   </div>
                 </div>
@@ -45,7 +45,7 @@
                       <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fas fa-envelope"></i></span>
                       </div>
-                      <input class="form-control form-control-alternative" placeholder="Seu Email" type="text">
+                      <input class="form-control form-control-alternative" placeholder="Seu Email" type="text" formControlName="email">
                     </div>
                   </div>
                 </div>
@@ -57,7 +57,7 @@
                       <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
                       </div>
-                      <input class="form-control form-control-alternative" placeholder="Data de Nascimento" type="text">
+                      <input class="form-control form-control-alternative" placeholder="Data de Nascimento" type="date" formControlName="dataNascimento">
                     </div>
                   </div>
                 </div>
@@ -67,7 +67,7 @@
                       <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fas fa-phone"></i></span>
                       </div>
-                      <input class="form-control form-control-alternative" placeholder="Telefone para Contato" type="text">
+                      <input class="form-control form-control-alternative" placeholder="Telefone para Contato" type="text" formControlName="celular">
                     </div>
                   </div>
                 </div>
@@ -75,7 +75,7 @@
             </div>
             <hr class="my-4" />
             <h6 class="heading-small text-muted mb-4">Endereço</h6>
-            <div class="pl-lg-4">
+            <div class="pl-lg-4" formGroupName="endereco">
               <div class="row">
                 <div class="col-md-6">
                   <div class="form-group">
@@ -83,7 +83,7 @@
                       <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
                       </div>
-                      <input class="form-control form-control-alternative" placeholder="Logradouro" type="text">
+                      <input class="form-control form-control-alternative" placeholder="Logradouro" type="text" formControlName="logradouro">
                     </div>
                   </div>
                 </div>
@@ -93,7 +93,7 @@
                       <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fas fa-bell"></i></span>
                       </div>
-                      <input class="form-control form-control-alternative" placeholder="Número" type="text">
+                      <input class="form-control form-control-alternative" placeholder="Número" type="text" formControlName="numero">
                     </div>
                   </div>
                 </div>
@@ -103,7 +103,7 @@
                       <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fas fa-home"></i></span>
                       </div>
-                      <input class="form-control form-control-alternative" placeholder="Complemento" type="text">
+                      <input class="form-control form-control-alternative" placeholder="Complemento" type="text" formControlName="complemento">
                     </div>
                   </div>
                 </div>
@@ -115,7 +115,7 @@
                       <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fas fa-location-arrow"></i></span>
                       </div>
-                      <input class="form-control form-control-alternative" placeholder="CEP" type="text">
+                      <input class="form-control form-control-alternative" placeholder="CEP" type="text" formControlName="cep">
                     </div>
                   </div>
                 </div>
@@ -125,7 +125,7 @@
                       <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fas fa-map-marked-alt"></i></span>
                       </div>
-                      <input class="form-control form-control-alternative" placeholder="Bairro" type="text">
+                      <input class="form-control form-control-alternative" placeholder="Bairro" type="text" formControlName="bairro">
                     </div>
                   </div>
                 </div>
@@ -137,7 +137,7 @@
                       <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fas fa-city"></i></span>
                       </div>
-                      <input class="form-control form-control-alternative" placeholder="Cidade" type="text">
+                      <input class="form-control form-control-alternative" placeholder="Cidade" type="text" formControlName="cidade">
                     </div>
                   </div>
                 </div>
@@ -147,7 +147,7 @@
                       <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fas fa-map"></i></span>
                       </div>
-                      <input class="form-control form-control-alternative" placeholder="Estado" type="text">
+                      <input class="form-control form-control-alternative" placeholder="Estado" type="text" formControlName="estado" maxlength="2">
                     </div>
                   </div>
                 </div>
@@ -163,7 +163,7 @@
                       <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fab fa-linkedin"></i></span>
                       </div>
-                      <input class="form-control form-control-alternative" placeholder="LinkedIn" type="text">
+                      <input class="form-control form-control-alternative" placeholder="LinkedIn" type="text" formControlName="linkLinkedin">
                     </div>
                   </div>
                 </div>
@@ -175,7 +175,7 @@
                       <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fab fa-github"></i></span>
                       </div>
-                      <input class="form-control form-control-alternative" placeholder="Github" type="text">
+                      <input class="form-control form-control-alternative" placeholder="Github" type="text" formControlName="linkGithub">
                     </div>
                   </div>
                 </div>
@@ -187,7 +187,7 @@
                       <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fas fa-briefcase"></i></span>
                       </div>
-                      <input class="form-control form-control-alternative" placeholder="Profissão" type="text">
+                      <input class="form-control form-control-alternative" placeholder="Profissão" type="text" formControlName="profissao">
                     </div>
                   </div>
                 </div>

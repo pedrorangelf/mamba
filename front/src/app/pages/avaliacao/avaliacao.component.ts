@@ -6,20 +6,21 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { QuestaoModel } from 'src/app/shared/model/desafio-add.model';
 import Swal from 'sweetalert2';
 import { CargoService } from 'src/app/services/cargo.service';
-import { EnderecoModel } from './../../shared/model/desafio-add.model';
+import { EnderecoModel } from '../../shared/model/desafio-add.model';
 import { InscricaoService } from 'src/app/services/inscricao.service';
 
 @Component({
-  selector: 'app-resposta',
-  templateUrl: './resposta.component.html',
-  styleUrls: ['./resposta.component.scss']
+  selector: 'app-avaliacao',
+  templateUrl: './avaliacao.component.html',
+  styleUrls: ['./avaliacao.component.scss']
 })
-export class RespostaComponent implements OnInit {
+export class AvaliacaoComponent implements OnInit {
 
   formGroup: FormGroup;
-  idDesafio: string;
+  idInscricao: string;
   desafio: any = {};
-  questoes: QuestaoModel[] = [];
+  inscricao: any = {};
+  questoes: any[] = [];
   respostas: RespostaModel[] = [];
 
   constructor(private formBuilder: FormBuilder,
@@ -27,13 +28,14 @@ export class RespostaComponent implements OnInit {
     private router: Router,
     private desafioService: DesafioService,
     private inscricaoService: InscricaoService) {
-    this.idDesafio = this._activatedRoute.snapshot.params.id ?? null;
+    this.idInscricao = this._activatedRoute.snapshot.params.id ?? null;
 
     if (this._activatedRoute.snapshot.params.id) {
 
-      this.desafioService.obterVagaInscricao(this.idDesafio).subscribe((result => {
-        this.desafio = result.data;
-        this.questoes = this.desafio.questoes;
+      this.inscricaoService.obterDetalhesInscricao(this.idInscricao).subscribe((result => {
+        console.log('obterDetalhesInscricao', result);
+        this.inscricao = result.data;
+        this.questoes = result.data.questoes;
       }));
     }
   }
@@ -41,7 +43,7 @@ export class RespostaComponent implements OnInit {
   ngOnInit(): void {
 
     this.formGroup = this.formBuilder.group({
-      nome: ['', Validators.required],
+      parecerFinal: [{value: '', disabled: this.inscricao.parecerFinal != null ? true : false }, Validators.required],
       celular: ['', Validators.required],
       email: ['', Validators.required],
       dataNascimento: ['', Validators.required],
@@ -75,30 +77,30 @@ export class RespostaComponent implements OnInit {
 
     console.log(this.respostas);
 
-    const model: InscricaoModel = {
-      desafioId: this.idDesafio,
-      nome: this.formGroup.value.nome,
-      celular: this.formGroup.value.celular,
-      email: this.formGroup.value.email,
-      dataNascimento: this.formGroup.value.dataNascimento,
-      linkLinkedin: this.formGroup.value.linkLinkedin,
-      linkGithub: this.formGroup.value.linkGithub,
-      profissao: this.formGroup.value.profissao,
-      endereco: {
-        logradouro: this.formGroup.value.endereco.logradouro,
-        numero: this.formGroup.value.endereco.numero,
-        complemento: this.formGroup.value.endereco.complemento,
-        bairro: this.formGroup.value.endereco.bairro,
-        cidade: this.formGroup.value.endereco.cidade,
-        estado: this.formGroup.value.endereco.estado,
-        cep: this.formGroup.value.endereco.cep
-      } as EnderecoModel,
-      respostas: this.respostas
-    };
+    // const model: InscricaoModel = {
+    //   desafioId: this.idDesafio,
+    //   nome: this.formGroup.value.nome,
+    //   celular: this.formGroup.value.celular,
+    //   email: this.formGroup.value.email,
+    //   dataNascimento: this.formGroup.value.dataNascimento,
+    //   linkLinkedin: this.formGroup.value.linkLinkedin,
+    //   linkGithub: this.formGroup.value.linkGithub,
+    //   profissao: this.formGroup.value.profissao,
+    //   endereco: {
+    //     logradouro: this.formGroup.value.endereco.logradouro,
+    //     numero: this.formGroup.value.endereco.numero,
+    //     complemento: this.formGroup.value.endereco.complemento,
+    //     bairro: this.formGroup.value.endereco.bairro,
+    //     cidade: this.formGroup.value.endereco.cidade,
+    //     estado: this.formGroup.value.endereco.estado,
+    //     cep: this.formGroup.value.endereco.cep
+    //   } as EnderecoModel,
+    //   respostas: this.respostas
+    // };
 
-    console.log(JSON.stringify(model));
+    // console.log(JSON.stringify(model));
 
-    this.inscricaoService.salvar(model).subscribe(result => console.log(result));
+    // this.inscricaoService.salvar(model).subscribe(result => console.log(result));
   }
 
   cancelar() {

@@ -8,6 +8,7 @@ import { UserProfileComponent } from '../../pages/user-profile/user-profile.comp
 import { TablesComponent } from '../../pages/tables/tables.component';
 import { VagaComponent } from 'src/app/pages/vaga/vaga.component';
 import { RespostaComponent } from 'src/app/pages/resposta/resposta.component';
+import { AvaliacaoComponent } from 'src/app/pages/avaliacao/avaliacao.component';
 
 export const AdminLayoutRoutes: Routes = [
     { path: 'dashboard',      component: DashboardComponent },
@@ -18,5 +19,6 @@ export const AdminLayoutRoutes: Routes = [
     { path: 'icons',          component: IconsComponent },
     { path: 'maps',           component: MapsComponent },
     { path: 'vaga/:id',       component: VagaComponent },
-    { path: 'resposta/:id',   component: RespostaComponent}
+    { path: 'resposta/:id',   component: RespostaComponent},
+    { path: 'avaliacao/:id',  component: AvaliacaoComponent}
 ];

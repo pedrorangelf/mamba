@@ -30,10 +30,11 @@ export class VagaComponent implements OnInit {
 
   obterCandidatosPorVaga(id: any) {
     this.candidatoService.obterCandidatosPorVaga(id)
-                         .subscribe(result => {
-                           this.obterDetalhesVaga(id);
-                           this.candidatos = result.data;
-                          });
+      .subscribe(result => {
+        this.obterDetalhesVaga(id);
+        this.candidatos = result.data;
+        console.log(result);
+      });
   }
 
   getWidth(acertos: any, total: any) {
@@ -57,7 +58,7 @@ export class VagaComponent implements OnInit {
   }
 
   obterDetalhesVaga(id: string) {
-    this.desafioService.obterDetalhes(id).subscribe(result => this.vaga = result.data);
+    this.desafioService.obterDetalhes(id).subscribe(result => { this.vaga = result.data; console.log(result); });
   }
 
 }

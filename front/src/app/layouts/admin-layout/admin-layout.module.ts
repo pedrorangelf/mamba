@@ -19,6 +19,8 @@ import { CargoService } from 'src/app/services/cargo.service';
 import { CandidatoService } from 'src/app/services/candidato.service';
 import { VagaComponent } from 'src/app/pages/vaga/vaga.component';
 import { RespostaComponent } from 'src/app/pages/resposta/resposta.component';
+import { InscricaoService } from 'src/app/services/inscricao.service';
+import { AvaliacaoComponent } from 'src/app/pages/avaliacao/avaliacao.component';
 // import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
@@ -39,12 +41,14 @@ import { RespostaComponent } from 'src/app/pages/resposta/resposta.component';
     MapsComponent,
     DesafioComponent,
     VagaComponent,
-    RespostaComponent
+    RespostaComponent,
+    AvaliacaoComponent
   ],
   providers: [
     DesafioService,
     CargoService,
-    CandidatoService
+    CandidatoService,
+    InscricaoService
   ]
 })
 

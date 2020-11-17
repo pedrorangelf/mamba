@@ -14,7 +14,6 @@ import { AppRoutingModule } from './app.routing';
 import { ComponentsModule } from './components/components.module';
 import { BrowserModule } from '@angular/platform-browser';
 
-
 @NgModule({
   imports: [
     BrowserModule,

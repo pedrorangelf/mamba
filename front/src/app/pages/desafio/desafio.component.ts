@@ -16,8 +16,8 @@ export class DesafioComponent implements OnInit {
 
   formGroup: FormGroup;
   idDesafio: string;
-  title = 'Cadastar Vaga';
-  subtitle = 'Nova Vaga';
+  title = 'Cadastrar Desafio';
+  subtitle = 'Novo Desafio';
   desafio: any = {};
   questoes: QuestaoModel[] = [];
   cargos = [];
@@ -34,7 +34,7 @@ export class DesafioComponent implements OnInit {
     });
 
     if (this._activatedRoute.snapshot.params.id) {
-      this.title = 'Editar Vaga';
+      this.title = 'Editar Desafio';
       this.subtitle = 'Editar';
       this.desafioService.buscarDesafioPorId(this.idDesafio).subscribe((result) => {
         console.log(result);
