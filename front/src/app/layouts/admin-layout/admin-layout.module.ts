@@ -18,6 +18,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CargoService } from 'src/app/services/cargo.service';
 import { CandidatoService } from 'src/app/services/candidato.service';
 import { VagaComponent } from 'src/app/pages/vaga/vaga.component';
+import { RespostaComponent } from 'src/app/pages/resposta/resposta.component';
 // import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
@@ -37,7 +38,8 @@ import { VagaComponent } from 'src/app/pages/vaga/vaga.component';
     IconsComponent,
     MapsComponent,
     DesafioComponent,
-    VagaComponent
+    VagaComponent,
+    RespostaComponent
   ],
   providers: [
     DesafioService,

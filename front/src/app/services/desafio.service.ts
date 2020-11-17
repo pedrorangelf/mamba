@@ -35,4 +35,8 @@ export class DesafioService extends DataService {
     obterDetalhes(id: string) {
       return this.get<any>('obter-detalhes', id);
     }
+
+    obterVagaInscricao(id: string) {
+      return this.get<any>('obter-vaga-inscricao', id);
+    }
 }

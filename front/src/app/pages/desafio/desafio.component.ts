@@ -126,8 +126,7 @@ export class DesafioComponent implements OnInit {
           }
         }
       );
-    }
-    else {
+    } else {
       this.router.navigate(['dashboard']);
     }
   }
@@ -135,7 +134,9 @@ export class DesafioComponent implements OnInit {
   addQuestao() {
     this.questoes.push({
       descricao: '',
-      idQuestao: 0
+      idQuestao: 0,
+      questaoId: '',
+      resposta: ''
     });
   }
 
