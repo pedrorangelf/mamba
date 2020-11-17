@@ -1,5 +1,6 @@
 ﻿using Mamba.API.Extensions.Utilities;
 using System;
+using System.Collections.Generic;
 
 namespace Mamba.API.DTOs.Responses
 {
@@ -8,7 +9,6 @@ namespace Mamba.API.DTOs.Responses
         public string Cargo { get; set; }
         public DateTime DataAbertura { get; set; }
         public DateTime? DataFechamento { get; set; }
-
         public string StatusDesafio
         {
             get
@@ -22,7 +22,6 @@ namespace Mamba.API.DTOs.Responses
                 return "Fechado";
             }
         }
-
         public string TempoStatus
         {
             get
@@ -36,5 +35,12 @@ namespace Mamba.API.DTOs.Responses
                 return DateTimeUtilities.ObterPeriodoTemporal(DataAbertura, prefixo: "Aberto");
             }
         }
+        public List<QuestoesDesafioResponse> Questoes { get; set; }
+    }
+
+    public class QuestoesDesafioResponse
+    {
+        public Guid QuestaoId { get; set; }
+        public string Descricao { get; set; }
     }
 }
