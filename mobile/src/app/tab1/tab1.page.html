@@ -1,0 +1,58 @@
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar color="primary">
+      <ion-buttons slot="secondary">
+        <ion-button>
+          <ion-icon slot="icon-only" name="person-circle"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <ion-title>Olá, {{nomeUsuario}}</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <div class="pl-5">
+    <ion-text>
+      <h4>Vagas</h4>
+    </ion-text>
+    <ion-text *ngIf="desafiosAbertos.length > 0">
+      <ion-label>
+        Posições Abertas
+      </ion-label>
+    </ion-text>
+  </div>
+
+  <ion-card *ngFor="let item of desafiosAbertos">
+    <ion-item (click)="goToDetalhes(item)">
+      <ion-label class="ion-text-wrap">
+        <p>{{item.totalInscricoes}} candidato(s)</p>
+        <ion-text color="primary">
+          <h3>{{item.cargo}}</h3>
+        </ion-text>
+        <p>{{item.tempoAbertura}}</p>
+      </ion-label>
+      <ion-badge slot="end" color="success">{{item.statusDesafio}}</ion-badge>
+    </ion-item>
+  </ion-card>
+
+  <div class="pl-5" *ngIf="desafiosFechados.length > 0">
+    <ion-text>
+      <ion-label>
+        Posições Fechadas
+      </ion-label>
+    </ion-text>
+  </div>
+
+  <ion-card *ngFor="let item of desafiosFechados">
+    <ion-item>
+      <ion-label class="ion-text-wrap">
+        <p>{{item.totalInscricoes}} candidato(s)</p>
+        <ion-text color="primary">
+          <h3>{{item.cargo}}</h3>
+        </ion-text>
+        <p>{{item.tempoAbertura}}</p>
+      </ion-label>
+      <ion-badge slot="end" color="danger">{{item.statusDesafio}}</ion-badge>
+    </ion-item>
+  </ion-card>
+
+</ion-content>

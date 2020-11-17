@@ -1,0 +1,33 @@
+<ion-content padding fixed>
+  <div class="logo">
+    <ion-row>
+      <ion-col>
+        <img src="assets/images/mamba.io.svg" alt="logo" width="40%">
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <img src="assets/images/RECRUITING.svg" alt="logo" width="35%">
+      </ion-col>
+    </ion-row>
+  </div>
+
+  <form [formGroup]="formGroup" novalidate>
+    <div class="login-form">
+      <ion-item>
+        <ion-label position="floating">Email</ion-label>
+        <ion-input type="email" formControlName="email"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Senha</ion-label>
+        <ion-input type="password" formControlName="senha"></ion-input>
+      </ion-item>
+    </div>
+    <div class="login-button">
+      <ion-button expand="block" color="mamba" (click)="login()" [disabled]="formGroup.invalid">Entrar</ion-button>
+    </div>
+  </form>
+  <!-- <div class="div-or">
+    <p style="margin:0">Esqueci minha senha</p>
+  </div> -->
+</ion-content>

@@ -1,0 +1,22 @@
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar color="primary">
+      <ion-title>Cargos</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <!-- <div class="pl-5">
+    <ion-searchbar [(ngModel)]="myInput"  (ionInput)="teste($event)"></ion-searchbar>
+  </div> -->
+
+  <ion-card *ngFor="let item of cargos">
+    <ion-item>
+      <ion-label class="ion-text-wrap">
+        <ion-text color="dark">
+          <h3>{{item.nome}}</h3>
+        </ion-text>
+      </ion-label>
+    </ion-item>
+  </ion-card>
+
+</ion-content>
