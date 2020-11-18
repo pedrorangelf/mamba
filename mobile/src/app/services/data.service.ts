@@ -11,19 +11,23 @@ export abstract class DataService {
     abstract context: string;
     currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
-    protected httpOptions = {
-        headers: new HttpHeaders({
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${this.currentUser.accessToken}`
-        })
-    };
+    protected getHttpOptions() {
+        if (this.currentUser == null) { return; }
+
+        return {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${this.currentUser.accessToken}`
+            })
+        };
+    }
 
     constructor(protected http: HttpClient) {
     }
 
     protected get<T>(url?: string, resourceId?: number | string): Observable<T> {
         const apiUrl = this.config + '/' + this.context + (url ? '/' + url : '') + (resourceId ? '/' + resourceId : '');
-        return this.http.get<T>(apiUrl, this.httpOptions);
+        return this.http.get<T>(apiUrl, this.getHttpOptions());
     }
 
     protected getWithParams<T>(url?: string, params?: HttpParams | { [param: string]: string | string[] }): Observable<T> {
@@ -31,10 +35,10 @@ export abstract class DataService {
     }
 
     protected post<T>(url: string, data: any): Observable<T> {
-        return this.http.post<T>(this.config + '/' + this.context + '/' + (url ? url : ''), data, this.httpOptions);
+        return this.http.post<T>(this.config + '/' + this.context + '/' + (url ? url : ''), data, this.getHttpOptions());
     }
 
     protected delete<T>(url?: string, resourceId?: number | string): Observable<T> {
-        return this.http.delete<T>(this.config + '/' + this.context + '/' + (url ? url : '') + '/' + resourceId, this.httpOptions);
+        return this.http.delete<T>(this.config + '/' + this.context + '/' + (url ? url : '') + '/' + resourceId, this.getHttpOptions());
     }
 }
