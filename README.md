@@ -9,24 +9,24 @@
 - SQL Server
 - Ionic Framework 4
 
-### Guia de pastas do repositório
+## Guia de pastas do repositório
 - **business:** Destinada para as entregas relacionadas ao modelo de negócios. (Documentação com Business Model Canvas + Pitch Final em vídeo)
 - **front:** Aplicação web em Angular 9
 - **mobile:** Aplicação mobile em Ionic Framework 4
 - **server:** Aplicação back-end em Web Api .Net Core 3.1
 
-### Credencial de acesso ao banco SQL Server (SOMENTE PARA CONSULTA)
+## Credencial de acesso ao banco SQL Server (SOMENTE PARA CONSULTA)
 - **Host:** 74.50.111.162
 - **Login: (Somente para consultas)** fiap_select
 - **Senha: (Somente para consultas)** 3*3h4Pqy
 
-### Credenciais para testes nas aplicações Web e Mobile
+## Credenciais para testes nas aplicações Web e Mobile
 - **Login** user@example.com
 - **Senha** Teste_123
 
+## Guia para testes
 
-### Guia para testes
-## Pré-requisitos
+### Pré-requisitos
 Siga os passos abaixo e garanta que tudo estará instalado para a execução do projeto.
 
 1. Baixe e instale o VS Code no link https://code.visualstudio.com/ ou o Visual Studio Community 2019 pelo link https://visualstudio.microsoft.com/pt-br/vs/
@@ -37,7 +37,7 @@ Siga os passos abaixo e garanta que tudo estará instalado para a execução do 
 5. Instale o Ionic CLI executando o seguinte comando no terminal:
 **npm install -g @ionic/cli**  -- https://ionicframework.com/docs/intro/cli
 
-## Passo a passo
+### Passo a passo
 Caso utilize o Visual Studio Community, abra a solution na IDE e defina o projeto Mamba.API como o projeto inicializador e depure o projeto.
 
 Caso utilize o VS Code ou qualquer editor de texto que não seja o Visual Studio Community, siga os passos abaixo para executar o projeto:
