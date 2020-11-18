@@ -41,6 +41,8 @@ Siga os passos abaixo e garanta que tudo estará instalado para a execução do 
 
 **Atenção: Este passo é opcional, pois as aplicações web e mobile estão programadas pra consumir uma API que já se encontra publicada. Esta API é exatamente o projeto Web Api .Net Core que se encontra neste repositório e pode ser acessada pelo link http://api.victorsavoi.dev.br/swagger**
 
+**Atenção: Este projeto está apontado para o banco de dados publicado em produção (O mesmo banco utilizado nas aplicações web e mobile)**
+
 #### 1.1. Utilizando Visual Studio Community
 Caso utilize o Visual Studio Community, abra a solution na IDE e defina o projeto Mamba.API como o projeto inicializador e depure o projeto.
 
@@ -53,6 +55,7 @@ Após tudo instalado e configurado, abra o prompt de comando e navegue até a pa
 - dotnet build
 - acessar o projeto Mamba.API (cd Mamba.API)
 - dotnet run
+- acesse o Swagger da aplicação colocando o caminho /swagger de acordo com o localhost instanciado em sua máquina.
 
 ### 2. Front-end web em Angular 9
 
