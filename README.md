@@ -10,7 +10,7 @@
 ## Tecnologias
 - .Net Core 3.1
 - Web Api .Net Core 3.1
-- Angular 8
+- Angular 9
 - SQL Server
 - Ionic Framework 4
 
