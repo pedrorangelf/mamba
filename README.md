@@ -3,9 +3,9 @@
 **Link do repositório no GitHub:** https://github.com/pedrorangelf/mamba
 - **Login da Aplicação:** user@example.com
 - **Senha da Aplicação:** Teste_123
-- **Host do banco de dados SQL Server:** mamba.database.windows.net,1433
-- **Login do banco de dado SQL Server:** mamba
-- **Senha do banco de dado SQL Server:** @Senha12
+- **Host do banco de dados SQL Server:** 74.50.111.162
+- **Login do banco de dado SQL Server: (Somente para consultas)** fiap_select
+- **Senha do banco de dado SQL Server: (Somente para consultas)** 3*3h4Pqy
 
 ## Tecnologias
 - .Net Core 3.1
