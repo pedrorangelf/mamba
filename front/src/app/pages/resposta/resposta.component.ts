@@ -62,18 +62,12 @@ export class RespostaComponent implements OnInit {
   }
 
   salvar() {
-    console.log(this.formGroup.value.select);
-
-    console.log(this.questoes);
-
     this.questoes.forEach(f => {
       const resposta = {} as RespostaModel;
       resposta.questaoId = f.questaoId;
       resposta.descricao = f.resposta;
       this.respostas.push(resposta);
     });
-
-    console.log(this.respostas);
 
     const model: InscricaoModel = {
       desafioId: this.idDesafio,
@@ -96,9 +90,22 @@ export class RespostaComponent implements OnInit {
       respostas: this.respostas
     };
 
-    console.log(JSON.stringify(model));
-
-    this.inscricaoService.salvar(model).subscribe(result => console.log(result));
+    this.inscricaoService.salvar(model).subscribe(result => {
+      Swal.fire({
+        title: 'Tudo Certo',
+        text: 'Recebemos as suas respostas! Em breve entraremos em contato com você novamente!',
+        showCancelButton: false,
+        confirmButtonColor: '#29b6f6',
+        cancelButtonColor: '#ef9a9a',
+        confirmButtonText: 'OK',
+      }).then(
+        s => {
+          if (s.value) {
+            this.router.navigate(['login']);
+          }
+        }
+      );
+    });
   }
 
   cancelar() {

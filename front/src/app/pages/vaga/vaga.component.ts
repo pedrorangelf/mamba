@@ -33,7 +33,6 @@ export class VagaComponent implements OnInit {
       .subscribe(result => {
         this.obterDetalhesVaga(id);
         this.candidatos = result.data;
-        console.log(result);
       });
   }
 
@@ -58,7 +57,7 @@ export class VagaComponent implements OnInit {
   }
 
   obterDetalhesVaga(id: string) {
-    this.desafioService.obterDetalhes(id).subscribe(result => { this.vaga = result.data; console.log(result); });
+    this.desafioService.obterDetalhes(id).subscribe(result => { this.vaga = result.data; });
   }
 
 }

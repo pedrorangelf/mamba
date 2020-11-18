@@ -28,7 +28,6 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.accountService.login(this.formGroup.value.email, this.formGroup.value.senha).subscribe((response: any) => {
 
       const responseToken = response.data;
-      console.log(response);
 
       if (responseToken) {
         this.accessToken = responseToken.acessToken;

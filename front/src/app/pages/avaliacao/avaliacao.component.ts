@@ -8,6 +8,9 @@ import Swal from 'sweetalert2';
 import { CargoService } from 'src/app/services/cargo.service';
 import { EnderecoModel } from '../../shared/model/desafio-add.model';
 import { InscricaoService } from 'src/app/services/inscricao.service';
+import { AvaliacaoModel, QuestaoAvaliacaoModel } from 'src/app/shared/model/questao-avaliacao.model';
+import { AvalicaoAvaliacoesModel } from './../../shared/model/questao-avaliacao.model';
+import { AvaliacaoService } from 'src/app/services/avaliacao.service';
 
 @Component({
   selector: 'app-avaliacao',
@@ -20,10 +23,16 @@ export class AvaliacaoComponent implements OnInit {
   idInscricao: string;
   desafio: any = {};
   inscricao: any = {};
-  questoes: any[] = [];
+  questoes: QuestaoAvaliacaoModel[] = [];
+  avaliacoes: AvalicaoAvaliacoesModel[] = [];
+  textoCorrecao = 'Correção Pendente';
+  classDiv = '';
+  icon = '';
+
   respostas: RespostaModel[] = [];
 
-  constructor(private formBuilder: FormBuilder,
+  constructor(private avaliacaoService: AvaliacaoService,
+    private formBuilder: FormBuilder,
     private _activatedRoute: ActivatedRoute,
     private router: Router,
     private desafioService: DesafioService,
@@ -33,9 +42,21 @@ export class AvaliacaoComponent implements OnInit {
     if (this._activatedRoute.snapshot.params.id) {
 
       this.inscricaoService.obterDetalhesInscricao(this.idInscricao).subscribe((result => {
-        console.log('obterDetalhesInscricao', result);
         this.inscricao = result.data;
         this.questoes = result.data.questoes;
+        if (this.inscricao.aprovado) {
+          this.textoCorrecao = 'Aprovado!';
+          this.classDiv = 'icon icon-shape bg-success text-white rounded-circle shadow';
+          this.icon = 'fas fa-check';
+        } else if (this.inscricao.aprovado === null) {
+          this.textoCorrecao = 'Correção Pendente';
+          this.classDiv = 'icon icon-shape bg-yellow text-white rounded-circle shadow';
+          this.icon = 'fas fa-edit';
+        } else {
+          this.textoCorrecao = 'Reprovado';
+          this.classDiv = 'icon icon-shape bg-danger text-white rounded-circle shadow';
+          this.icon = 'fas fa-times';
+        }
       }));
     }
   }
@@ -43,86 +64,42 @@ export class AvaliacaoComponent implements OnInit {
   ngOnInit(): void {
 
     this.formGroup = this.formBuilder.group({
-      parecerFinal: [{value: '', disabled: this.inscricao.parecerFinal != null ? true : false }, Validators.required],
-      celular: ['', Validators.required],
-      email: ['', Validators.required],
-      dataNascimento: ['', Validators.required],
-      linkLinkedin: [''],
-      linkGithub: [''],
-      profissao: [''],
-      endereco: this.formBuilder.group({
-        logradouro: ['', Validators.required],
-        numero: ['', Validators.required],
-        complemento: ['', Validators.required],
-        bairro: ['', Validators.required],
-        cidade: ['', Validators.required],
-        estado: ['', Validators.required],
-        cep: ['', Validators.required]
-      })
+      parecerFinal: ['', Validators.required]
     });
 
   }
 
   salvar() {
-    console.log(this.formGroup.value.select);
-
-    console.log(this.questoes);
-
     this.questoes.forEach(f => {
-      const resposta = {} as RespostaModel;
-      resposta.questaoId = f.questaoId;
-      resposta.descricao = f.resposta;
-      this.respostas.push(resposta);
+      const avaliacao = {} as AvalicaoAvaliacoesModel;
+      if (f.avaliacao.aprovado == null) {
+        avaliacao.correta = false;
+      } else {
+        avaliacao.correta = f.avaliacao.aprovado;
+      }
+      avaliacao.descricao = f.avaliacao.descricao;
+      avaliacao.respostaId = f.resposta.respostaId;
+      this.avaliacoes.push(avaliacao);
     });
 
-    console.log(this.respostas);
+    const acertos = this.avaliacoes.filter(f => f.correta === true);
+    const porcentagem = acertos.length * 100 / this.questoes.length;
 
-    // const model: InscricaoModel = {
-    //   desafioId: this.idDesafio,
-    //   nome: this.formGroup.value.nome,
-    //   celular: this.formGroup.value.celular,
-    //   email: this.formGroup.value.email,
-    //   dataNascimento: this.formGroup.value.dataNascimento,
-    //   linkLinkedin: this.formGroup.value.linkLinkedin,
-    //   linkGithub: this.formGroup.value.linkGithub,
-    //   profissao: this.formGroup.value.profissao,
-    //   endereco: {
-    //     logradouro: this.formGroup.value.endereco.logradouro,
-    //     numero: this.formGroup.value.endereco.numero,
-    //     complemento: this.formGroup.value.endereco.complemento,
-    //     bairro: this.formGroup.value.endereco.bairro,
-    //     cidade: this.formGroup.value.endereco.cidade,
-    //     estado: this.formGroup.value.endereco.estado,
-    //     cep: this.formGroup.value.endereco.cep
-    //   } as EnderecoModel,
-    //   respostas: this.respostas
-    // };
+    const model: AvaliacaoModel = {
+      desafioId: this.inscricao.desafioId,
+      inscricaoId: this.idInscricao,
+      candidatoAprovado: porcentagem > 60 ? true : false,
+      parecerFinal: this.formGroup.value.parecerFinal,
+      avaliacoes: this.avaliacoes
+    };
 
-    // console.log(JSON.stringify(model));
-
-    // this.inscricaoService.salvar(model).subscribe(result => console.log(result));
+    this.avaliacaoService.salvar(model).subscribe(result =>  this.router.navigate(['vaga/' + this.inscricao.desafioId]));
   }
 
-  cancelar() {
-    if (this.formGroup.dirty) {
-      Swal.fire({
-        title: 'Deseja abandonar?',
-        text: 'Se você sair, todos os dados alterados serão perdidos.',
-        showCancelButton: true,
-        confirmButtonColor: '#29b6f6',
-        cancelButtonColor: '#ef9a9a',
-        confirmButtonText: 'Sim',
-        cancelButtonText: 'Não'
-      }).then(
-        s => {
-          if (s.value) {
-            this.router.navigate(['dashboard']);
-          }
-        }
-      );
-    } else {
-      this.router.navigate(['dashboard']);
-    }
+  voltar() {
+
+    this.router.navigate(['vaga/' + this.inscricao.desafioId]);
+
   }
 
 }

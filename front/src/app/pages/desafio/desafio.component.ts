@@ -37,7 +37,6 @@ export class DesafioComponent implements OnInit {
       this.title = 'Editar Desafio';
       this.subtitle = 'Editar';
       this.desafioService.buscarDesafioPorId(this.idDesafio).subscribe((result) => {
-        console.log(result);
         this.desafio = result.data;
         this.questoes = this.desafio.questoes;
         this.formGroup.controls['select'].setValue(this.desafio.cargoId, { onlySelf: true });
@@ -54,7 +53,6 @@ export class DesafioComponent implements OnInit {
   }
 
   salvar() {
-    console.log(this.formGroup.value.select);
     const model: DesafioModel = {
       cargoId: this.formGroup.value.select ?? this.desafio.cargoId,
       limiteInscricao: 10,
@@ -64,9 +62,7 @@ export class DesafioComponent implements OnInit {
       questoes: this.questoes
     };
 
-    console.log(model);
     if (this.idDesafio) {
-      console.log('editar');
       this.desafioService.editar(model).subscribe(result => {
         Swal.fire({
           title: 'Vaga salva com sucesso!',

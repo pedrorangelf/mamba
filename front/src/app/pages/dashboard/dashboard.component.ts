@@ -64,7 +64,6 @@ export class DashboardComponent implements OnInit {
 
   listarDesafios() {
     this.desafioService.listarDesafios().subscribe(result => {
-      console.log(result);
       this.desafios = result.data;
     });
   }

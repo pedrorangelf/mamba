@@ -4,11 +4,12 @@
   <span class="mask bg-gradient-danger opacity-8"></span>
   <!-- Header container -->
   <div class="container-fluid d-flex align-items-center">
-    <div class="row">
-      <div class="col-lg-12 col-md-12">
+    <div class="row w-100">
+      <div class="col-lg-6 col-md-6">
         <h1 class="display-2 text-white">{{inscricao.nomeCandidato}}</h1>
         <div class="col-lg-12 col-md-12">
-          <i class="fas fa-briefcase"></i><small class="text-white mt-0 mb-5">Vaga: <b>{{inscricao.vagaDesafio}}</b></small>
+          <i class="fas fa-briefcase"></i><small class="text-white mt-0 mb-5">Vaga:
+            <b>{{inscricao.vagaDesafio}}</b></small>
         </div>
         <div class="col-lg-12 col-md-12">
           <i class="fas fa-phone"></i><small class="text-white mt-0 mb-5">Telefone: {{inscricao.telefone}}</small>
@@ -17,9 +18,26 @@
           <i class="fas fa-envelope"></i><small class="text-white mt-0 mb-5">Email: {{inscricao.email}}</small>
         </div>
         <div class="col-lg-12 col-md-12">
-          <i class="fab fa-linkedin"></i><small class="text-white mt-0 mb-5">LinkedIn: <a [attr.href]="inscricao.linkedIn" class="">{{inscricao.linkedIn}}</a></small>
+          <i class="fab fa-linkedin"></i><small class="text-white mt-0 mb-5">LinkedIn: <a
+              [attr.href]="inscricao.linkedIn" class="">{{inscricao.linkedIn}}</a></small>
         </div>
         <!-- <a href="#!" class="btn btn-info">Editar perfil</a> -->
+      </div>
+      <div class="col-lg-3 col-md-3">
+        <div class="card card-stats mb-4 mb-xl-0">
+          <div class="card-body">
+            <div class="row">
+              <div class="col">
+                <h5 class="card-title text-uppercase text-muted mb-0">{{textoCorrecao}}</h5>
+              </div>
+              <div class="col-auto">
+                <div [class]="classDiv">
+                  <i [class]="icon"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -52,23 +70,38 @@
                         <label class="form-control-label" for="input-address">Questão #{{i + 1}}</label>
                       </div>
                     </div>
-                    <p class="h4">{{questao.descricao}}</p>
+                    <p>{{questao.descricao}}</p>
                     <!-- <textarea rows="5" class="form-control form-control-alternative" [(ngModel)]="questao.resposta"
                       [ngModelOptions]="{standalone: true}"></textarea> -->
 
-                      <div class="row">
-                        <div class="col">
-                          <label class="form-control-label" for="input-address">Resposta #{{i + 1}}</label>
-                        </div>
+                    <div class="row">
+                      <div class="col">
+                        <label class="form-control-label" for="input-address">Resposta #{{i + 1}}</label>
                       </div>
-                      <p class="h4">{{questao.resposta.descricao}}</p>
+                      <div class="col" *ngIf="inscricao.aprovado !== null">
+                        <span *ngIf="questao.avaliacao.aprovado" class="badge badge-success">CORRETO</span>
+                        <span *ngIf="!questao.avaliacao.aprovado" class="badge badge-danger">INCORRETO</span>
+                      </div>
 
+                      <div class="col" *ngIf="inscricao.aprovado == null">
+                        <label>
+                          <input type="checkbox" [(ngModel)]="questao.avaliacao.aprovado"
+                            [ngModelOptions]="{standalone: true}" /> Correto
+                        </label>
+                      </div>
+                    </div>
+                    <p>{{questao.resposta.descricao}}</p>
+
+                    <textarea rows="5" class="form-control form-control-alternative"
+                      [disabled]="inscricao.aprovado !== null ? true : false"
+                      [(ngModel)]="questao.avaliacao.descricao" [ngModelOptions]="{standalone: true}" required></textarea>
+
+                    <hr class="my-4" />
                     <!-- <input type="hidden" ng-model="record.usersId" value="{{user.userId}}" ng-init="record.usersId=user.userId"/> -->
                   </div>
                 </div>
               </div>
             </div>
-            <hr class="my-4" />
 
             <div class="row">
               <div class="col">
@@ -84,8 +117,13 @@
                         <label class="form-control-label" for="input-address">Questão #{{i + 1}}</label>
                       </div> -->
                     </div>
-                    <p class="h4">Avaliador: Jonas</p>
-                    <textarea rows="5" class="form-control form-control-alternative" formControlName="parecerFinal" [(ngModel)]="inscricao.parecerFinal"></textarea>
+                    <div *ngIf="inscricao.aprovado != null ? true : false">
+                      <p>{{inscricao.parecerFinal}}</p>
+                    </div>
+                    <div *ngIf="inscricao.aprovado == null ? true : false">
+                      <textarea rows="5" class="form-control form-control-alternative" formControlName="parecerFinal"
+                        [(ngModel)]="inscricao.parecerFinal" maxlength="500"></textarea>
+                    </div>
                     <!-- <input type="hidden" ng-model="record.usersId" value="{{user.userId}}" ng-init="record.usersId=user.userId"/> -->
                   </div>
                 </div>
@@ -93,9 +131,12 @@
             </div>
 
             <div class="pl-lg-4">
-              <div class="form-group">
+              <div class="form-group" *ngIf="!inscricao.aprovado ? true : false">
                 <button type="button" class="btn btn-success btn-lg btn-block" [disabled]="formGroup.invalid"
                   (click)="salvar()">Avaliar</button>
+              </div>
+              <div class="form-group" *ngIf="inscricao.aprovado ? true : false">
+                <button type="button" class="btn btn-primary btn-lg btn-block" (click)="voltar()">Voltar</button>
               </div>
             </div>
           </form>
