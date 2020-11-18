@@ -1,19 +1,31 @@
-### Mamba - Read Me
+### Mamba - Read Me - FIAP FINAL PROJECT
 
 **Link do repositório no GitHub:** https://github.com/pedrorangelf/mamba
-- **Login da Aplicação:** user@example.com
-- **Senha da Aplicação:** Teste_123
-- **Host do banco de dados SQL Server:** 74.50.111.162
-- **Login do banco de dado SQL Server: (Somente para consultas)** fiap_select
-- **Senha do banco de dado SQL Server: (Somente para consultas)** 3*3h4Pqy
 
-## Tecnologias
+## Tecnologias utilizadas
 - .Net Core 3.1
 - Web Api .Net Core 3.1
 - Angular 9
 - SQL Server
 - Ionic Framework 4
 
+### Guia de pastas do repositório
+- **business:** Destinada para as entregas relacionadas ao modelo de negócios. (Documentação com Business Model Canvas + Pitch Final em vídeo)
+- **front:** Aplicação web em Angular 9
+- **mobile:** Aplicação mobile em Ionic Framework 4
+- **server:** Aplicação back-end em Web Api .Net Core 3.1
+
+### Credencial de acesso ao banco SQL Server (SOMENTE PARA CONSULTA)
+- **Host:** 74.50.111.162
+- **Login: (Somente para consultas)** fiap_select
+- **Senha: (Somente para consultas)** 3*3h4Pqy
+
+### Credenciais para testes nas aplicações Web e Mobile
+- **Login** user@example.com
+- **Senha** Teste_123
+
+
+### Guia para testes
 ## Pré-requisitos
 Siga os passos abaixo e garanta que tudo estará instalado para a execução do projeto.
 
@@ -24,7 +36,6 @@ Siga os passos abaixo e garanta que tudo estará instalado para a execução do 
 **npm i -g @angular/cli**
 5. Instale o Ionic CLI executando o seguinte comando no terminal:
 **npm install -g @ionic/cli**  -- https://ionicframework.com/docs/intro/cli
-
 
 ## Passo a passo
 Caso utilize o Visual Studio Community, abra a solution na IDE e defina o projeto Mamba.API como o projeto inicializador e depure o projeto.
