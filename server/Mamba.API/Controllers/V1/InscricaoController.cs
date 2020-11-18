@@ -178,7 +178,7 @@ namespace Mamba.API.Controllers.V1
                             Aprovado = r.Avaliacao.Aprovado,
                             Descricao = r.Avaliacao.Descricao,
                             Avaliador = r.Avaliacao.Funcionario.ApplicationUser.Nome
-                        }).FirstOrDefault()
+                        }).FirstOrDefault() ?? new InscricaoDetalhadaQuestaoAvaliacaoResponse()
                 }).ToList()
             };
 

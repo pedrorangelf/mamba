@@ -1,19 +1,30 @@
-### Mamba - Read Me
+### Mamba - Read Me - FIAP FINAL PROJECT
 
 **Link do repositório no GitHub:** https://github.com/pedrorangelf/mamba
-- **Login da Aplicação:** user@example.com
-- **Senha da Aplicação:** Teste_123
-- **Host do banco de dados SQL Server:** mamba.database.windows.net,1433
-- **Login do banco de dado SQL Server:** mamba
-- **Senha do banco de dado SQL Server:** @Senha12
 
-## Tecnologias
+## Tecnologias utilizadas
 - .Net Core 3.1
 - Web Api .Net Core 3.1
-- Angular 8
+- Angular 9
 - SQL Server
+- Ionic Framework 4
 
-## Pré-requisitos
+## Guia de pastas do repositório
+- **business:** Destinada para as entregas relacionadas ao modelo de negócios. (Documentação com Business Model Canvas + Pitch Final em vídeo)
+- **front:** Aplicação web em Angular 9
+- **mobile:** Aplicação mobile em Ionic Framework 4
+- **server:** Aplicação back-end em Web Api .Net Core 3.1
+
+## Credencial de acesso ao banco SQL Server (SOMENTE PARA CONSULTA)
+- **Host:** 74.50.111.162
+- **Login: (Somente para consultas)** fiap_select
+- **Senha: (Somente para consultas)** 3*3h4Pqy
+
+## Credenciais para testes nas aplicações Web e Mobile
+- **Login** fiap@tester.com
+- **Senha** Fiap_2020
+
+## Pré-requisitos para testes
 Siga os passos abaixo e garanta que tudo estará instalado para a execução do projeto.
 
 1. Baixe e instale o VS Code no link https://code.visualstudio.com/ ou o Visual Studio Community 2019 pelo link https://visualstudio.microsoft.com/pt-br/vs/
@@ -21,11 +32,21 @@ Siga os passos abaixo e garanta que tudo estará instalado para a execução do 
 3. Baixe e instale o NodeJS pelo link https://nodejs.org/ (selecione a opção "LTS").
 4. Instale o Angular CLI executando o seguinte comando no terminal:
 **npm i -g @angular/cli**
+5. Instale o Ionic CLI executando o seguinte comando no terminal:
+**npm install -g @ionic/cli**  -- https://ionicframework.com/docs/intro/cli
 
+## Passo a passo para testes
 
-## Passo a passo
+### 1. Back-end .Net Core (Opcional)
+
+**Atenção: Este passo é opcional, pois as aplicações web e mobile estão programadas pra consumir uma API que já se encontra publicada. Esta API é exatamente o projeto Web Api .Net Core que se encontra neste repositório e pode ser acessada pelo link http://api.victorsavoi.dev.br/swagger**
+
+**Atenção: Este projeto está apontado para o banco de dados publicado em produção (O mesmo banco utilizado nas aplicações web e mobile)**
+
+#### 1.1. Utilizando Visual Studio Community
 Caso utilize o Visual Studio Community, abra a solution na IDE e defina o projeto Mamba.API como o projeto inicializador e depure o projeto.
 
+#### 1.2. Utilizando VS Code
 Caso utilize o VS Code ou qualquer editor de texto que não seja o Visual Studio Community, siga os passos abaixo para executar o projeto:
 Após tudo instalado e configurado, abra o prompt de comando e navegue até a pasta do projeto e execute os comandos abaixo respeitando a sequência.
 
@@ -34,10 +55,22 @@ Após tudo instalado e configurado, abra o prompt de comando e navegue até a pa
 - dotnet build
 - acessar o projeto Mamba.API (cd Mamba.API)
 - dotnet run
+- copie o link retornado no terminal na linha "Now listening on: https://localhost:{SUA_PORTA}" e cole no navegador incluindo o caminho /swagger
+
+### 2. Front-end web em Angular 9
+
+**Atenção: A URL da API no arquivo src/environment/environment.ts está apontando para o serviço PUBLICADO**
 
 **No terminal acesse a pasta "front" e execute os comandos abaixo:**
-
 - npm install
-- ng serve -o
+- ng serve --o
 
-**Lembre-se de verificar se a url da api está correta no arquivo src/environment/environment.ts**
+### 3. Front-end mobile em Ionic Framework 4
+
+**Atenção: A URL da API no arquivo src/environment/environment.ts está apontando para o serviço PUBLICADO**
+
+**No terminal acesse a pasta "mobile" e execute os comandos abaixo:**
+- npm install
+- ionic serve
+
+**AO EXECUTAR O APP NO BROWSER LEMBRE-SE DE ATIVAR AS FERRAMENTAS DO DESENVOLVEDOR(F12) E SELECIONAR QUALQUER DISPOSITIVO PARA VISUALIZAR MELHOR.**
