@@ -37,7 +37,10 @@ Siga os passos abaixo e garanta que tudo estará instalado para a execução do 
 
 ## Passo a passo para testes
 
-### Back-end .Net Core
+### Back-end .Net Core (Opcional)
+
+**Atenção: Este passo é opcional, pos as aplicações web e mobile estão programadas pra consumir uma API que já se encontra publicada. Esta API é exatamente o projeto Web Api .Net Core que se encontra neste repositório e pode ser acessada pelo link http://api.victorsavoi.dev.br/swagger**
+
 #### Utilizando Visual Studio Community
 Caso utilize o Visual Studio Community, abra a solution na IDE e defina o projeto Mamba.API como o projeto inicializador e depure o projeto.
 
