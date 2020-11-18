@@ -21,8 +21,8 @@
 - **Senha: (Somente para consultas)** 3*3h4Pqy
 
 ## Credenciais para testes nas aplicações Web e Mobile
-- **Login** user@example.com
-- **Senha** Teste_123
+- **Login** fiap@tester.com
+- **Senha** Fiap_2020
 
 ## Pré-requisitos para testes
 Siga os passos abaixo e garanta que tudo estará instalado para a execução do projeto.
