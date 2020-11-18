@@ -52,16 +52,19 @@ Após tudo instalado e configurado, abra o prompt de comando e navegue até a pa
 - dotnet run
 
 ### Front-end web em Angular 9
+
+**Atenção: A URL da API no arquivo src/environment/environment.ts está apontando para o serviço PUBLICADO**
+
 **No terminal acesse a pasta "front" e execute os comandos abaixo:**
 - npm install
 - ng serve --o
 
-**A URL da API no arquivo src/environment/environment.ts está apontando para o serviço PUBLICADO**
-
 ### Front-end mobile em Ionic Framework 4
+
+**Atenção: A URL da API no arquivo src/environment/environment.ts está apontando para o serviço PUBLICADO**
+
 **No terminal acesse a pasta "mobile" e execute os comandos abaixo:**
 - npm install
 - ionic serve
 
-**A URL da API no arquivo src/environment/environment.ts está apontando para o serviço PUBLICADO**
 **AO EXECUTAR O APP NO BROWSER LEMBRE-SE DE ATIVAR AS FERRAMENTAS DO DESENVOLVEDOR(F12) E SELECIONAR QUALQUER DISPOSITIVO PARA VISUALIZAR MELHOR.**
