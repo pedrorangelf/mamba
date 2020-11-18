@@ -55,7 +55,7 @@ Após tudo instalado e configurado, abra o prompt de comando e navegue até a pa
 - dotnet build
 - acessar o projeto Mamba.API (cd Mamba.API)
 - dotnet run
-- acesse o Swagger da aplicação colocando o caminho /swagger de acordo com o localhost instanciado em sua máquina.
+- copie o link retornado no terminal na linha "Now listening on: https://localhost:{SUA_PORTA}" e cole no navegador incluindo o caminho /swagger
 
 ### 2. Front-end web em Angular 9
 
