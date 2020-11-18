@@ -37,11 +37,11 @@ Siga os passos abaixo e garanta que tudo estará instalado para a execução do 
 
 ## Passo a passo para testes
 
-## Back-end .Net Core
-# Utilizando Visual Studio Community
+### Back-end .Net Core
+#### Utilizando Visual Studio Community
 Caso utilize o Visual Studio Community, abra a solution na IDE e defina o projeto Mamba.API como o projeto inicializador e depure o projeto.
 
-# Utilizando VS Code
+#### Utilizando VS Code
 Caso utilize o VS Code ou qualquer editor de texto que não seja o Visual Studio Community, siga os passos abaixo para executar o projeto:
 Após tudo instalado e configurado, abra o prompt de comando e navegue até a pasta do projeto e execute os comandos abaixo respeitando a sequência.
 
@@ -51,14 +51,14 @@ Após tudo instalado e configurado, abra o prompt de comando e navegue até a pa
 - acessar o projeto Mamba.API (cd Mamba.API)
 - dotnet run
 
-## Front-end web em Angular 9
+### Front-end web em Angular 9
 **No terminal acesse a pasta "front" e execute os comandos abaixo:**
 - npm install
 - ng serve --o
 
 **A URL da API no arquivo src/environment/environment.ts está apontando para o serviço PUBLICADO**
 
-## Front-end mobile em Ionic Framework 4
+### Front-end mobile em Ionic Framework 4
 **No terminal acesse a pasta "mobile" e execute os comandos abaixo:**
 - npm install
 - ionic serve
