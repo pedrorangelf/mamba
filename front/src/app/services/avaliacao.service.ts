@@ -13,6 +13,6 @@ export class AvaliacaoService extends DataService {
   context = 'avaliacao';
 
   salvar(data: any) {
-    return this.post<any>(data.desafioId, data);
+    return this.post<any>('salvar-avaliacao-desafio/' + data.desafioId, data);
   }
 }
