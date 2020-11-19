@@ -39,4 +39,9 @@ export class DesafioService extends DataService {
     obterVagaInscricao(id: string) {
       return this.get<any>('obter-vaga-inscricao', id);
     }
+
+    fecharDesafio(id: string) {
+      return this.post<any>(id + '/fechar-desafio', null);
+
+    }
 }

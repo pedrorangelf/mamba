@@ -28,6 +28,7 @@ export class AvaliacaoComponent implements OnInit {
   textoCorrecao = 'Correção Pendente';
   classDiv = '';
   icon = '';
+  visible: boolean;
 
   respostas: RespostaModel[] = [];
 
@@ -45,14 +46,17 @@ export class AvaliacaoComponent implements OnInit {
         this.inscricao = result.data;
         this.questoes = result.data.questoes;
         if (this.inscricao.aprovado) {
+          this.visible = false;
           this.textoCorrecao = 'Aprovado!';
           this.classDiv = 'icon icon-shape bg-success text-white rounded-circle shadow';
           this.icon = 'fas fa-check';
         } else if (this.inscricao.aprovado === null) {
+          this.visible = true;
           this.textoCorrecao = 'Correção Pendente';
           this.classDiv = 'icon icon-shape bg-yellow text-white rounded-circle shadow';
           this.icon = 'fas fa-edit';
         } else {
+          this.visible = false;
           this.textoCorrecao = 'Reprovado';
           this.classDiv = 'icon icon-shape bg-danger text-white rounded-circle shadow';
           this.icon = 'fas fa-times';
@@ -93,7 +97,24 @@ export class AvaliacaoComponent implements OnInit {
       avaliacoes: this.avaliacoes
     };
 
-    this.avaliacaoService.salvar(model).subscribe(result =>  this.router.navigate(['vaga/' + this.inscricao.desafioId]));
+    this.avaliacaoService.salvar(model).subscribe(result => {
+
+      Swal.fire({
+        title: 'Candidato Avalidado com Sucesso',
+        text: model.candidatoAprovado ? 'Candidato Aprovado' : 'Candidato Reprovado',
+        showCancelButton: false,
+        confirmButtonColor: '#29b6f6',
+        cancelButtonColor: '#ef9a9a',
+        confirmButtonText: 'Ok',
+      }).then(
+        s => {
+          if (s.value) {
+            this.router.navigate(['vaga/' + this.inscricao.desafioId]);
+
+          }
+        }
+      );
+    });
   }
 
   voltar() {

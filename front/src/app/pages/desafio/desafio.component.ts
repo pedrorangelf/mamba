@@ -47,18 +47,34 @@ export class DesafioComponent implements OnInit {
   ngOnInit(): void {
 
     this.formGroup = this.formBuilder.group({
-      select: new FormControl(null)
-    });
+      select: new FormControl(null),
+      dataAbertura: ['', [Validators.required]],
+      dataFechamento: ['', [Validators.required]],
+      limiteInscricao: ['', [Validators.required]]
+    }, {validator: this.dateLessThan('dataAbertura', 'dataFechamento')});
 
+  }
+
+  dateLessThan(from: string, to: string) {
+    return (group: FormGroup): {[key: string]: any} => {
+     const f = group.controls[from];
+     const t = group.controls[to];
+     if (f.value > t.value) {
+       return {
+         dates: 'Data Abertura não pode ser maior que Data Fechamento'
+       };
+     }
+     return {};
+    };
   }
 
   salvar() {
     const model: DesafioModel = {
       cargoId: this.formGroup.value.select ?? this.desafio.cargoId,
-      limiteInscricao: 10,
+      limiteInscricao: this.formGroup.value.limiteInscricao,
       id: this.idDesafio,
-      dataAbertura: new Date(),
-      dataFechamento: new Date('2021-01-16'),
+      dataAbertura: this.formGroup.value.dataAbertura,
+      dataFechamento: this.formGroup.value.dataFechamento,
       questoes: this.questoes
     };
 

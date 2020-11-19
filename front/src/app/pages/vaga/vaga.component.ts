@@ -57,7 +57,11 @@ export class VagaComponent implements OnInit {
   }
 
   obterDetalhesVaga(id: string) {
-    this.desafioService.obterDetalhes(id).subscribe(result => { this.vaga = result.data; });
+    this.desafioService.obterDetalhes(id).subscribe(result => { this.vaga = result.data; console.log(result.data); });
+  }
+
+  fecharDesafio() {
+    this.desafioService.fecharDesafio(this.idVaga).subscribe(result => this.obterCandidatosPorVaga(this.idVaga));
   }
 
 }
