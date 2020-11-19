@@ -25,7 +25,6 @@ export class VagaComponent implements OnInit {
 
   ngOnInit(): void {
     this.obterCandidatosPorVaga(this.idVaga);
-
   }
 
   obterCandidatosPorVaga(id: any) {
@@ -61,7 +60,7 @@ export class VagaComponent implements OnInit {
   }
 
   fecharDesafio() {
-    this.desafioService.fecharDesafio(this.idVaga).subscribe(result => this.obterCandidatosPorVaga(this.idVaga));
+    this.desafioService.fecharDesafio(this.idVaga).subscribe(result => this.obterDetalhesVaga(this.idVaga));
   }
 
 }

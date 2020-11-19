@@ -69,13 +69,15 @@
               <h3 class="mb-0">{{vaga.cargo}}</h3>
             </div>
             <div class="col text-right">
-              <span class="badge badge-success">Aberto</span>
+              <span class="badge badge-success" *ngIf="vaga.statusDesafio == 'Aberto'">Aberto</span>
+              <span class="badge badge-danger" *ngIf="vaga.statusDesafio == 'Fechado'">Fechado</span>
             </div>
             <div class="col text-right">
               <a href="#!" class="btn btn-sm"  [routerLink]="'/resposta/' + idVaga">Enviar desafio <i class="fas fa-share-alt"></i></a>
             </div>
             <div class="col text-right">
-              <a href="#!" class="btn btn-sm btn-danger">Fechar Vaga</a>
+              <a href="javascript:void(0)" class="btn btn-sm btn-danger" *ngIf="vaga.statusDesafio == 'Aberto'"
+                (click)="fecharDesafio()">Fechar Vaga</a>
             </div>
           </div>
         </div>

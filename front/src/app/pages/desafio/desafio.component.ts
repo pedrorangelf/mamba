@@ -6,6 +6,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { QuestaoModel } from 'src/app/shared/model/desafio-add.model';
 import Swal from 'sweetalert2';
 import { CargoService } from 'src/app/services/cargo.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-desafio',
@@ -26,7 +27,8 @@ export class DesafioComponent implements OnInit {
     private _activatedRoute: ActivatedRoute,
     private router: Router,
     private cargoService: CargoService,
-    private desafioService: DesafioService) {
+    private desafioService: DesafioService,
+    private datePipe: DatePipe) {
     this.idDesafio = this._activatedRoute.snapshot.params.id ?? null;
 
     this.cargoService.listarCargos().subscribe((result) => {
@@ -40,6 +42,10 @@ export class DesafioComponent implements OnInit {
         this.desafio = result.data;
         this.questoes = this.desafio.questoes;
         this.formGroup.controls['select'].setValue(this.desafio.cargoId, { onlySelf: true });
+
+        this.formGroup.controls['dataAbertura'].setValue(this.formataData(this.desafio.dataAbertura), { onlySelf: true });
+        this.formGroup.controls['dataFechamento'].setValue(this.formataData(this.desafio.dataFechamento), { onlySelf: true });
+        this.formGroup.controls['limiteInscricao'].setValue(this.desafio.limiteInscricao, { onlySelf: true });
       });
     }
   }
@@ -51,20 +57,20 @@ export class DesafioComponent implements OnInit {
       dataAbertura: ['', [Validators.required]],
       dataFechamento: ['', [Validators.required]],
       limiteInscricao: ['', [Validators.required]]
-    }, {validator: this.dateLessThan('dataAbertura', 'dataFechamento')});
+    }, { validator: this.dateLessThan('dataAbertura', 'dataFechamento') });
 
   }
 
   dateLessThan(from: string, to: string) {
-    return (group: FormGroup): {[key: string]: any} => {
-     const f = group.controls[from];
-     const t = group.controls[to];
-     if (f.value > t.value) {
-       return {
-         dates: 'Data Abertura não pode ser maior que Data Fechamento'
-       };
-     }
-     return {};
+    return (group: FormGroup): { [key: string]: any } => {
+      const f = group.controls[from];
+      const t = group.controls[to];
+      if (f.value > t.value) {
+        return {
+          dates: 'Data Abertura não pode ser maior que Data Fechamento'
+        };
+      }
+      return {};
     };
   }
 
@@ -154,6 +160,10 @@ export class DesafioComponent implements OnInit {
 
   removeQuestao(i: number) {
     this.questoes.splice(i, 1);
+  }
+
+  formataData(data: string): string {
+    return this.datePipe.transform(new Date(data), 'yyyy-MM-dd');
   }
 
 }
